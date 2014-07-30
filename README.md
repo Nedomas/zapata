@@ -1,26 +1,12 @@
 # Zapata
 
-TODO: Write a gem description
+Who has time to write tests? This is a revolutional tool to make them write themselves.
 
+
+![Emiliano Zapata](https://cloud.githubusercontent.com/assets/1877286/3753719/af3bfec2-1814-11e4-8790-242c2b26a8e9.jpg)
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'zapata'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install zapata
-
-## Usage
-
-TODO: Write usage instructions here
+Install by looking at source code.
 
 ## Contributing
 

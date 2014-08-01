@@ -4,6 +4,9 @@ require 'pry-stack_explorer'
 require 'andand'
 require_relative 'zapata/analyst'
 require_relative 'zapata/version'
+require_relative 'zapata/var_collector'
+require_relative 'zapata/rspec_writer'
+require_relative 'zapata/code_parser'
 
 module Zapata
   class Revolutionist

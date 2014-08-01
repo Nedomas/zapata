@@ -5,7 +5,8 @@ module Zapata
     end
 
     def rspec
-      VarCollector.new(@code).result
+      vars = VarCollector.new(@code).result
+      spec = RspecWriter.new(@code, vars).result
     end
 
     class << self

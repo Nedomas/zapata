@@ -12,8 +12,9 @@ module Zapata
     end
 
     def add_var(name, value)
-      @result[name] ||= []
-      @result[name] << value
+      clean_name = name.to_s.delete('@').to_sym
+      @result[clean_name] ||= []
+      @result[clean_name] << value
     end
 
     def parse_class(class_code)
@@ -67,12 +68,18 @@ module Zapata
     end
 
     def parse_value(value)
-      case value.type
+      result = { type: value.type }
+
+      result[:value] = case value.type
       when :lvar
         parse_lvar(value)
       when :send
         parse_send(value)
+      when :str, :sym
+        value.to_a.first
       end
+
+      result
     end
 
     def parse_lvar(value)

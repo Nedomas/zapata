@@ -1,13 +1,40 @@
 module Zapata
+  class Writer
+    def initialize(filename)
+      @file = File.open("#{filename}.rb", 'w')
+      @padding = 0
+      clean
+    end
+
+    def clean
+      @file.write('')
+    end
+
+    def append_line(line='')
+      if line.match('end')
+        @padding -= 1
+      end
+
+      @file.puts("#{'  ' * @padding}#{line}")
+
+      if line.match('do')
+        @padding += 1
+      end
+    end
+  end
+
   class RspecWriter
     attr_reader :result
 
-    def initialize(code)
+    def initialize(code, var_analysis)
+      @var_analysis = var_analysis
+      @template_spec = CodeParser.new('test_files/template_spec').code
+      @writer = Writer.new('test_files/zapata_spec')
       @result = {}
 
       case code.type
       when :class
-        parse_class(code)
+        parse_klass(code)
       end
     end
 
@@ -16,9 +43,25 @@ module Zapata
       @result[name] << value
     end
 
-    def parse_class(class_code)
-      klass, inherited_from_klass, body = class_code.to_a
+    def parse_klass(class_code)
+      @klass, inherited_from_klass, body = class_code.to_a
+
+      @writer.append_line("require 'spec_helper'")
+      @writer.append_line
+
+      @writer.append_line("describe #{klass_name}Spec do")
+      @writer.append_line
+
+      @writer.append_line("let(:#{klass_name.downcase}) { #{klass_name}.new() }")
+      @writer.append_line
+
       parse_body(body)
+      @writer.append_line('end')
+    end
+
+    def klass_name
+      module_name, klass_name = @klass.to_a
+      klass_name
     end
 
     def parse_body(body)
@@ -57,7 +100,47 @@ module Zapata
 
     def parse_method(method)
       name, args, body = method.to_a
-      parse_block(body)
+      calculated_args = heuristic_args(args)
+      text_args = !calculated_args.empty? ? "(#{calculated_args.join(', ')})" : ''
+
+      @writer.append_line("describe '##{name}' do")
+      @writer.append_line(
+        "expect(@#{klass_name.downcase}.#{name}#{text_args}).to eq()"
+      )
+
+      @writer.append_line('end')
+      @writer.append_line
+    end
+
+    def heuristic_args(args)
+      args.to_a.map do |arg|
+        var_name = arg.to_a.first
+        # fallback if not found
+        value = choose_arg_value(var_name)
+        arg_for_print(value)
+      end
+    end
+
+    def arg_for_print(value)
+      case value
+      when String
+        "'#{value}'"
+      else
+      end
+    end
+
+    def choose_arg_value(var_name)
+      value = @var_analysis[var_name].andand.first
+      return "NEVER_SET_#{var_name}" unless value
+
+      case value[:type]
+      when :lvar
+        "UNSURE_LVAR_#{value[:value]}"
+      when :send
+        "UNSURE_METHOD_#{value[:value]}"
+      when :str, :sym
+        value[:value]
+      end
     end
 
     def parse_ivasgn(ivasgn)

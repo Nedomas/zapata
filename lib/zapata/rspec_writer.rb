@@ -125,7 +125,8 @@ module Zapata
       case value
       when String
         "'#{value}'"
-      else
+      when Symbol
+        ":#{value}"
       end
     end
 

@@ -16,4 +16,8 @@ describe PersonSpec do
     expect(@person.show_name_with_prefix('funky')).to eq()
   end
   
+  describe '#whats_my_code' do
+    expect(@person.whats_my_code(:some_code)).to eq()
+  end
+  
 end

@@ -14,4 +14,8 @@ class Person < Object
   def show_name_with_prefix(prefix)
     "#{prefix}_#{@name}"
   end
+
+  def whats_my_code(code)
+    code
+  end
 end

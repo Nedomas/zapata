@@ -2,11 +2,7 @@ require 'spec_helper'
 
 describe PersonSpec do
   
-  let(:person) { Person.new() }
-  
-  describe '#initialize' do
-    expect(@person.initialize('UNSURE_LVAR_name', 'NEVER_SET_shop_id')).to eq()
-  end
+  let(:person) { Person.new('UNSURE_LVAR_name', 'NEVER_SET_shop_id') }
   
   describe '#show_shop_ids' do
     expect(@person.show_shop_ids).to eq()

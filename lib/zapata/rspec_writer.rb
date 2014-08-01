@@ -52,9 +52,6 @@ module Zapata
       @writer.append_line("describe #{klass_name}Spec do")
       @writer.append_line
 
-      @writer.append_line("let(:#{klass_name.downcase}) { #{klass_name}.new() }")
-      @writer.append_line
-
       parse_body(body)
       @writer.append_line('end')
     end
@@ -100,16 +97,34 @@ module Zapata
 
     def parse_method(method)
       name, args, body = method.to_a
-      calculated_args = heuristic_args(args)
-      text_args = !calculated_args.empty? ? "(#{calculated_args.join(', ')})" : ''
 
+      if name == :initialize
+        write_let_from_initialize(name, args, body)
+      else
+        write_method(name, args, body)
+      end
+    end
+
+    def write_let_from_initialize(name, args, body)
+      @writer.append_line(
+        "let(:#{klass_name.downcase}) { #{klass_name}.new#{predicted_args(args)} }"
+      )
+      @writer.append_line
+    end
+
+    def write_method(name, args, body)
       @writer.append_line("describe '##{name}' do")
       @writer.append_line(
-        "expect(@#{klass_name.downcase}.#{name}#{text_args}).to eq()"
+        "expect(@#{klass_name.downcase}.#{name}#{predicted_args(args)}).to eq()"
       )
 
       @writer.append_line('end')
       @writer.append_line
+    end
+
+    def predicted_args(args)
+      calculated_args = heuristic_args(args)
+      !calculated_args.empty? ? "(#{calculated_args.join(', ')})" : ''
     end
 
     def heuristic_args(args)

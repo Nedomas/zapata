@@ -5,15 +5,43 @@ module Zapata
     end
 
     def rspec
+      VarCollector.new(@code).result
+    end
+
+    class << self
+      def analize(files)
+        files.each do |file|
+          # parse_file
+          # Somehow get data from all files
+          # @code = Parser::CurrentRuby.parse(plain_text_code)
+          # @analyst = Analyst.new(parsed_code)
+        end
+
+        {}
+      end
+    end
+  end
+
+  class CodeParser
+    def initialize(filename)
+      @plain_text_code = File.open("#{filename}.rb").read
+    end
+
+    def code
+      Parser::CurrentRuby.parse(@plain_text_code)
+    end
+  end
+
+  class VarCollector
+    attr_reader :result
+
+    def initialize(code)
       @result = {}
 
-      variables = VarCollector.new(@code)
-      case @code.type
+      case code.type
       when :class
-        parse_class(@code)
+        parse_class(code)
       end
-
-      @result
     end
 
     def add_var(name, value)
@@ -84,32 +112,5 @@ module Zapata
       name, *_ = value.to_a
       name
     end
-
-    class << self
-      def analize(files)
-        files.each do |file|
-          # parse_file
-          # Somehow get data from all files
-          # @code = Parser::CurrentRuby.parse(plain_text_code)
-          # @analyst = Analyst.new(parsed_code)
-        end
-
-        {}
-      end
-    end
-  end
-
-  class CodeParser
-    def initialize(filename)
-      @plain_text_code = File.open("#{filename}.rb").read
-    end
-
-    def code
-      Parser::CurrentRuby.parse(@plain_text_code)
-    end
-  end
-
-  class VarCollector
-
   end
 end

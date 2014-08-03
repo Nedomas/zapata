@@ -15,11 +15,6 @@ module Zapata
       end
     end
 
-    def add_var(name, value)
-      @result[name] ||= []
-      @result[name] << value
-    end
-
     def parse_klass(class_code)
       @klass, inherited_from_klass, body = class_code.to_a
 
@@ -67,8 +62,6 @@ module Zapata
       case part.type
       when :def
         parse_method(part)
-      when :ivasgn
-        parse_ivasgn(part)
       end
     end
 
@@ -94,15 +87,12 @@ module Zapata
     end
 
     def write_method(name, args, body)
-      @writer.append_line("describe '##{name}' do")
-
-      @writer.append_line("it 'should work as planned' do")
+      @writer.append_line("it '##{name}' do")
 
       @writer.append_line(
-        "expect(#{klass_name_underscore}.#{name}#{predicted_args(args)}).to eq('somethin')"
+        "expect(#{klass_name_underscore}.#{name}#{predicted_args(args)}).to eq('FILL IN THIS BY HAND')"
       )
 
-      @writer.append_line('end')
       @writer.append_line('end')
       @writer.append_line
     end
@@ -127,15 +117,17 @@ module Zapata
 
       value = choose_by_probability(possible_values)
 
-      case value[:type]
-      when :lvar, :send
+      type = value[:type]
+
+      if MISSING_TYPES.include?(type)
         MissingVariable.new(value[:type], value[:value])
-      when :str, :sym
+      elsif PRIMITIVE_TYPES.include?(type)
         value[:value]
       end
     end
 
-    PRIMITIVE_TYPES = %i(str sym)
+    MISSING_TYPES = %i(lvar send)
+    PRIMITIVE_TYPES = %i(str sym int array true false)
 
     def choose_by_probability(possible_values)
       most_probable_by_count = most_probable_by_counts(possible_values)
@@ -158,26 +150,6 @@ module Zapata
       values.each_with_object(Hash.new(0)) do |value, obj|
         obj[value] += 1
       end
-    end
-
-    def parse_ivasgn(ivasgn)
-      name, value = ivasgn.to_a
-
-      add_var(name, parse_value(value))
-    end
-
-    def parse_value(value)
-      case value.type
-      when :lvar
-        parse_lvar(value)
-      when :send
-        parse_send(value)
-      end
-    end
-
-    def parse_lvar(value)
-      name, *_ = value.to_a
-      name
     end
   end
 end

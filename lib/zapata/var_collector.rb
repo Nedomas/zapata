@@ -89,8 +89,16 @@ module Zapata
         parse_lvar(value)
       when :send
         parse_send(value)
-      when :str, :sym
+      when :str, :sym, :int
         value.to_a.first
+      when :array
+        value.to_a.map { |v| v.to_a.first }
+      when :true
+        true
+      when :false
+        false
+      else
+        binding.pry
       end
 
       result

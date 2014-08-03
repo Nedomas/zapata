@@ -8,6 +8,10 @@ module Zapata
       @module, @name = name_node.to_a
     end
 
+    def initialized?
+      @args_to_s
+    end
+
     def initialize_to_s
       "#{@name}.new#{@args_to_s}"
     end

@@ -1,7 +1,7 @@
 module Zapata
   class Chooser
     def initialize(possible_values)
-      @possible_values = possible_values
+      @possible_values = possible_values.dup
     end
 
     def by_probability
@@ -9,7 +9,9 @@ module Zapata
 
       chosen_by_count = by_count
 
-      result = if ArgsPredictor::PRIMITIVE_TYPES.include?(chosen_by_count[:type])
+      result = if ArgsPredictor::PRIMITIVE_TYPES.include?(chosen_by_count[:type]) or
+        ArgsPredictor::MISSING_TYPES.include?(chosen_by_count[:type])
+
         chosen_by_count
       else
         @possible_values.delete(chosen_by_count)

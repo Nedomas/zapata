@@ -1,7 +1,7 @@
 require 'parser/current'
 require 'pry'
 require 'pry-stack_explorer'
-require 'andand'
+# require 'andand'
 require 'rails'
 require_relative 'zapata/analyst'
 require_relative 'zapata/version'
@@ -17,7 +17,7 @@ require_relative 'zapata/args_predictor'
 require_relative 'zapata/chooser'
 
 # load Rails ENV
-require File.expand_path('../../../zapata_rails_test/config/environment',  __FILE__)
+require File.expand_path('../../../samesystem/config/environment',  __FILE__)
 
 module Zapata
   class Revolutionist

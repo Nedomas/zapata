@@ -32,15 +32,25 @@ module Zapata
 
       type = value[:type]
 
-      if MISSING_TYPES.include?(type)
+      if MISSING_TYPES.include?(type) and @instance.initialized?
         @instance.new.send(value[:value])
-        # binding.pry
-        # MissingVariable.new(value[:type], value[:value])
       elsif PRIMITIVE_TYPES.include?(type)
         value[:value]
+      elsif type == :send
+        Evaluation.new(value[:value])
       else
-        binding.pry
+        MissingVariable.new(:never_set, var_name)
       end
+    end
+  end
+
+  class Evaluation
+    def initialize(code)
+      @code = code
+    end
+
+    def to_s
+      @code
     end
   end
 end

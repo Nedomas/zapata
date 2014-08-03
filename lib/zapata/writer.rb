@@ -31,6 +31,8 @@ module Zapata
           "'#{value}'"
         when Symbol
           ":#{value}"
+        when Evaluation
+          value
         else
           value
         end

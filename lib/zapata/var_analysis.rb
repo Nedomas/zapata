@@ -8,6 +8,8 @@ module Zapata
       case code.type
       when :class
         parse_class(code)
+      when :begin
+        parse_block(code)
       end
     end
 
@@ -64,6 +66,8 @@ module Zapata
         parse_ivasgn(part)
       when :lvasgn
         parse_lvasgn(part)
+      when :class
+        parse_class(part)
       end
     end
 

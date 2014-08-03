@@ -1,39 +1,4 @@
 module Zapata
-  class Writer
-    def initialize(filename)
-      @file = File.open(filename, 'w')
-      @padding = 0
-      clean
-    end
-
-    def clean
-      @file.write('')
-    end
-
-    def append_line(line='')
-      if line.match('end')
-        @padding -= 1
-      end
-
-      @file.puts("#{'  ' * @padding}#{line}")
-
-      if line.match('do')
-        @padding += 1
-      end
-    end
-
-    def self.arg_for_print(value)
-      case value
-      when String
-        "'#{value}'"
-      when Symbol
-        ":#{value}"
-      else
-        value
-      end
-    end
-  end
-
   class RspecWriter
     attr_reader :result
 

@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'andand'
   spec.add_runtime_dependency 'pry'
   spec.add_runtime_dependency 'pry-stack_explorer'
+  spec.add_runtime_dependency 'rails'
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rake', '~> 10.0'
 end

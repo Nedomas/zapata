@@ -2,6 +2,7 @@ require 'parser/current'
 require 'pry'
 require 'pry-stack_explorer'
 require 'andand'
+require 'rails'
 require_relative 'zapata/analyst'
 require_relative 'zapata/version'
 require_relative 'zapata/var_collector'
@@ -44,10 +45,3 @@ module Zapata
     end
   end
 end
-
-dirs = %w(app/models app/controllers)
-file_list = Zapata::FileCollector.expand_dirs_to_files(dirs)
-
-Zapata::Revolutionist.new(file_list)
-  .generate_rspec_for('app/models/class_to_test.rb')
-puts 'Its done, comrades'

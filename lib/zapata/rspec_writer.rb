@@ -23,10 +23,10 @@ module Zapata
     def parse_klass(class_code)
       @klass, inherited_from_klass, body = class_code.to_a
 
-      @writer.append_line("require 'spec_helper'")
+      @writer.append_line("require 'rails_helper'")
       @writer.append_line
 
-      @writer.append_line("describe #{klass_name}Spec do")
+      @writer.append_line("describe #{klass_name} do")
       @writer.append_line
 
       parse_body(body)
@@ -84,17 +84,25 @@ module Zapata
 
     def write_let_from_initialize(name, args, body)
       @writer.append_line(
-        "let(:#{klass_name.downcase}) { #{klass_name}.new#{predicted_args(args)} }"
+        "let(:#{klass_name_underscore}) { #{klass_name}.new#{predicted_args(args)} }"
       )
       @writer.append_line
     end
 
+    def klass_name_underscore
+      klass_name.to_s.underscore
+    end
+
     def write_method(name, args, body)
       @writer.append_line("describe '##{name}' do")
+
+      @writer.append_line("it 'should work as planned' do")
+
       @writer.append_line(
-        "expect(#{klass_name.downcase}.#{name}#{predicted_args(args)}).to eq()"
+        "expect(#{klass_name_underscore}.#{name}#{predicted_args(args)}).to eq('somethin')"
       )
 
+      @writer.append_line('end')
       @writer.append_line('end')
       @writer.append_line
     end

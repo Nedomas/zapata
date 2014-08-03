@@ -21,6 +21,17 @@ module Zapata
         @padding += 1
       end
     end
+
+    def self.arg_for_print(value)
+      case value
+      when String
+        "'#{value}'"
+      when Symbol
+        ":#{value}"
+      else
+        value
+      end
+    end
   end
 
   class RspecWriter
@@ -133,28 +144,17 @@ module Zapata
         var_name = arg.to_a.first
         # fallback if not found
         value = choose_arg_value(var_name)
-        arg_for_print(value)
-      end
-    end
-
-    def arg_for_print(value)
-      case value
-      when String
-        "'#{value}'"
-      when Symbol
-        ":#{value}"
+        Writer.arg_for_print(value)
       end
     end
 
     def choose_arg_value(var_name)
       value = @var_analysis[var_name].andand.first
-      return "NEVER_SET_#{var_name}" unless value
+      return MissingVariable.new(:never_set, var_name) unless value
 
       case value[:type]
-      when :lvar
-        "UNSURE_LVAR_#{value[:value]}"
-      when :send
-        "UNSURE_METHOD_#{value[:value]}"
+      when :lvar, :send
+        MissingVariable.new(value[:type], value[:value])
       when :str, :sym
         value[:value]
       end

@@ -8,6 +8,7 @@ require_relative 'zapata/var_collector'
 require_relative 'zapata/rspec_writer'
 require_relative 'zapata/code_parser'
 require_relative 'zapata/file_collector'
+require_relative 'zapata/missing_variable'
 
 module Zapata
   class Revolutionist

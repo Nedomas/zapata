@@ -1,7 +1,7 @@
 module Zapata
   class Writer
     def initialize(filename)
-      @file = File.open("#{filename}.rb", 'w')
+      @file = File.open(filename, 'w')
       @padding = 0
       clean
     end
@@ -26,10 +26,11 @@ module Zapata
   class RspecWriter
     attr_reader :result
 
-    def initialize(code, var_analysis)
+    def initialize(filename, code, var_analysis)
       @var_analysis = var_analysis
-      @template_spec = CodeParser.new('test_files/template_spec').code
-      @writer = Writer.new('test_files/zapata_spec')
+      # @template_spec = CodeParser.parse('test_files/template_spec').code
+      spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
+      @writer = Writer.new(spec_filename)
       @result = {}
 
       case code.type
@@ -115,7 +116,7 @@ module Zapata
     def write_method(name, args, body)
       @writer.append_line("describe '##{name}' do")
       @writer.append_line(
-        "expect(@#{klass_name.downcase}.#{name}#{predicted_args(args)}).to eq()"
+        "expect(#{klass_name.downcase}.#{name}#{predicted_args(args)}).to eq()"
       )
 
       @writer.append_line('end')

@@ -33,6 +33,9 @@ module Zapata
     end
 
     def parse_block(block)
+      # skip empty methods
+      return unless block
+
       case block.type
       when :send
         parse_send(block)
@@ -97,11 +100,23 @@ module Zapata
         true
       when :false
         false
+      when :hash
+        eval(value.loc.expression.source)
       else
-        binding.pry
       end
 
       result
+    end
+
+    def unnest(value)
+      value = [value] unless value.is_a?(Array)
+
+      if value.first.is_a?(Parser::AST::Node)
+        value = value.first.to_a
+        value.map { |v| unnest(v) }
+      else
+        value.first
+      end
     end
 
     def parse_lvar(value)

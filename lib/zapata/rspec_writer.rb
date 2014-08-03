@@ -127,7 +127,7 @@ module Zapata
     end
 
     MISSING_TYPES = %i(lvar send)
-    PRIMITIVE_TYPES = %i(str sym int array true false)
+    PRIMITIVE_TYPES = %i(str sym int array true false hash)
 
     def choose_by_probability(possible_values)
       most_probable_by_count = most_probable_by_counts(possible_values)

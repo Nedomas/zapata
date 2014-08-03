@@ -149,14 +149,41 @@ module Zapata
     end
 
     def choose_arg_value(var_name)
-      value = @var_analysis[var_name].andand.first
-      return MissingVariable.new(:never_set, var_name) unless value
+      possible_values = @var_analysis[var_name] || []
+      return MissingVariable.new(:never_set, var_name) if possible_values.empty?
+
+      value = choose_by_probability(possible_values)
 
       case value[:type]
       when :lvar, :send
         MissingVariable.new(value[:type], value[:value])
       when :str, :sym
         value[:value]
+      end
+    end
+
+    PRIMITIVE_TYPES = %i(str sym)
+
+    def choose_by_probability(possible_values)
+      most_probable_by_count = most_probable_by_counts(possible_values)
+
+      result = if PRIMITIVE_TYPES.include?(most_probable_by_count[:type])
+        most_probable_by_count
+      else
+        possible_values.delete(most_probable_by_count)
+        choose_by_probability(possible_values)
+      end
+
+      result || most_probable_by_count
+    end
+
+    def most_probable_by_counts(possible_values)
+      group_with_counts(possible_values).max_by { |k, v| v }.first
+    end
+
+    def group_with_counts(values)
+      values.each_with_object(Hash.new(0)) do |value, obj|
+        obj[value] += 1
       end
     end
 

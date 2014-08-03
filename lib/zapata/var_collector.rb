@@ -26,6 +26,9 @@ module Zapata
       case body.type
       when :begin
         parse_block(body)
+      when :def
+        # single method class
+        parse_method(body)
       end
     end
 
@@ -39,6 +42,9 @@ module Zapata
         parts.each do |part|
           parse_part(part)
         end
+      when :lvasgn
+        # single assign method
+        parse_lvasgn(block)
       end
     end
 
@@ -53,6 +59,8 @@ module Zapata
         parse_method(part)
       when :ivasgn
         parse_ivasgn(part)
+      when :lvasgn
+        parse_lvasgn(part)
       end
     end
 
@@ -63,6 +71,12 @@ module Zapata
 
     def parse_ivasgn(ivasgn)
       name, value = ivasgn.to_a
+
+      add_var(name, parse_value(value))
+    end
+
+    def parse_lvasgn(lvasgn)
+      name, value = lvasgn.to_a
 
       add_var(name, parse_value(value))
     end

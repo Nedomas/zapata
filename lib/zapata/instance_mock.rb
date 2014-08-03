@@ -12,10 +12,12 @@ module Zapata
       "#{@name}.new#{@args_to_s}"
     end
 
+    def new
+      eval(initialize_to_s)
+    end
+
     def name_underscore
       @name.to_s.underscore
     end
   end
-
-
 end

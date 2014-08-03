@@ -63,7 +63,7 @@ module Zapata
 
     def parse_method(method)
       name_node, args, body = method.to_a
-      method = MethodMock.new(name_node, args, body, @var_analysis)
+      method = MethodMock.new(name_node, args, body, @var_analysis, @instance)
 
       if method.name == :initialize
         @instance.args_to_s = method.predicted_args_to_s

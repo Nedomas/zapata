@@ -1,5 +1,5 @@
 module Zapata
-  class VarCollector
+  class VarAnalysis
     attr_reader :result
 
     def initialize(code)

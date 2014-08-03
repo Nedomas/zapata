@@ -3,63 +3,43 @@ module Zapata
     MISSING_TYPES = %i(lvar send)
     PRIMITIVE_TYPES = %i(str sym int array true false hash)
 
-    def initialize(args, var_analysis)
+    def initialize(args, var_analysis, instance)
       @args = args
       @var_analysis = var_analysis
+      @instance = instance
     end
 
     def to_s
+      heuristic_args = calculate_heuristic_args
       !heuristic_args.empty? ? "(#{heuristic_args.join(', ')})" : ''
     end
 
-    def heuristic_args
-      @args.to_a.map do |arg|
+    def calculate_heuristic_args
+      a = @args.to_a.map do |arg|
         var_name = arg.to_a.first
         # fallback if not found
         value = choose_arg_value(var_name)
         Writer.arg_for_print(value)
       end
+      a
     end
 
     def choose_arg_value(var_name)
       possible_values = @var_analysis[var_name] || []
       return MissingVariable.new(:never_set, var_name) if possible_values.empty?
 
-      value = choose_by_probability(possible_values)
+      value = Chooser.new(possible_values).by_probability
 
       type = value[:type]
 
       if MISSING_TYPES.include?(type)
-        MissingVariable.new(value[:type], value[:value])
+        @instance.new.send(value[:value])
+        # binding.pry
+        # MissingVariable.new(value[:type], value[:value])
       elsif PRIMITIVE_TYPES.include?(type)
         value[:value]
       else
         binding.pry
-      end
-    end
-
-    def choose_by_probability(possible_values)
-      return if possible_values.empty?
-
-      most_probable_by_count = most_probable_by_counts(possible_values)
-
-      result = if PRIMITIVE_TYPES.include?(most_probable_by_count[:type])
-        most_probable_by_count
-      else
-        possible_values.delete(most_probable_by_count)
-        choose_by_probability(possible_values)
-      end
-
-      result || most_probable_by_count
-    end
-
-    def most_probable_by_counts(possible_values)
-      group_with_counts(possible_values).max_by { |k, v| v }.first
-    end
-
-    def group_with_counts(values)
-      values.each_with_object(Hash.new(0)) do |value, obj|
-        obj[value] += 1
       end
     end
   end

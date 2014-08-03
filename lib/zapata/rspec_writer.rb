@@ -1,11 +1,11 @@
 module Zapata
   class RspecWriter
-    attr_reader :result
+    attr_reader :spec_filename
 
     def initialize(filename, code, var_analysis)
       @var_analysis = var_analysis
       # @template_spec = CodeParser.parse('test_files/template_spec').code
-      spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
+      @spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
       @writer = Writer.new(spec_filename)
       @result = {}
 
@@ -75,7 +75,7 @@ module Zapata
 
     def write_let_from_initialize
       @writer.append_line(
-        "let(:#{@instance.name}) { #{@instance.initialize_to_s} }"
+        "let(:#{@instance.name_underscore}) { #{@instance.initialize_to_s} }"
       )
       @writer.append_line
     end

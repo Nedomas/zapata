@@ -35,7 +35,7 @@ module Zapata
       @analysis[filename] = Analyst.analyze(filename) unless @analysis[filename]
 
       code = CodeParser.parse(filename)
-      RspecWriter.new(filename, code, merged_analysis).result
+      RspecWriter.new(filename, code, merged_analysis)
     end
 
     def merged_analysis

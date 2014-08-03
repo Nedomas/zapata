@@ -12,6 +12,8 @@ require_relative 'zapata/code_parser'
 require_relative 'zapata/file_collector'
 require_relative 'zapata/missing_variable'
 require_relative 'zapata/instance_mock'
+require_relative 'zapata/method_mock'
+require_relative 'zapata/args_predictor'
 
 # load Rails ENV
 require File.expand_path('../../../zapata_rails_test/config/environment',  __FILE__)

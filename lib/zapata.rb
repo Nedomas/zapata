@@ -11,6 +11,10 @@ require_relative 'zapata/writer'
 require_relative 'zapata/code_parser'
 require_relative 'zapata/file_collector'
 require_relative 'zapata/missing_variable'
+require_relative 'zapata/instance_mock'
+
+# load Rails ENV
+require File.expand_path('../../../zapata_rails_test/config/environment',  __FILE__)
 
 module Zapata
   class Revolutionist

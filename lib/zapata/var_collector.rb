@@ -86,37 +86,16 @@ module Zapata
 
     def parse_value(value)
       result = { type: value.type }
+      source = value.loc.expression.source
 
       result[:value] = case value.type
-      when :lvar
-        parse_lvar(value)
-      when :send
-        parse_send(value)
-      when :str, :sym, :int
-        value.to_a.first
-      when :array
-        value.to_a.map { |v| v.to_a.first }
-      when :true
-        true
-      when :false
-        false
-      when :hash
-        eval(value.loc.expression.source)
+      when :lvar, :send
+        source
       else
+        eval(source)
       end
 
       result
-    end
-
-    def unnest(value)
-      value = [value] unless value.is_a?(Array)
-
-      if value.first.is_a?(Parser::AST::Node)
-        value = value.first.to_a
-        value.map { |v| unnest(v) }
-      else
-        value.first
-      end
     end
 
     def parse_lvar(value)

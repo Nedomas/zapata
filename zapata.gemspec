@@ -6,7 +6,7 @@ require 'zapata/version'
 Gem::Specification.new do |spec|
   spec.name          = 'zapata'
   spec.version       = Zapata::VERSION
-  spec.authors       = ['Domas']
+  spec.authors       = ['Domas Bitvinskas']
   spec.email         = ['domas.bitvinskas@me.com']
   spec.summary       = %q(Automatic automated test writer)
   spec.description   = %q(Who has time to write tests? This is a revolutional tool to make them write themselves.)

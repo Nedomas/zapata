@@ -16,7 +16,7 @@ Slop.parse do
       dirs = %w(app/models app/controllers)
       file_list = Zapata::FileCollector.expand_dirs_to_files(dirs)
 
-      files = %w(app/models/ical.rb app/models/fingerprint.rb)
+      # files = %w(app/models/ical.rb app/models/fingerprint.rb)
 
       spec_filename = Zapata::Revolutionist.new(file_list)
         .generate_rspec_for(args.shift).spec_filename

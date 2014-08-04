@@ -21,9 +21,17 @@ require_relative 'zapata/args_predictor'
 require_relative 'zapata/chooser'
 
 # load Rails ENV
-# require File.expand_path('../../../samesystem/spec/spec_helper',  __FILE__)
-# require File.expand_path('../../../zapata_rails_test/spec/rails_helper',  __FILE__)
-require File.expand_path('../../../zapata_rails_test/spec/rails_helper',  __FILE__)
+rails_dir = Dir.pwd
+rails_helper_path = File.expand_path("#{rails_dir}/spec/rails_helper",  __FILE__)
+spec_helper_path = File.expand_path("#{rails_dir}/spec/spec_helper",  __FILE__)
+
+if File.exist?("#{rails_helper_path}.rb")
+  require rails_helper_path
+elsif File.exist?("#{spec_helper_path}.rb")
+  require spec_helper_path
+else
+  raise 'Was not able to load nor rails_helper, nor spec_helper'
+end
 
 module Zapata
   class Revolutionist

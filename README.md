@@ -121,4 +121,4 @@ I doubt it will work easily out of the box so check ``lib/zapata.rb``
 
 ## Copyright
 Copyright (c) 2014 Domas.
-See [LICENSE][] for details.
+See [LICENSE](LICENSE) for details.

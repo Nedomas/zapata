@@ -19,7 +19,7 @@ module Zapata
         var_name = arg.to_a.first
         # fallback if not found
         value = choose_arg_value(var_name)
-        Writer.arg_for_print(value)
+        Printer.value(value)
       end
       a
     end

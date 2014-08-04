@@ -27,20 +27,5 @@ module Zapata
     def word_exists?(string, word)
       !!/\b(?:#{word})\b/.match(string)
     end
-
-    class << self
-      def arg_for_print(value)
-        case value
-        when String
-          "'#{value}'"
-        when Symbol
-          ":#{value}"
-        when Evaluation
-          value
-        else
-          value
-        end
-      end
-    end
   end
 end

@@ -20,7 +20,7 @@ module Zapata
       name, inherited_from_klass, body = class_code.to_a
       @instance = InstanceMock.new(name, inherited_from_klass, body)
 
-      @writer.append_line("require 'spec_helper'")
+      @writer.append_line("require 'rails_helper'")
       @writer.append_line
 
       @writer.append_line("describe #{@instance.name} do")
@@ -94,20 +94,10 @@ module Zapata
 
     def write_equal(method_name)
       if @spec_analysis
-        method_spec_analysis = @spec_analysis[method_name]
-
-        if exception = method_spec_analysis[:exception]
-          string_representation(exception[:message])
-        else
-          string_representation(method_spec_analysis[:status])
-        end
+        Printer.value(@spec_analysis.expected(method_name))
       else
-        string_representation('FILL IN THIS BY HAND')
+        Printer.value('FILL IN THIS BY HAND')
       end
-    end
-
-    def string_representation(text)
-      "\"#{text}\""
     end
   end
 end

@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require_relative '../lib/zapata'
+
+Slop.parse do
+  banner 'Usage: zapata [options]'
+
+  on '--help', '-h' do
+    puts help
+  end
+
+  command 'generate' do
+    run do |opts, args|
+      dirs = %w(app/models app/controllers)
+      file_list = Zapata::FileCollector.expand_dirs_to_files(dirs)
+
+      files = %w(app/models/ical.rb app/models/fingerprint.rb)
+
+      spec_filename = Zapata::Revolutionist.new(file_list)
+        .generate_rspec_for(args.shift).spec_filename
+      puts "Its done, comrades. File #{spec_filename} was generated."
+    end
+  end
+end

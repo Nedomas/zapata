@@ -70,7 +70,7 @@ require 'rails_helper'
 
 describe RobotToTest do
 
-  let(:robot_to_test) { RobotToTest.new('John3000', 11, Zapata::MissingVariable.new(:never_set, :sex), true) }
+  let(:robot_to_test) { RobotToTest.new('John3000', 11, Zapata::Missing.new(:never_set, :sex), true) }
 
   it '#show_shop_ids' do
     expect(robot_to_test.show_shop_ids).to eq('FILL IN THIS BY HAND')

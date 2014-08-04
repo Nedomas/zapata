@@ -11,6 +11,7 @@ module Zapata
 
       "Zapata::Missing.new(#{printable_params.join(', ')})"
     end
+    alias_method :to_str, :to_s
 
     def method_missing(m, *args, &block)
       binding.pry

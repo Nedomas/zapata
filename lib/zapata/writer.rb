@@ -1,13 +1,15 @@
 module Zapata
   class Writer
     def initialize(filename)
-      @file = File.open(filename, 'w')
+      @filename = filename
       @padding = 0
       clean
     end
 
     def clean
-      @file.write('')
+      file = File.open(@filename, 'w')
+      file.write('')
+      file.close
     end
 
     def append_line(line = '')
@@ -15,7 +17,9 @@ module Zapata
 
       padding_to_use = @padding
       padding_to_use = 0 if line.empty?
-      @file.puts("#{'  ' * padding_to_use}#{line}")
+      file = File.open(@filename, 'ab+')
+      file.puts("#{'  ' * padding_to_use}#{line}")
+      file.close
 
       @padding += 1 if word_exists?(line, 'do')
     end

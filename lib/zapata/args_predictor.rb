@@ -26,31 +26,22 @@ module Zapata
 
     def choose_arg_value(var_name)
       possible_values = @var_analysis[var_name] || []
-      return MissingVariable.new(:never_set, var_name) if possible_values.empty?
+      return Missing.new(:never_set, var_name) if possible_values.empty?
 
       value = Chooser.new(possible_values).by_probability
+      return_value_by_type(value[:value], value[:type], var_name)
+    end
 
-      type = value[:type]
-
+    def return_value_by_type(value, type, var_name)
       if MISSING_TYPES.include?(type) and @instance.initialized?
-        @instance.new.send(value[:value])
+        @instance.new.send(value)
       elsif PRIMITIVE_TYPES.include?(type)
-        value[:value]
+        value
       elsif type == :send
-        Evaluation.new(value[:value])
+        Evaluation.new(value)
       else
-        MissingVariable.new(:never_set, var_name)
+        Missing.new(:not_calculatable, var_name)
       end
-    end
-  end
-
-  class Evaluation
-    def initialize(code)
-      @code = code
-    end
-
-    def to_s
-      @code
     end
   end
 end

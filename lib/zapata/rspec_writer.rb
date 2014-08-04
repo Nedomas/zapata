@@ -1,9 +1,10 @@
 module Zapata
-  class RspecWriter
+  class RSpecWriter
     attr_reader :spec_filename
 
-    def initialize(filename, code, var_analysis)
+    def initialize(filename, code, var_analysis, spec_analysis = nil)
       @var_analysis = var_analysis
+      @spec_analysis = spec_analysis
       # @template_spec = CodeParser.parse('test_files/template_spec').code
       @spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
       @writer = Writer.new(spec_filename)
@@ -19,7 +20,7 @@ module Zapata
       name, inherited_from_klass, body = class_code.to_a
       @instance = InstanceMock.new(name, inherited_from_klass, body)
 
-      @writer.append_line("require 'rails_helper'")
+      @writer.append_line("require 'spec_helper'")
       @writer.append_line
 
       @writer.append_line("describe #{@instance.name} do")
@@ -84,11 +85,29 @@ module Zapata
       @writer.append_line("it '##{method.name}' do")
 
       @writer.append_line(
-        "expect(#{@instance.name_underscore}.#{method.name}#{method.predicted_args_to_s}).to eq('FILL IN THIS BY HAND')"
+        "expect(#{@instance.name_underscore}.#{method.name}#{method.predicted_args_to_s}).to eq(#{write_equal(method.name)})"
       )
 
       @writer.append_line('end')
       @writer.append_line
+    end
+
+    def write_equal(method_name)
+      if @spec_analysis
+        method_spec_analysis = @spec_analysis[method_name]
+
+        if exception = method_spec_analysis[:exception]
+          string_representation(exception[:message])
+        else
+          string_representation(method_spec_analysis[:status])
+        end
+      else
+        string_representation('FILL IN THIS BY HAND')
+      end
+    end
+
+    def string_representation(text)
+      "\"#{text}\""
     end
   end
 end

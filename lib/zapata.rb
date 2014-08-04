@@ -11,7 +11,7 @@ require_relative 'zapata/rspec_writer'
 require_relative 'zapata/rspec_runner'
 require_relative 'zapata/writer'
 require_relative 'zapata/printer'
-require_relative 'zapata/code_parser'
+require_relative 'zapata/code_reader'
 require_relative 'zapata/file_collector'
 require_relative 'zapata/missing'
 require_relative 'zapata/evaluation'
@@ -19,6 +19,7 @@ require_relative 'zapata/instance_mock'
 require_relative 'zapata/method_mock'
 require_relative 'zapata/args_predictor'
 require_relative 'zapata/chooser'
+require_relative 'zapata/code_diver'
 
 # load Rails ENV
 rails_dir = Dir.pwd
@@ -48,7 +49,7 @@ module Zapata
     def generate_rspec_for(filename)
       @analysis[filename] = Analyst.analyze(filename) unless @analysis[filename]
 
-      code = CodeParser.parse(filename)
+      code = CodeReader.parse(filename)
 
       # first run
       spec = RSpecWriter.new(filename, code, merged_analysis)
@@ -59,10 +60,12 @@ module Zapata
     end
 
     def merged_analysis
-      merge_array_of_hashes(@analysis.values)
+      Helper.merge_array_of_hashes(@analysis.values) rescue binding.pry
     end
+  end
 
-    def merge_array_of_hashes(array)
+  class Helper
+    def self.merge_array_of_hashes(array)
       array.each_with_object({}) do |pairs, obj|
         pairs.each do |k, v|
           (obj[k] ||= []) << v

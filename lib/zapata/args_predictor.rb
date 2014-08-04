@@ -1,7 +1,7 @@
 module Zapata
   class ArgsPredictor
     MISSING_TYPES = %i(lvar send)
-    PRIMITIVE_TYPES = %i(str sym int array true false hash)
+    PRIMITIVE_TYPES = %i(str sym int array true false)
 
     def initialize(args, var_analysis, instance)
       @args = args
@@ -29,17 +29,26 @@ module Zapata
       return Missing.new(:never_set, var_name) if possible_values.empty?
 
       value = Chooser.new(possible_values).by_probability
-      return_value_by_type(value[:value], value[:type], var_name)
+      return_value_by_type(value[:code], value[:type], var_name)
     end
 
-    def return_value_by_type(value, type, var_name)
+    def return_value_by_type(code, type, var_name)
       if MISSING_TYPES.include?(type) and @instance.initialized?
-        @instance.new.send(value)
+        @instance.new.send(code)
       elsif PRIMITIVE_TYPES.include?(type)
-        value
+        code
       elsif type == :send
-        Evaluation.new(value)
+        Evaluation.new(code)
+      elsif type == :hash
+        result = {}
+
+        code.each do |key, val|
+          result[key[:code]] = val[:code]
+        end
+
+        result
       else
+        binding.pry
         Missing.new(:not_calculatable, var_name)
       end
     end

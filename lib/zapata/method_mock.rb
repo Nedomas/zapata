@@ -5,8 +5,13 @@ module Zapata
     def initialize(name, args, body, var_analysis, instance)
       @name = name
       @args = args
+      @body = body
       @var_analysis = var_analysis
       @instance = instance
+    end
+
+    def empty?
+      !@body
     end
 
     def predicted_args_to_s

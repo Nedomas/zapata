@@ -23,7 +23,7 @@ module Zapata
       report_lines = exception(method_name).to_s.split(/\n/)
       expected_line = report_lines.detect { |line| line.match('got:') }
       clean_expected_line = expected_line[9..-1]
-      eval(clean_expected_line) rescue binding.pry
+      eval(clean_expected_line)
     end
 
     def run

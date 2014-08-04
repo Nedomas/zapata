@@ -1,7 +1,7 @@
 module Zapata
   class Analyst
     def self.analyze(filename)
-      code = CodeParser.parse(filename)
+      code = CodeReader.parse(filename)
       VarAnalysis.new(code).result
     end
   end

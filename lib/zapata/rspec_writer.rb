@@ -82,6 +82,8 @@ module Zapata
     end
 
     def write_method(method)
+      return if method.empty?
+
       @writer.append_line("it '##{method.name}' do")
 
       @writer.append_line(

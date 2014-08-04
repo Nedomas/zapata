@@ -14,7 +14,6 @@ module Zapata
     alias_method :to_str, :to_s
 
     def method_missing(m, *args, &block)
-      binding.pry
       self
     end
   end

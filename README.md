@@ -7,20 +7,47 @@ Who has time to write tests? This is a revolutional tool to make them write them
 
 # Working prototype
 
-So here comes a day where we have this bullshit class to test
+There comes a day where you have this bullshit class ``RobotToTest`` to test.
 
 ```ruby
-class Person < Object
-  def initialize(name, shop_id)
+class RobotToTest < Object
+  def initialize(name, shop_id, sex, has_children)
+    has_children = true
+    random_false_value = false
     @name = name
-    @shop_ids = shop_ids
+    @shop_ids = [1, 2, 3]
     @code = :some_code
+    code = :some_other_code
     @prefix = 'funky'
-    show_name_with_prefix(prefix)
+    show_name_with_prefix(@prefix)
+
+    run_helping_method = some_helping_method
+    test_method_return_as_arg(run_helping_method)
   end
 
   def show_shop_ids
-    Hello.p @shop_ids
+    shop_id = 11
+    code = :some_other_code
+    p @shop_ids
+  end
+
+  def some_helping_method
+    'hello'
+  end
+
+  def test_method_return_as_arg(run_helping_method)
+    p run_helping_method
+  end
+
+  def testing_true_and_false(has_children, random_false_value)
+    has_children
+  end
+
+  def testing_empty_method
+  end
+
+  def testing_hash(options_hash)
+    options_hash = { one: :thing, led: :to_another }
   end
 
   def show_name_with_prefix(prefix)
@@ -33,26 +60,48 @@ class Person < Object
 end
 ```
 
-We just run ``ruby lib/zapata.rb`` and make pop the champagne.
-Here's what Zapata generated us. More data to analyse means better predictions.
+You just run ``zapata generate app/models/robot_to_test.rb`` and pop the champagne.
+Zapata generated ``spec/models/robot_to_test_spec.rb`` and prefills it with its own data.
+The more data it has, the more accurate the generated spec is. It automatically
+does the analysis of classes in ``app/{models,controllers}`` and gathers data.
 
 ```ruby
-require 'spec_helper'
+require 'rails_helper'
 
-describe PersonSpec do
+describe RobotToTest do
 
-  let(:person) { Person.new('UNSURE_LVAR_name', 'NEVER_SET_shop_id') }
+  let(:robot_to_test) { RobotToTest.new('John3000', 11, Zapata::MissingVariable.new(:never_set, :sex), true) }
 
-  describe '#show_shop_ids' do
-    expect(@person.show_shop_ids).to eq()
+  it '#show_shop_ids' do
+    expect(robot_to_test.show_shop_ids).to eq('FILL IN THIS BY HAND')
   end
 
-  describe '#show_name_with_prefix' do
-    expect(@person.show_name_with_prefix('funky')).to eq()
+  it '#some_helping_method' do
+    expect(robot_to_test.some_helping_method).to eq('FILL IN THIS BY HAND')
   end
 
-  describe '#whats_my_code' do
-    expect(@person.whats_my_code(:some_code)).to eq()
+  it '#test_method_return_as_arg' do
+    expect(robot_to_test.test_method_return_as_arg('hello')).to eq('FILL IN THIS BY HAND')
+  end
+
+  it '#testing_true_and_false' do
+    expect(robot_to_test.testing_true_and_false(true, false)).to eq('FILL IN THIS BY HAND')
+  end
+
+  it '#testing_empty_method' do
+    expect(robot_to_test.testing_empty_method).to eq('FILL IN THIS BY HAND')
+  end
+
+  it '#testing_hash' do
+    expect(robot_to_test.testing_hash({:one=>:thing, :led=>:to_another})).to eq('FILL IN THIS BY HAND')
+  end
+
+  it '#show_name_with_prefix' do
+    expect(robot_to_test.show_name_with_prefix('funky')).to eq('FILL IN THIS BY HAND')
+  end
+
+  it '#whats_my_code' do
+    expect(robot_to_test.whats_my_code(:some_other_code)).to eq('FILL IN THIS BY HAND')
   end
 
 end
@@ -60,7 +109,12 @@ end
 
 ## Installation
 
-Install by looking at source code.
+It in unreleased and unstable at the moment, but you can install it by
+```
+gem 'redcarpet', :git => 'git://github.com/tanoku/redcarpet.git'
+```
+
+I doubt it will work easily out of the box so check ``lib/zapata.rb``
 
 ## Contributing
 

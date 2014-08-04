@@ -2,7 +2,6 @@
 
 Who has time to write tests? This is a revolutional tool to make them write themselves.
 
-
 ![Emiliano Zapata](https://cloud.githubusercontent.com/assets/1877286/3753719/af3bfec2-1814-11e4-8790-242c2b26a8e9.jpg)
 
 # Working prototype
@@ -111,17 +110,15 @@ end
 
 ## Installation
 
-It in unreleased and unstable at the moment, but you can install it by
-```
-gem 'redcarpet', :git => 'git://github.com/tanoku/redcarpet.git'
+It is unreleased and unstable at this moment, but you can install it by
+```sh
+git clone https://github.com/Nedomas/zapata
+cd zapata
+bundle exec rake install
 ```
 
 I doubt it will work easily out of the box so check ``lib/zapata.rb``
 
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/zapata/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+## Copyright
+Copyright (c) 2014 Domas.
+See [LICENSE][] for details.

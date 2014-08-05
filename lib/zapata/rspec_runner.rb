@@ -8,7 +8,7 @@ module Zapata
     end
 
     def methodz
-      examples.index_by { |ex| ex.metadata[:description].delete('#').to_sym }
+      examples.index_by { |ex| ex.metadata[:description].delete('#').to_sym } rescue binding.pry
     end
 
     def metadata(method_name)
@@ -36,6 +36,8 @@ module Zapata
       rspec_examples = reporter.instance_variable_get(:@examples)
 
       raise 'Exception in rspec' unless rspec_examples
+
+      rspec_examples
     end
   end
 end

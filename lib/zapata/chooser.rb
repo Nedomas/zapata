@@ -9,8 +9,8 @@ module Zapata
 
       chosen_by_count = by_count
 
-      result = if ArgsPredictor::PRIMITIVE_TYPES.include?(chosen_by_count[:type]) or
-        ArgsPredictor::MISSING_TYPES.include?(chosen_by_count[:type])
+      result = if ArgsPredictor::PRIMITIVE_TYPES.include?(chosen_by_count.type) or
+        ArgsPredictor::MISSING_TYPES.include?(chosen_by_count.type)
 
         chosen_by_count
       else

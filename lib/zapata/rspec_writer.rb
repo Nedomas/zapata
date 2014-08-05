@@ -2,7 +2,8 @@ module Zapata
   class RSpecWriter
     attr_reader :spec_filename
 
-    def initialize(filename, code, helper_file, var_analysis, spec_analysis = nil)
+    def initialize(filename, code, subject_analysis, helper_file, var_analysis, spec_analysis = nil)
+      @subject_analysis = subject_analysis
       @var_analysis = var_analysis
       @spec_analysis = spec_analysis
       @helper_file = helper_file
@@ -16,6 +17,10 @@ module Zapata
       end
     end
 
+    def subject_methods
+      @subject_analysis.select { |assignment| assignment.class == DefAssignment }
+    end
+
     def parse_klass(class_code)
       name, inherited_from_klass, body = class_code.to_a
       @instance = InstanceMock.new(name, inherited_from_klass, body)
@@ -26,45 +31,16 @@ module Zapata
       @writer.append_line("describe #{@instance.name} do")
       @writer.append_line
 
-      parse_body(@instance.body)
+      subject_methods.each do |method|
+        write_for_method(method)
+      end
+
       @writer.append_line('end')
     end
 
-    def parse_body(body)
-      case body.type
-      when :begin
-        parse_block(body)
-      end
-    end
-
-    def parse_block(block)
-      case block.type
-      when :send
-        parse_send(block)
-      when :begin
-        *parts = block.to_a
-
-        parts.each do |part|
-          parse_part(part)
-        end
-      end
-    end
-
-    def parse_send(block)
-      to_object, method, *args = block.to_a
-      method
-    end
-
-    def parse_part(part)
-      case part.type
-      when :def
-        parse_method(part)
-      end
-    end
-
-    def parse_method(method)
-      name_node, args, body = method.to_a
-      method = MethodMock.new(name_node, args, body, @var_analysis, @instance)
+    def write_for_method(def_assignment)
+      method = MethodMock.new(def_assignment.name, def_assignment.args,
+        def_assignment.body, @var_analysis, @instance)
 
       if method.name == :initialize
         @instance.args_to_s = method.predicted_args_to_s

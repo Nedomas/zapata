@@ -1,6 +1,6 @@
 module Zapata
   class ArgsPredictor
-    MISSING_TYPES = %i(lvar send)
+    MISSING_TYPES = %i(lvar)
     PRIMITIVE_TYPES = %i(str sym int array true false)
 
     def initialize(args, var_analysis, instance)
@@ -25,30 +25,52 @@ module Zapata
     end
 
     def choose_arg_value(var_name)
-      possible_values = @var_analysis[var_name] || []
+      possible_values = @var_analysis.select { |v| v.name == var_name }
       return Missing.new(:never_set, var_name) if possible_values.empty?
 
       value = Chooser.new(possible_values).by_probability
-      return_value_by_type(value[:code], value[:type], var_name)
+      ObjectRebuilder.rebuild(value, @var_analysis)
     end
+  end
 
-    def return_value_by_type(code, type, var_name)
-      if MISSING_TYPES.include?(type) and @instance.initialized?
-        @instance.new.send(code)
-      elsif PRIMITIVE_TYPES.include?(type)
-        code
-      elsif type == :send
-        Evaluation.new(code)
-      elsif type == :hash
+  class ObjectRebuilder
+    class << self
+      def rebuild(value, var_analysis)
+        return value unless value.respond_to?(:type)
+
+        type = value.type
+        body = value.body
+
+        case type
+        when :str, :int, :sym
+          value.value(var_analysis)
+        when :true
+          true
+        when :false
+          false
+        when :hash
+          # hash = value.value(var_analysis)
+          hash(value.body)
+        when :send
+          rebuild(value.value(var_analysis), var_analysis)
+          # Evaluation.new(body)
+        else
+          binding.pry
+        end
+      end
+
+      def hash(body)
         result = {}
 
-        code.each do |key, val|
-          result[key[:code]] = val[:code]
+        pairs = body.to_a
+        pairs.each do |pair|
+          key_node, value_node = pair.to_a
+          key = key_node.to_a.first rescue binding.pry
+          value = value_node.to_a.first
+          result[key] = value
         end
 
         result
-      else
-        Missing.new(:not_calculatable, var_name)
       end
     end
   end

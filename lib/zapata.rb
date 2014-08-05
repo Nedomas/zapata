@@ -20,6 +20,9 @@ require_relative 'zapata/method_mock'
 require_relative 'zapata/args_predictor'
 require_relative 'zapata/chooser'
 require_relative 'zapata/code_diver'
+require_relative 'zapata/assignment_record'
+require_relative 'zapata/var_assignment'
+require_relative 'zapata/def_assignment'
 
 module Zapata
   class Revolutionist
@@ -57,15 +60,16 @@ module Zapata
       code = CodeReader.parse(filename)
 
       # first run
-      spec = RSpecWriter.new(filename, code, @helper_file, merged_analysis)
+      spec = RSpecWriter.new(filename, code, @analysis[filename], @helper_file, merged_analysis)
       spec_analysis = RSpecRunner.new(spec.spec_filename)
 
       # second run
-      RSpecWriter.new(filename, code, @helper_file, merged_analysis, spec_analysis)
+      spec = RSpecWriter.new(filename, code, @analysis[filename], @helper_file, merged_analysis, spec_analysis)
     end
 
     def merged_analysis
-      Helper.merge_array_of_hashes(@analysis.values) rescue binding.pry
+      @analysis.values.flatten
+      # Helper.merge_array_of_hashes(@analysis.values) rescue binding.pry
     end
   end
 

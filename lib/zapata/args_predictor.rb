@@ -48,7 +48,6 @@ module Zapata
 
         result
       else
-        binding.pry
         Missing.new(:not_calculatable, var_name)
       end
     end

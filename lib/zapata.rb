@@ -21,23 +21,28 @@ require_relative 'zapata/args_predictor'
 require_relative 'zapata/chooser'
 require_relative 'zapata/code_diver'
 
-# load Rails ENV
-rails_dir = Dir.pwd
-rails_helper_path = File.expand_path("#{rails_dir}/spec/rails_helper",  __FILE__)
-spec_helper_path = File.expand_path("#{rails_dir}/spec/spec_helper",  __FILE__)
-
-if File.exist?("#{rails_helper_path}.rb")
-  require rails_helper_path
-elsif File.exist?("#{spec_helper_path}.rb")
-  require spec_helper_path
-else
-  raise 'Was not able to load nor rails_helper, nor spec_helper'
-end
-
 module Zapata
   class Revolutionist
     def initialize(file_list)
+      load_rails
       @analysis = analyze_multiple(file_list)
+    end
+
+    def load_rails
+      # load Rails ENV
+      rails_dir = Dir.pwd
+      rails_helper_path = File.expand_path("#{rails_dir}/spec/rails_helper",  __FILE__)
+      spec_helper_path = File.expand_path("#{rails_dir}/spec/spec_helper",  __FILE__)
+
+      @helper_file = if File.exist?("#{rails_helper_path}.rb")
+        require rails_helper_path
+        'rails_helper'
+      elsif File.exist?("#{spec_helper_path}.rb")
+        require spec_helper_path
+        'spec_helper'
+      else
+        raise 'Was not able to load nor rails_helper, nor spec_helper'
+      end
     end
 
     def analyze_multiple(files)
@@ -52,11 +57,11 @@ module Zapata
       code = CodeReader.parse(filename)
 
       # first run
-      spec = RSpecWriter.new(filename, code, merged_analysis)
+      spec = RSpecWriter.new(filename, code, @helper_file, merged_analysis)
       spec_analysis = RSpecRunner.new(spec.spec_filename)
 
       # second run
-      RSpecWriter.new(filename, code, merged_analysis, spec_analysis)
+      RSpecWriter.new(filename, code, @helper_file, merged_analysis, spec_analysis)
     end
 
     def merged_analysis

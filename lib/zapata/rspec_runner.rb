@@ -33,7 +33,9 @@ module Zapata
 
     def examples
       reporter = RSpec.configuration.reporter
-      reporter.instance_variable_get(:@examples)
+      rspec_examples = reporter.instance_variable_get(:@examples)
+
+      raise 'Exception in rspec' unless rspec_examples
     end
   end
 end

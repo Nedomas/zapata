@@ -3,24 +3,28 @@ module Zapata
     attr_reader :result
 
     def initialize(class_code)
-      @klass, @inherited_from_klass, @body = class_code.to_a
+      @class_code = class_code
       @result = {}
     end
 
     def scan_variables
-      dive(@body.type, @body)
+      return unless @class_code
+
+      dive(@class_code.type, @class_code)
     end
 
     RETURN_TYPES = %i(sym float str int lvar ivar)
-    DIVE_TYPES = %i(begin block regexp regopt defined? nth_ref splat kwsplat
-      block_pass sclass masgn mlhs or irange erange rescue resbody when and
-      return case array kwbegin yield while op_asgn dstr ensure pair)
+    DIVE_TYPES = %i(begin block defined? nth_ref splat kwsplat class
+      block_pass sclass masgn or and irange erange when and
+      return array kwbegin yield while dstr ensure pair)
     ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn)
     DEF_TYPES = %i(def defs)
-    HARD_TYPES = %i(const nil next self false true break zsuper super retry)
+    HARD_TYPES = %i(dsym resbody mlhs const nil next self false true break zsuper
+      super retry rescue match_with_lvasgn case op_asgn regopt regexp)
 
     def map_dives(parts)
       parts.map do |part|
+        return { type: :error, code: part } unless part
         dive(part.type, part)
       end
     end
@@ -34,6 +38,7 @@ module Zapata
         map_dives(parts)
       elsif (ASSIGN_TYPES + DEF_TYPES).include?(type)
         dive_and_document(type, parts)
+      elsif HARD_TYPES.include?(type)
       elsif type == :send
         to_object, method, *args = code.to_a
 
@@ -63,6 +68,8 @@ module Zapata
 #       condition, on_true, on_false = question.to_a
 #
 #       dig(question)
+      else
+        binding.pry
       end
     end
 
@@ -72,15 +79,18 @@ module Zapata
       method_name = parts.first
       method_body = parts.last
       return unless method_body
+      binding.pry if method_name == :@context
 
-      document(method_name, value(type, dive(method_body.type, method_body)))
+      document(method_name, value(type, dive(method_body.type, method_body))) rescue binding.pry
     end
 
     def document(name, value)
       clean_name = clean(name)
 
-      @result[clean_name] ||= []
-      @result[clean_name] << value
+      if RETURN_TYPES.include?(value[:type])
+        @result[clean_name] ||= []
+        @result[clean_name] << value
+      end
     end
 
     def clean(name)

@@ -16,9 +16,9 @@ Slop.parse do
       dirs = %w(app/models app/controllers)
       file_list = Zapata::FileCollector.expand_dirs_to_files(dirs)
 
-      # files = %w(app/models/ical.rb)
+      files = %w(app/models/ical.rb)
 
-      spec_filename = Zapata::Revolutionist.new(file_list)
+      spec_filename = Zapata::Revolutionist.new(files)
         .generate_rspec_for(args.shift).spec_filename
       puts "Its done, comrades. File #{spec_filename} was generated."
     end

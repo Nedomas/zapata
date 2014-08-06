@@ -20,8 +20,11 @@ module Zapata
 
     def map_dives(parts)
       parts.map do |part|
-        return { type: :error, code: part } unless part
-        dive(part)
+        if part
+          dive(part)
+        else
+          { type: :error, code: part }
+        end
       end
     end
 
@@ -51,13 +54,12 @@ module Zapata
           AssignmentRecord.create(new_send)
         end
         new_send
-      elsif type == :true
-      elsif type == :false
-      elsif type == :hash
       elsif type == :args
+        PrimitiveArray.new(code, self)
+      elsif type == :arg or type == :optarg
+        Arg.new(code, self)
       elsif type == :if
       else
-        # binding.pry
       end
     end
   end

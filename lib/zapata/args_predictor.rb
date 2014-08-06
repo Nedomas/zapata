@@ -15,12 +15,11 @@ module Zapata
     end
 
     def calculate_heuristic_args
-      a = @args.to_a.map do |arg|
-        var_name = arg.to_a.first
+      a = @args.to_a(@var_analysis).map do |arg|
         # fallback if not found
-        value = choose_arg_value(var_name)
+        value = choose_arg_value(arg)
         Printer.value(value)
-      end
+      end rescue binding.pry
       a
     end
 
@@ -39,7 +38,7 @@ module Zapata
         return value unless value.respond_to?(:type)
 
         type = value.type
-        body = value.body
+        # body = value.body
 
         case type
         when :str, :int, :sym
@@ -54,6 +53,10 @@ module Zapata
         when :send
           rebuild(value.value(var_analysis), var_analysis)
           # Evaluation.new(body)
+        when :lvar
+          rebuild(value.value(var_analysis), var_analysis)
+        when :arg, :optarg
+          value.name
         else
           binding.pry
         end

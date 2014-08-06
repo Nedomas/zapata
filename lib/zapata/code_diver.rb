@@ -7,7 +7,7 @@ module Zapata
   DEF_TYPES = %i(def defs)
   HARD_TYPES = %i(dsym resbody mlhs const nil next self false true break zsuper
     super retry rescue match_with_lvasgn case op_asgn regopt regexp)
-  TYPES_BY_SEARCH_FOR = { var: ASSIGN_TYPES, def: DEF_TYPES, send: %i(send) }
+  TYPES_BY_SEARCH_FOR = { klass: %i(class), var: ASSIGN_TYPES, def: DEF_TYPES, send: %i(send) }
 
   class CodeDiver
     def initialize(search_for)
@@ -38,7 +38,8 @@ module Zapata
       elsif type == :arg or type == :optarg
         PrimitiveArg.new(code, self)
       elsif HARD_TYPES.include?(type)
-      else
+      elsif type == :class
+        Klass.new(code, self)
       end
 
       AssignmentRecord.create(result) if dive_types.include?(type)

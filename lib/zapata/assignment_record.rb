@@ -21,4 +21,10 @@ module Zapata
       end
     end
   end
+
+  class SaveManager
+    def self.clean(name)
+      name.to_s.delete('@').to_sym
+    end
+  end
 end

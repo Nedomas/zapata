@@ -1,7 +1,11 @@
 module Zapata
-  class Evaluation
+  class Eval
     def initialize(code)
       @code = code
+    end
+
+    def value(*)
+      binding.pry
     end
 
     def to_s

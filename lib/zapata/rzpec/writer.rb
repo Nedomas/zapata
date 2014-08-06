@@ -1,33 +1,34 @@
 module Zapata
-  module RSpec
+  module RZpec
     class Writer
       attr_reader :spec_filename
 
-      def initialize(filename, code, subject_analysis, helper_file, var_analysis, spec_analysis = nil)
+      def initialize(filename, code, subject_analysis, whole_analysis, spec_analysis = nil)
         @subject_analysis = subject_analysis
-        @var_analysis = var_analysis
+        @whole_analysis = whole_analysis
         @spec_analysis = spec_analysis
-        @helper_file = helper_file
         @spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
         @writer = Writer.new(spec_filename)
         @result = {}
 
-        write_class(klass)
+        klasses.each do |klass|
+          write_class(klass)
+        end
       end
 
-      def klass
-        @subject_analysis.select { |obj| obj.class == Klass }
+      def klasses
+        @subject_analysis.select { |obj| obj.is_a?(Klass) }
       end
 
       def subject_methods
-        @subject_analysis.select { |assignment| assignment.class == DefAssignment }
+        @subject_analysis.select { |assignment| assignment.is_a?(Def) }
       end
 
       def write_class(klass)
-        @writer.append_line("require '#{@helper_file}'")
+        @writer.append_line("require '#{File::Loader.helper_path}'")
         @writer.append_line
 
-        @writer.append_line("describe #{@instance.name} do")
+        @writer.append_line("describe #{klass.name} do")
         @writer.append_line
 
         subject_methods.each do |method|
@@ -37,13 +38,7 @@ module Zapata
         @writer.append_line('end')
       end
 
-      def parse_klass(class_code)
-        name, inherited_from_klass, body = class_code.to_a
-        @instance = InstanceMock.new(name, inherited_from_klass, body)
-
-      end
-
-      def write_for_method(def_assignment)
+      def write_for_method(primitive_def)
         method = MethodMock.new(def_assignment.name, def_assignment.args,
           def_assignment.body, @var_analysis, @instance)
 

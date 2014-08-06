@@ -1,5 +1,5 @@
 module Zapata
-  class AssignmentRecord
+  class DB
     @records = []
 
     class << self

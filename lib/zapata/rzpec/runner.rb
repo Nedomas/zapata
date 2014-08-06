@@ -1,5 +1,5 @@
 module Zapata
-  module RSpec
+  module RZpec
     class Runner
       attr_reader :ran
 

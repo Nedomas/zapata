@@ -1,5 +1,5 @@
 module Zapata
-  module RSpec
+  module RZpec
     class Printer
       class << self
         def value(what)

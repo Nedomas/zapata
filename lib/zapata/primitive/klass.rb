@@ -1,6 +1,7 @@
 module Zapata
   module Primitive
     class Klass < Basic
+        @instance = InstanceMock.new(name, inherited_from_klass, body)
 #       attr_reader :body, :name
 #       attr_accessor :args_to_s
 #
@@ -21,7 +22,8 @@ module Zapata
 #         eval(initialize_to_s)
 #       end
       def name
-        binding.pry
+        name, inherited_from_klass, body = @body.to_a
+        name
       end
     end
   end

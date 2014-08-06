@@ -1,5 +1,5 @@
 module Zapata
-  module File
+  module Core
     class Writer
       def initialize(filename)
         @filename = filename

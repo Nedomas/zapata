@@ -1,6 +1,6 @@
 module Zapata
   module Primitive
-    class Arg < Primitive::Basic
+    class Args < Primitive::Array
     end
   end
 end

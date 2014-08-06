@@ -3,7 +3,7 @@ module Zapata
     attr_reader :result
 
     def self.analyze(filename)
-      code = CodeReader.parse(filename)
+      code = Core::Reader.parse(filename)
       analyst = Analyst.new(code)
       result = analyst.result.dup
       analyst.clean
@@ -12,19 +12,23 @@ module Zapata
 
     def initialize(code)
       # class dive
-      CodeDiver.new(:klass).dive(code)
+      Diver.search_for(:klass)
+      Diver.dive(code)
       # var dive
-      CodeDiver.new(:var).dive(code)
+      Diver.search_for(:var)
+      Diver.dive(code)
       # def dive
-      CodeDiver.new(:def).dive(code)
+      Diver.search_for(:def)
+      Diver.dive(code)
       # send dive
-      CodeDiver.new(:send).dive(code)
+      Diver.search_for(:send)
+      Diver.dive(code)
 
-      @result = Zapata::AssignmentRecord.all
+      @result = DB.all
     end
 
     def clean
-      Zapata::AssignmentRecord.destroy_all
+      DB.destroy_all
     end
   end
 end

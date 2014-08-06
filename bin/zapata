@@ -14,7 +14,7 @@ Slop.parse do
   command 'generate' do
     run do |opts, args|
       dirs = %w(app/models app/controllers)
-      file_list = Zapata::FileCollector.expand_dirs_to_files(dirs)
+      file_list = Zapata::Core::Collector.expand_dirs_to_files(dirs)
 
       files = %w(app/models/ical.rb app/models/calendar/balance_transfer/to_vacation_planner.rb)
 

@@ -7,7 +7,7 @@ module Zapata
 
       def to_s
         printable_params = @parameters.map do |param|
-          Printer.value(param)
+          RZpec::Printer.value(param)
         end
 
         "Zapata::Missing.new(#{printable_params.join(', ')})"

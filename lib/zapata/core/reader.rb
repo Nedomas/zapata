@@ -1,5 +1,5 @@
 module Zapata
-  module File
+  module Core
     class Reader
       def self.parse(filename)
         plain_text_code = File.open(filename).read

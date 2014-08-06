@@ -1,18 +1,22 @@
 module Zapata
   module Primitive
-    class Array
-      def initialize(code, diver)
-        @body = code
-        @diver = diver
+    class Array < Base
+      def node
+        body = @code
+        type = @code.type
+        OpenStruct.new(type: type, body: body)
       end
 
-      def to_a(analysis, args_predictor)
-        value(analysis, args_predictor)
+      def dive_deeper
       end
 
-      def value(analysis, args_predictor)
-        @body.to_a.map do |element|
-          @diver.dive(element).value(analysis, args_predictor)
+      def to_a
+        value
+      end
+
+      def value
+        node.body.to_a.map do |element|
+          Diver.dive(element).value
         end
       end
     end

@@ -1,26 +1,25 @@
 module Zapata
   class ObjectRebuilder
     class << self
-      def rebuild(value, var_analysis, args_predictor)
+      def rebuild(value)
         return value unless value.respond_to?(:type)
 
         type = value.type
-        # body = value.body
 
         case type
         when :str, :int, :sym
-          value.value(var_analysis, args_predictor)
+          value.value
         when :true
           true
         when :false
           false
         when :hash
-          value.value(var_analysis, args_predictor)
+          value.value
         when :send
-          rebuild(value.value(var_analysis, args_predictor), var_analysis, args_predictor) rescue binding.pry
+          # rebuild(value.value(var_analysis, args_predictor), var_analysis, args_predictor) rescue binding.pry
           # Evaluation.new(body)
         when :lvar
-          rebuild(value.value(var_analysis, args_predictor), var_analysis, args_predictor)
+          # rebuild(value.value(var_analysis, args_predictor), var_analysis, args_predictor)
         when :arg, :optarg
           value.name
         when :ivar

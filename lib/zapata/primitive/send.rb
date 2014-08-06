@@ -1,43 +1,34 @@
 module Zapata
   module Primitive
-    class Send
-      attr_reader :name, :type
+    class Send < Base
+      def to_a
+        [value]
+      end
 
-      def initialize(code, diver)
-        @type = :send
-        @body = code
-        @to_object, method, args = code.to_a
-        @args = if args
-          diver.dive(args) rescue binding.pry
-        else
-          Arg.new(nil, diver)
+      def node
+        receiver, name, args = @code.to_a
+        type = @code.type
+        OpenStruct.new(type: type, name: name, args: args, receiver: receiver)
+      end
+
+      def receiver_constant
+        node.receiver.to_a.compact.join('::')
+      end
+
+      def literal
+        "#{receiver_constant}.#{node.name}#{Predictor::Args.literal(node.args)}"
+      end
+
+      def value
+        definition = Revolutionist.analysis_as_array.detect do |assignment|
+          assignment.class == Def and assignment.name == node.name
         end
-
-        @name = SaveManager.clean(method)
-      end
-
-      def to_a(analysis, args_predictor)
-        [value(analysis, args_predictor)]
-      end
-
-      def body(analysis, args_predictor)
-        # add args
-        "#{object_constant}.#{name}#{ArgsPredictor.new(@args, analysis, nil, args_predictor.ivars)}"
-      end
-
-      def object_constant
-        @to_object.to_a.compact.join('::')
-      end
-
-      def value(analysis, args_predictor)
-        definition = analysis.find do |assignment|
-          assignment.class == Zapata::DefAssignment and assignment.name == @name
-        end
+        return unless definition
 
         if @to_object
-          Evaluation.new(body(analysis, args_predictor))
+          Eval.new(literal)
         else
-          definition.value(analysis, args_predictor) rescue binding.pry
+          definition.value
         end
       end
     end

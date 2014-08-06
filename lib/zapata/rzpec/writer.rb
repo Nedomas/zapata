@@ -8,7 +8,7 @@ module Zapata
         @whole_analysis = whole_analysis
         @spec_analysis = spec_analysis
         @spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
-        @writer = Writer.new(spec_filename)
+        @writer = Core::Writer.new(spec_filename) rescue binding.pry
         @result = {}
 
         klasses.each do |klass|
@@ -17,68 +17,73 @@ module Zapata
       end
 
       def klasses
-        @subject_analysis.select { |obj| obj.is_a?(Klass) }
+        @subject_analysis.select { |obj| obj.is_a?(Primitive::Klass) }
       end
 
       def subject_methods
-        @subject_analysis.select { |assignment| assignment.is_a?(Def) }
+        @subject_analysis.select { |assignment| assignment.is_a?(Primitive::Def) }
       end
 
       def write_class(klass)
-        @writer.append_line("require '#{File::Loader.helper_path}'")
+        @writer.append_line("require '#{Core::Loader.helper_path}'")
         @writer.append_line
 
         @writer.append_line("describe #{klass.name} do")
         @writer.append_line
 
+        write_let_from_initialize(klass)
+
         subject_methods.each do |method|
-          write_for_method(method)
+          write_method(klass, method)
         end
 
         @writer.append_line('end')
       end
 
-      def write_for_method(primitive_def)
-        method = MethodMock.new(def_assignment.name, def_assignment.args,
-          def_assignment.body, @var_analysis, @instance)
+      def write_let_from_initialize(klass)
+        initialize_def = subject_methods.find { |meth| meth.name == :initialize }
 
-        method.arg_ivars.each do |ivar|
-          write_let_from_ivar(ivar)
-        end
+        @writer.append_line("let(:#{underscore(klass.name)}) do")
 
-        if method.name == :initialize
-          @instance.args_to_s = method.predicted_args_to_s
-          write_let_from_initialize
-        else
-          write_method(method)
-        end
-      end
+        @writer.append_line("#{klass.name}.new(#{initialize_def.literal_predicted_args})")
+        @writer.append_line('end')
 
-      def write_let_from_ivar(ivar)
-        @writer.append_line(
-          "let(:#{SaveManager.clean(underscore(ivar))}) { Zapata::Missing.new }"
-        )
-      end
-
-      def write_let_from_initialize
-        @writer.append_line(
-          "let(:#{underscore(@instance.name)}) { #{@instance.initialize_to_s} }"
-        )
         @writer.append_line
       end
 
-      def write_method(method)
-        return if method.empty?
+      def write_method(klass, method)
+        return unless method.node.body
+        return if method.name == :initialize
 
         @writer.append_line("it '##{method.name}' do")
 
         @writer.append_line(
-          "expect(#{underscore(@instance.name)}.#{method.name}#{method.predicted_args_to_s}).to eq(#{write_equal(method.name)})"
+          "expect(#{underscore(klass.name)}.#{method.name}(#{method.literal_predicted_args})).to eq(#{write_equal(method.name)})"
         )
 
         @writer.append_line('end')
         @writer.append_line
       end
+
+
+#
+#       def write_for_method(klass, primitive_def)
+# #         method.arg_ivars.each do |ivar|
+# #           write_let_from_ivar(ivar)
+# #         end
+# #
+#         if primitive_def.name == :initialize
+#           write_let_from_initialize(primitive_def)
+#         else
+#           write_method(primitive_def)
+#         end
+#       end
+
+      # def write_let_from_ivar(ivar)
+      #   @writer.append_line(
+      #     "let(:#{SaveManager.clean(underscore(ivar))}) { Zapata::Missing.new }"
+      #   )
+      # end
 
       def write_equal(method_name)
         if @spec_analysis

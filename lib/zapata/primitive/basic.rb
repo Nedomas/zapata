@@ -1,20 +1,21 @@
 module Zapata
   module Primitive
-    class Basic
-      attr_reader :name, :type, :body
-
-      def initialize(code, diver)
-        @type = code.type if code
-        @diver = diver
-        @body = code
+    class Basic < Primitive::Base
+      def to_a
+        [value]
       end
 
-      def to_a(analysis, args_predictor)
-        [ObjectRebuilder.rebuild(self, analysis, args_predictor)]
+      def node
+        body = @code
+        type = @code.type
+        OpenStruct.new(type: type, body: body)
       end
 
-      def value(*)
-        @body.to_a.first
+      def dive_deeper
+      end
+
+      def value
+        node.body.to_a.last
       end
     end
   end

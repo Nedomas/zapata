@@ -11,6 +11,8 @@ module Zapata
           ":#{what}"
         when Evaluation
           what.to_s
+        when Hash
+          hash(what)
         else
           what
         end
@@ -20,22 +22,18 @@ module Zapata
         if args_obj.is_a?(PrimitiveHash)
           hash(args_array.each_slice(2).to_h)
         elsif args_obj.is_a?(PrimitiveArray)
-          args_array.join(', ')
+          args_array.map { |arg| value(arg) }.join(', ')
         else
           binding.pry
         end
       end
 
       def hash(obj)
-        result = '{ '
-
-        obj.each do |key, val|
-          result += "#{value(key)} => #{value(val)}"
+        values = obj.map do |key, val|
+          "#{value(key)} => #{value(val)}"
         end
 
-        result += ' }'
-
-        result
+        "{ #{values.join(', ')} }"
       end
     end
   end

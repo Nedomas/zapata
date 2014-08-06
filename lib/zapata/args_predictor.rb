@@ -13,16 +13,20 @@ module Zapata
     end
 
     def to_s
-      !@heuristic_args.empty? ? "(#{@heuristic_args})" : ''
+      !@heuristic_args.empty? ? "(#{@heuristic_args})" : '' rescue binding.pry
     end
 
     def calculate_heuristic_args
       calculated_args = @args.to_a(@var_analysis, self).map do |arg|
-        if arg.is_a?(Evaluation)
-          @ivars << arg
-          arg
+        if arg.is_a?(Integer)
+          [arg]
         else
-          choose_arg_value(arg, self)
+          if arg.is_a?(Evaluation)
+            @ivars << arg
+            arg
+          else
+            choose_arg_value(arg, self)
+          end
         end
       end
 

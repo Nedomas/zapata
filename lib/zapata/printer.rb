@@ -23,6 +23,8 @@ module Zapata
           hash(args_array.each_slice(2).to_h)
         elsif args_obj.is_a?(PrimitiveArray)
           args_array.map { |arg| value(arg) }.join(', ')
+        elsif args_obj.is_a?(Primitive)
+          value(args_array.first) rescue binding.pry
         else
           binding.pry
         end

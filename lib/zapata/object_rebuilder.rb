@@ -26,6 +26,8 @@ module Zapata
         when :ivar
           binding.pry
           value.body.to_a.last.to_s
+        when nil
+          nil
         else
           binding.pry
         end

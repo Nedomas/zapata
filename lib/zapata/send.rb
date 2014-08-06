@@ -9,7 +9,7 @@ module Zapata
       @args = if args
         diver.dive(args) rescue binding.pry
       else
-        Primitive.new(nil, diver)
+        PrimitiveArg.new(nil, diver)
       end
 
       @name = SaveManager.clean(method)
@@ -21,7 +21,7 @@ module Zapata
 
     def body(analysis, args_predictor)
       # add args
-      "#{object_constant}.#{name}#{ArgsPredictor.new(@args, analysis, nil, args_predictor.ivars)}" rescue binding.pry
+      "#{object_constant}.#{name}#{ArgsPredictor.new(@args, analysis, nil, args_predictor.ivars)}"
     end
 
     def object_constant

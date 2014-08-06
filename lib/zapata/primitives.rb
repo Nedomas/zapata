@@ -12,13 +12,15 @@ module Zapata
       [ObjectRebuilder.rebuild(self, analysis, args_predictor)]
     end
 
-    def value(analysis, args_predictor)
+    def value(*)
       @body.to_a.first
     end
   end
 
   class PrimitiveArg < Primitive
     def name
+      @body = [nil] unless @body
+
       @body.to_a.first
     end
   end

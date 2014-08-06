@@ -8,7 +8,7 @@ module Zapata
     end
 
     def methodz
-      examples.index_by { |ex| ex.metadata[:description].delete('#').to_sym } rescue binding.pry
+      examples.index_by { |ex| ex.metadata[:description].delete('#').to_sym }
     end
 
     def metadata(method_name)

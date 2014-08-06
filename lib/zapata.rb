@@ -23,6 +23,9 @@ require_relative 'zapata/code_diver'
 require_relative 'zapata/assignment_record'
 require_relative 'zapata/var_assignment'
 require_relative 'zapata/def_assignment'
+require_relative 'zapata/send'
+require_relative 'zapata/primitives'
+require_relative 'zapata/object_rebuilder'
 
 module Zapata
   class Revolutionist

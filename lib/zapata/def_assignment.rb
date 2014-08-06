@@ -17,8 +17,8 @@ module Zapata
       end
     end
 
-    def value(analysis)
-      @diver.dive(@body).value(analysis)
+    def value(analysis, args_predictor)
+      @diver.dive(@body).value(analysis, args_predictor)
     end
   end
 end

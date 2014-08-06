@@ -15,28 +15,28 @@ module Zapata
       @name = SaveManager.clean(method)
     end
 
-    def to_a(analysis)
-      [value(analysis)]
+    def to_a(analysis, args_predictor)
+      [value(analysis, args_predictor)]
     end
 
-    def body(analysis)
+    def body(analysis, args_predictor)
       # add args
-      "#{object_constant}.#{name}#{ArgsPredictor.new(@args, analysis, nil)}" rescue binding.pry
+      "#{object_constant}.#{name}#{ArgsPredictor.new(@args, analysis, nil, args_predictor.ivars)}" rescue binding.pry
     end
 
     def object_constant
       @to_object.to_a.compact.join('::')
     end
 
-    def value(analysis)
+    def value(analysis, args_predictor)
       definition = analysis.find do |assignment|
         assignment.class == Zapata::DefAssignment and assignment.name == @name
       end
 
       if @to_object
-        Evaluation.new(body(analysis))
+        Evaluation.new(body(analysis, args_predictor))
       else
-        definition.value(analysis) rescue binding.pry
+        definition.value(analysis, args_predictor) rescue binding.pry
       end
     end
   end

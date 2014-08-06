@@ -42,6 +42,10 @@ module Zapata
       method = MethodMock.new(def_assignment.name, def_assignment.args,
         def_assignment.body, @var_analysis, @instance)
 
+      method.arg_ivars.each do |ivar|
+        write_let_from_ivar(ivar)
+      end
+
       if method.name == :initialize
         @instance.args_to_s = method.predicted_args_to_s
         write_let_from_initialize
@@ -50,9 +54,15 @@ module Zapata
       end
     end
 
+    def write_let_from_ivar(ivar)
+      @writer.append_line(
+        "let(:#{SaveManager.clean(underscore(ivar))}) { Zapata::Missing.new }"
+      )
+    end
+
     def write_let_from_initialize
       @writer.append_line(
-        "let(:#{@instance.name_underscore}) { #{@instance.initialize_to_s} }"
+        "let(:#{underscore(@instance.name)}) { #{@instance.initialize_to_s} }"
       )
       @writer.append_line
     end
@@ -63,7 +73,7 @@ module Zapata
       @writer.append_line("it '##{method.name}' do")
 
       @writer.append_line(
-        "expect(#{@instance.name_underscore}.#{method.name}#{method.predicted_args_to_s}).to eq(#{write_equal(method.name)})"
+        "expect(#{underscore(@instance.name)}.#{method.name}#{method.predicted_args_to_s}).to eq(#{write_equal(method.name)})"
       )
 
       @writer.append_line('end')
@@ -76,6 +86,10 @@ module Zapata
       else
         Printer.value('FILL IN THIS BY HAND')
       end
+    end
+
+    def underscore(name)
+      name.to_s.underscore
     end
   end
 end

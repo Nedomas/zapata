@@ -8,6 +8,11 @@ module Zapata
       @body = body
       @var_analysis = var_analysis
       @instance = instance
+      @args_predictor = ArgsPredictor.new(@args, @var_analysis, @instance)
+    end
+
+    def arg_ivars
+      @args_predictor.ivars
     end
 
     def empty?
@@ -15,7 +20,7 @@ module Zapata
     end
 
     def predicted_args_to_s
-      ArgsPredictor.new(@args, @var_analysis, @instance).to_s
+      @args_predictor.to_s
     end
   end
 end

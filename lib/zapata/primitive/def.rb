@@ -4,6 +4,7 @@ module Zapata
       def node
         name, args, body = @code.to_a
         type = @code.type
+        binding.pry if name == :find
         OpenStruct.new(type: type, name: name, args: args, body: body)
       end
 

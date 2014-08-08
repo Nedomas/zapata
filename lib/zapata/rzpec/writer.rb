@@ -42,6 +42,7 @@ module Zapata
 
       def write_let_from_initialize(klass)
         initialize_def = subject_methods.find { |meth| meth.name == :initialize }
+        return unless initialize_def
 
         @writer.append_line("let(:#{underscore(klass.name)}) do")
 
@@ -64,20 +65,6 @@ module Zapata
         @writer.append_line('end')
         @writer.append_line
       end
-
-
-#
-#       def write_for_method(klass, primitive_def)
-# #         method.arg_ivars.each do |ivar|
-# #           write_let_from_ivar(ivar)
-# #         end
-# #
-#         if primitive_def.name == :initialize
-#           write_let_from_initialize(primitive_def)
-#         else
-#           write_method(primitive_def)
-#         end
-#       end
 
       # def write_let_from_ivar(ivar)
       #   @writer.append_line(

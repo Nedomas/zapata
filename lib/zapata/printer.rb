@@ -7,7 +7,7 @@ module Zapata
           raw.value
         when :str
           # decide which one to use
-          # "\"#{value}\""
+          # "\"#{raw.value}\""
           "'#{raw.value}'"
         when :sym
           ":#{raw.value}"
@@ -21,6 +21,10 @@ module Zapata
           hash(raw.value)
         when :nil
           nil
+        when :missing
+          print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
+        when :const_send
+          raw.value
         else
           binding.pry
         end

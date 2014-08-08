@@ -36,6 +36,7 @@ module Zapata
           binding.pry
           value.body.to_a.last.to_s
         when :missing
+          binding.pry
           object.literal
         when :raw
           Printer.print(object)

@@ -1,11 +1,11 @@
 module Zapata
-  RETURN_TYPES = %i(arg optarg sym float str int ivar lvar true false)
+  RETURN_TYPES = %i(const_send arg optarg sym float str int ivar lvar true false const nil)
   DIVE_TYPES = %i(begin block defined? nth_ref splat kwsplat class
     block_pass sclass masgn or and irange erange when and
     return array kwbegin yield while dstr ensure pair)
   ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn)
   DEF_TYPES = %i(def defs)
-  HARD_TYPES = %i(dsym resbody mlhs const nil next self false true break zsuper
+  HARD_TYPES = %i(dsym resbody mlhs next self break zsuper
     super retry rescue match_with_lvasgn case op_asgn regopt regexp)
   TYPES_BY_SEARCH_FOR = {
     klass: %i(class),

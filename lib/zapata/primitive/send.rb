@@ -16,7 +16,11 @@ module Zapata
       end
 
       def to_raw
-        Raw.new(:send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
+        if raw_receiver.value
+          Raw.new(:const_send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
+        else
+          Predictor::Args.choose_value(node.name).to_raw
+        end
       end
     end
   end

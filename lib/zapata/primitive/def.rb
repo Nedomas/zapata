@@ -8,6 +8,7 @@ module Zapata
         @klass = Diver.current_klass
         @self = Diver.current_sklass
         @access_level = Diver.access_level
+        @modul = Diver.current_modul
         dive_deeper
       end
 

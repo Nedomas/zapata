@@ -5,8 +5,8 @@ module Zapata
     return array kwbegin yield while dstr ensure pair)
   ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn)
   DEF_TYPES = %i(def defs)
-  # HARD_TYPES = %i(dsym resbody mlhs next self break zsuper
-  #   super retry rescue match_with_lvasgn case op_asgn regopt regexp)
+  HARD_TYPES = %i(if dsym resbody mlhs next self break zsuper
+    super retry rescue match_with_lvasgn case op_asgn regopt regexp)
   TYPES_BY_SEARCH_FOR = {
     klass: %i(class),
     var: ASSIGN_TYPES,
@@ -15,8 +15,6 @@ module Zapata
   }
 
   PRIMITIVE_TYPES = {
-    Basic: RETURN_TYPES,
-    Var: ASSIGN_TYPES,
     Def: %i(def),
     Defs: %i(defs),
     Send: %i(send),
@@ -26,12 +24,17 @@ module Zapata
     Lvar: %i(lvar),
     Klass: %i(class),
     Sklass: %i(sclass),
+    Modul: %i(module),
     Const: %i(const),
+    Optarg: %i(optarg),
+    Basic: RETURN_TYPES,
+    Casgn: %i(casgn),
+    Var: ASSIGN_TYPES,
   }.freeze
 
   class Diver
     class << self
-      attr_accessor :current_klass, :current_sklass, :access_level
+      attr_accessor :current_modul, :current_klass, :current_sklass, :access_level
 
       def search_for(what)
         @search_for = what
@@ -41,6 +44,8 @@ module Zapata
         return Primitive::Raw.new(:nil, nil) unless code
 
         current_type = code.type
+        return Primitive::Raw.new(:nil, nil) if HARD_TYPES.include?(current_type)
+
         subklass_pair = PRIMITIVE_TYPES.detect do |_, types|
           types.include?(current_type)
         end
@@ -50,9 +55,24 @@ module Zapata
           result = klass.new(code)
 
           DB.create(result) if search_for_types.include?(current_type)
+        else
+          if DIVE_TYPES.include?(current_type)
+            return Primitive::Raw.new(:missing, nil)
+          else
+            binding.pry
+          end
+          binding.pry
+        #   return Primitive::Raw.new(:missing, nil)
+        # elsif %i(lvar ivasgn).include?(current_type)
+        #   return Primitive::Raw.new(:missing, nil)
+        # else
+        #   binding.pry
+        # end
         end
 
         deeper_dives(code) if DIVE_TYPES.include?(current_type)
+
+
         result
       end
 

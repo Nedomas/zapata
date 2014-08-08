@@ -61,6 +61,8 @@ module Zapata
         end
 
         def choose_value(name)
+          return Primitive::Raw.new(:nil, nil) if name.nil?
+
           possible_values = Revolutionist.analysis_as_array.select do |v|
             v.name == name
           end

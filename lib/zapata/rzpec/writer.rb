@@ -56,7 +56,7 @@ module Zapata
       end
 
       def write_let(name, block)
-        @writer.append_line("let(:#{underscore(name)}) do")
+        @writer.append_line("let(:#{to_var_name(name)}) do")
 
         @writer.append_line(block)
         @writer.append_line('end')
@@ -78,7 +78,7 @@ module Zapata
         receiver = if primitive_def.self?
           primitive_def.klass.name
         else
-          underscore(primitive_def.klass.name)
+          to_var_name(primitive_def.klass.name)
         end
 
         @writer.append_line(
@@ -103,8 +103,8 @@ module Zapata
         end
       end
 
-      def underscore(name)
-        name.to_s.underscore
+      def to_var_name(name)
+        name.to_s.split('::').last.underscore
       end
     end
   end

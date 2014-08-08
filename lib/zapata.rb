@@ -40,9 +40,10 @@ module Zapata
       spec_analysis = RZpec::Runner.new(spec.spec_filename)
 
       # second run with RSpec results
-      tmp_filename = "#{filename}.tmp"
-      RZpec::Writer.new(tmp_filename, code, @@analysis[filename], global_analysis, spec_analysis)
-      FileUtils.mv(tmp_filename, filename)
+      tmp = Tempfile.new('zapata')
+      writer = RZpec::Writer.new(tmp.path, code, @@analysis[filename], global_analysis, spec_analysis)
+      FileUtils.mv(tmp.path, filename)
+      writer
     end
 
     def self.analysis_as_array

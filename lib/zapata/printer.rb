@@ -20,9 +20,11 @@ module Zapata
         when :hash
           hash(raw.value)
         when :nil
-          nil
+          'nil'
         when :missing
           print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
+        when :ivar
+          raw.value.to_s
         else
           binding.pry
         end

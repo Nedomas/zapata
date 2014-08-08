@@ -8,7 +8,7 @@ module Zapata
       end
 
       def to_raw
-        Raw.new(:const, "#{node.modul}::#{node.klass}")
+        Raw.new(:const, [node.modul, node.klass].compact.join('::'))
       end
     end
   end

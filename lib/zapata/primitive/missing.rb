@@ -5,17 +5,21 @@ module Zapata
         @parameters = parameters
       end
 
-      def to_s
-        printable_params = @parameters.map do |param|
-          RZpec::Printer.value(param)
-        end
-
-        "Zapata::Missing.new(#{printable_params.join(', ')})"
+      def literal
+        # literal_symbols = @parameters.map { |p| Printer.print(p) }
+        # "Zapata::Primitive::Missing.new(#{literal_symbols.join(', ')})"
       end
-      alias_method :to_str, :to_s
 
-      def method_missing(m, *args, &block)
-        self
+      def node
+        OpenStruct.new(type: :missing, body: mocked_body_node)
+      end
+
+      def mocked_body_node
+        OpenStruct.new(type: :missing, literal: literal)
+      end
+
+      def to_raw
+        Raw.new(:str, literal)
       end
     end
   end

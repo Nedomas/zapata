@@ -14,8 +14,8 @@ module Zapata
       def dive_deeper
       end
 
-      def value
-        node.body.to_a.last
+      def to_raw
+        Raw.new(node.body.type, node.body.to_a.last)
       end
     end
   end

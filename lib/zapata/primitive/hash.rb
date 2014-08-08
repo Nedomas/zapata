@@ -14,17 +14,17 @@ module Zapata
       def dive_deeper
       end
 
-      def value
+      def to_raw
         result = {}
 
         node.body.to_a.each do |pair|
           key_node, value_node = pair.to_a
-          key = Diver.dive(key_node)
-          value = Diver.dive(value_node)
+          key = Diver.dive(key_node).to_raw
+          value = Diver.dive(value_node).to_raw
           result[key] = value
         end
 
-        result
+        Raw.new(:hash, result)
       end
     end
   end

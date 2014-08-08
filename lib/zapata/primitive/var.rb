@@ -6,6 +6,10 @@ module Zapata
         type = @code.type
         OpenStruct.new(type: type, name: name, body: body)
       end
+
+      def literal
+        Diver.dive(node.body).literal
+      end
     end
   end
 end

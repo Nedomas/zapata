@@ -1,5 +1,5 @@
 module Zapata
-  RETURN_TYPES = %i(sym float str int ivar lvar true false)
+  RETURN_TYPES = %i(arg optarg sym float str int ivar lvar true false)
   DIVE_TYPES = %i(begin block defined? nth_ref splat kwsplat class
     block_pass sclass masgn or and irange erange when and
     return array kwbegin yield while dstr ensure pair)
@@ -19,12 +19,11 @@ module Zapata
     Var: ASSIGN_TYPES,
     Def: DEF_TYPES,
     Send: %i(send),
-    Array: %i(array),
-    Args: %i(args),
+    Array: %i(args array),
     Hash: %i(hash),
     Ivar: %i(ivar),
-    Arg: %i(arg optarg),
     Klass: %i(class),
+    Const: %i(const),
   }.freeze
 
   class Diver
@@ -34,6 +33,8 @@ module Zapata
       end
 
       def dive(code)
+        return Primitive::Raw.new(:nil, nil) unless code
+
         current_type = code.type
         subklass_pair = PRIMITIVE_TYPES.detect do |_, types|
           types.include?(current_type)
@@ -41,7 +42,7 @@ module Zapata
 
         if subklass_pair
           klass = "Zapata::Primitive::#{subklass_pair.first}".constantize
-          result = klass.new(code) rescue binding.pry
+          result = klass.new(code)
 
           DB.create(result) if search_for_types.include?(current_type)
         end

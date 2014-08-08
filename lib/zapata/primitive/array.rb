@@ -14,10 +14,12 @@ module Zapata
         value
       end
 
-      def value
-        node.body.to_a.map do |element|
-          Diver.dive(element).value
+      def to_raw
+        value = node.body.to_a.map do |element|
+          Diver.dive(element).to_raw
         end
+
+        Raw.new(:array, value)
       end
     end
   end

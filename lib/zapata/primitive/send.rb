@@ -11,25 +11,12 @@ module Zapata
         OpenStruct.new(type: type, name: name, args: args, receiver: receiver)
       end
 
-      def receiver_constant
-        node.receiver.to_a.compact.join('::')
+      def raw_receiver
+        Diver.dive(node.receiver).to_raw rescue binding.pry
       end
 
-      def literal
-        "#{receiver_constant}.#{node.name}#{Predictor::Args.literal(node.args)}"
-      end
-
-      def value
-        definition = Revolutionist.analysis_as_array.detect do |assignment|
-          assignment.class == Def and assignment.name == node.name
-        end
-        return unless definition
-
-        if @to_object
-          Eval.new(literal)
-        else
-          definition.value
-        end
+      def to_raw
+        Raw.new(:send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
       end
     end
   end

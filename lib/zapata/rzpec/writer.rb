@@ -45,7 +45,7 @@ module Zapata
 
         @writer.append_line("let(:#{underscore(klass.name)}) do")
 
-        @writer.append_line("#{klass.name}.new(#{initialize_def.literal_predicted_args})")
+        @writer.append_line("#{klass.name}.new#{initialize_def.literal_predicted_args}")
         @writer.append_line('end')
 
         @writer.append_line
@@ -58,7 +58,7 @@ module Zapata
         @writer.append_line("it '##{method.name}' do")
 
         @writer.append_line(
-          "expect(#{underscore(klass.name)}.#{method.name}(#{method.literal_predicted_args})).to eq(#{write_equal(method.name)})"
+          "expect(#{underscore(klass.name)}.#{method.name}#{method.literal_predicted_args}).to eq(#{write_equal(method.name)})"
         )
 
         @writer.append_line('end')
@@ -87,9 +87,9 @@ module Zapata
 
       def write_equal(method_name)
         if @spec_analysis
-          Printer.value(@spec_analysis.expected(method_name))
+          Printer.print(@spec_analysis.expected(method_name))
         else
-          Printer.value('FILL IN THIS BY HAND')
+          Printer.print(Primitive::Raw.new(:str, 'FILL IN THIS BY HAND'))
         end
       end
 

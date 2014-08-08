@@ -16,8 +16,9 @@ module Zapata
         end
       end
 
-      def value
-        Diver.dive(node.body).value
+      def to_raw
+        raw = Diver.dive(node.body).to_raw
+        Raw.new(raw.type, raw.value)
       end
     end
   end

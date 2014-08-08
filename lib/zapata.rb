@@ -12,6 +12,7 @@ require_relative 'zapata/analyst'
 require_relative 'zapata/diver'
 require_relative 'zapata/db'
 require_relative 'zapata/object_rebuilder'
+require_relative 'zapata/printer'
 require_relative 'zapata/version'
 
 module Zapata
@@ -35,6 +36,7 @@ module Zapata
       global_analysis = Revolutionist.analysis_as_array
       # first run
       spec = RZpec::Writer.new(filename, code, @@analysis[filename], global_analysis)
+      binding.pry
       spec_analysis = RZpec::Runner.new(spec.spec_filename)
 
       # second run with RSpec results

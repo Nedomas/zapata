@@ -1,6 +1,18 @@
 module Zapata
   module Primitive
     class Send < Base
+      def initialize(code)
+        super
+
+        if node.name == :private
+          Diver.access_level = :private
+        elsif node.name == :protected
+          Diver.access_level = :protected
+        elsif node.name == :public
+          Diver.access_level = :public
+        end
+      end
+
       def to_a
         [value]
       end
@@ -12,7 +24,7 @@ module Zapata
       end
 
       def raw_receiver
-        Diver.dive(node.receiver).to_raw rescue binding.pry
+        Diver.dive(node.receiver).to_raw
       end
 
       def to_raw

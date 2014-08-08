@@ -17,6 +17,7 @@ Slop.parse do
       file_list = Zapata::Core::Collector.expand_dirs_to_files(dirs)
 
       files = %w(app/models/ical.rb app/models/calendar/balance_transfer/to_vacation_planner.rb)
+      files = %w()
 
       spec_filename = Zapata::Revolutionist.new(file_list)
         .generate_rspec_for(args.shift).spec_filename

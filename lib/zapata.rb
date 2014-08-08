@@ -36,10 +36,13 @@ module Zapata
       global_analysis = Revolutionist.analysis_as_array
       # first run
       spec = RZpec::Writer.new(filename, code, @@analysis[filename], global_analysis)
+      binding.pry
       spec_analysis = RZpec::Runner.new(spec.spec_filename)
 
       # second run with RSpec results
-      RZpec::Writer.new(filename, code, @@analysis[filename], global_analysis, spec_analysis)
+      tmp_filename = "#{filename}.tmp"
+      RZpec::Writer.new(tmp_filename, code, @@analysis[filename], global_analysis, spec_analysis)
+      FileUtils.mv(tmp_filename, filename)
     end
 
     def self.analysis_as_array

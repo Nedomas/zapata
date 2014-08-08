@@ -5,9 +5,8 @@ module Zapata
 
       def initialize(spec_filename)
         @spec_filename = spec_filename
-        silence do
-          run
-        end
+        run
+        # silence { run }
       end
 
       def silence

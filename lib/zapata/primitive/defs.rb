@@ -6,11 +6,16 @@ module Zapata
       def initialize(code)
         @code = code
         @klass = Diver.current_klass
+        @access_level = Diver.access_level
         dive_deeper
       end
 
       def self?
         true
+      end
+
+      def public?
+        @access_level == :public
       end
 
       def node

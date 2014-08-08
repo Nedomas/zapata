@@ -1,5 +1,5 @@
 module Zapata
-  RETURN_TYPES = %i(const_send arg optarg sym float str int ivar lvar true false const nil)
+  RETURN_TYPES = %i(const_send arg optarg sym float str int ivar true false const nil)
   DIVE_TYPES = %i(begin block defined? nth_ref splat kwsplat class
     block_pass sclass masgn or and irange erange when and
     return array kwbegin yield while dstr ensure pair)
@@ -23,6 +23,7 @@ module Zapata
     Array: %i(args array),
     Hash: %i(hash),
     Ivar: %i(ivar),
+    Lvar: %i(lvar),
     Klass: %i(class),
     Sklass: %i(sclass),
     Const: %i(const),
@@ -30,7 +31,7 @@ module Zapata
 
   class Diver
     class << self
-      attr_accessor :current_klass, :current_sklass
+      attr_accessor :current_klass, :current_sklass, :access_level
 
       def search_for(what)
         @search_for = what

@@ -3,6 +3,7 @@ module Zapata
     class Klass < Base
       def initialize(code)
         @code = code
+        Diver.access_level = :public
         Diver.current_klass = self
         dive_deeper
         Diver.current_klass = nil

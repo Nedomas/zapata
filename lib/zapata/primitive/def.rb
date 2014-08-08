@@ -7,11 +7,16 @@ module Zapata
         @code = code
         @klass = Diver.current_klass
         @self = Diver.current_sklass
+        @access_level = Diver.access_level
         dive_deeper
       end
 
       def self?
         !!@self
+      end
+
+      def public?
+        @access_level == :public
       end
 
       def node

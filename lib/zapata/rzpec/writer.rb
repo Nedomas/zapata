@@ -22,7 +22,8 @@ module Zapata
 
       def subject_defs
         @subject_analysis.select do |method|
-          [Primitive::Def, Primitive::Defs].include?(method.class)
+          [Primitive::Def, Primitive::Defs].include?(method.class) and
+            method.public?
         end
       end
 
@@ -63,9 +64,9 @@ module Zapata
         @writer.append_line
       end
 
-      def write_let_from_initialize(initialize_def)
-        block = "#{initialize_def.name}.new#{initialize_def.literal_predicted_args}"
-        write_let(initialize_def.name, block)
+      def write_let_from_initialize
+        block = "#{initialize_def.klass.name}.new#{initialize_def.literal_predicted_args}"
+        write_let(initialize_def.klass.name, block)
       end
 
       def write_method(primitive_def)

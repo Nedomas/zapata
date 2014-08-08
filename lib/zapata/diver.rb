@@ -5,8 +5,8 @@ module Zapata
     return array kwbegin yield while dstr ensure pair)
   ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn)
   DEF_TYPES = %i(def defs)
-  HARD_TYPES = %i(dsym resbody mlhs next self break zsuper
-    super retry rescue match_with_lvasgn case op_asgn regopt regexp)
+  # HARD_TYPES = %i(dsym resbody mlhs next self break zsuper
+  #   super retry rescue match_with_lvasgn case op_asgn regopt regexp)
   TYPES_BY_SEARCH_FOR = {
     klass: %i(class),
     var: ASSIGN_TYPES,
@@ -17,7 +17,8 @@ module Zapata
   PRIMITIVE_TYPES = {
     Basic: RETURN_TYPES,
     Var: ASSIGN_TYPES,
-    Def: DEF_TYPES,
+    Def: %i(def),
+    Defs: %i(defs),
     Send: %i(send),
     Array: %i(args array),
     Hash: %i(hash),

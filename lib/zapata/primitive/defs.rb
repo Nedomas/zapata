@@ -1,21 +1,20 @@
 module Zapata
   module Primitive
-    class Def < Base
+    class Defs < Base
       attr_accessor :klass
 
       def initialize(code)
         @code = code
         @klass = Diver.current_klass
-        @self = Diver.current_sklass
         dive_deeper
       end
 
       def self?
-        !!@self
+        true
       end
 
       def node
-        name, args, body = @code.to_a
+        receiver, name, args, body = @code.to_a
         type = @code.type
         OpenStruct.new(type: type, name: name, args: args, body: body)
       end

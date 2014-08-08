@@ -21,7 +21,13 @@ module Zapata
       end
 
       def subject_defs
-        @subject_analysis.select { |assignment| assignment.is_a?(Primitive::Def) }
+        @subject_analysis.select do |method|
+          [Primitive::Def, Primitive::Defs].include?(method.class)
+        end
+      end
+
+      def initialize_def
+        subject_defs.detect { |method| method.name == :initialize }
       end
 
       def write_class(klass)
@@ -31,19 +37,21 @@ module Zapata
         @writer.append_line("describe #{klass.name} do")
         @writer.append_line
 
-        initialize_def = subject_defs.detect { |meth| meth.name == :initialize }
-
-        if initialize_def
-          write_let_from_initialize(initialize_def)
-        else
-          write_let(klass.name, "#{klass.name}.new")
-        end
+        write_instance_let(klass)
 
         subject_defs.each do |primitive_def|
           write_method(primitive_def)
         end
 
         @writer.append_line('end')
+      end
+
+      def write_instance_let(klass)
+        if initialize_def
+          write_let_from_initialize
+        else
+          write_let(klass.name, "#{klass.name}.new")
+        end
       end
 
       def write_let(name, block)
@@ -66,7 +74,7 @@ module Zapata
 
         @writer.append_line("it '##{primitive_def.name}' do")
 
-        receiver = if primitive_def.sklass
+        receiver = if primitive_def.self?
           primitive_def.klass.name
         else
           underscore(primitive_def.klass.name)

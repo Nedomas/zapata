@@ -23,8 +23,13 @@ module Zapata
       def expected(method_name)
         report_lines = exception(method_name).to_s.split(/\n/)
         expected_line = report_lines.detect { |line| line.match('got:') }
-        clean_expected_line = expected_line[9..-1]
-        eval(clean_expected_line)
+        clean_expected_line = expected_line[10..-1]
+
+        if (matches = clean_expected_line.match(/\#\<(.+):(.+)\>/))
+          "'Returned instance object #{matches[1]}'"
+        else
+          clean_expected_line
+        end
       end
 
       def run

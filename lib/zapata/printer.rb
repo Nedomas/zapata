@@ -3,7 +3,7 @@ module Zapata
     class << self
       def print(raw)
         case raw.type
-        when :const, :send, :int
+        when :const, :send, :int, :const_send, :literal
           raw.value
         when :str
           # decide which one to use
@@ -23,8 +23,6 @@ module Zapata
           nil
         when :missing
           print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
-        when :const_send
-          raw.value
         else
           binding.pry
         end

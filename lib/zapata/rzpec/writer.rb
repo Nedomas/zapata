@@ -87,7 +87,7 @@ module Zapata
 
       def write_equal(method_name)
         if @spec_analysis
-          Printer.print(@spec_analysis.expected(method_name))
+          Printer.print(Primitive::Raw.new(:literal, @spec_analysis.expected(method_name)))
         else
           Printer.print(Primitive::Raw.new(:str, 'FILL IN THIS BY HAND'))
         end

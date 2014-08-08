@@ -20,7 +20,7 @@ module Zapata
         @subject_analysis.select { |obj| obj.is_a?(Primitive::Klass) }
       end
 
-      def subject_methods
+      def subject_defs
         @subject_analysis.select { |assignment| assignment.is_a?(Primitive::Def) }
       end
 
@@ -31,35 +31,41 @@ module Zapata
         @writer.append_line("describe #{klass.name} do")
         @writer.append_line
 
-        write_let_from_initialize(klass)
+        write_let_from_initialize
 
-        subject_methods.each do |method|
-          write_method(klass, method)
+        subject_defs.each do |primitive_def|
+          write_method(primitive_def)
         end
 
         @writer.append_line('end')
       end
 
-      def write_let_from_initialize(klass)
-        initialize_def = subject_methods.find { |meth| meth.name == :initialize }
+      def write_let_from_initialize
+        initialize_def = subject_defs.find { |meth| meth.name == :initialize }
         return unless initialize_def
 
-        @writer.append_line("let(:#{underscore(klass.name)}) do")
+        @writer.append_line("let(:#{underscore(initialize_def.name)}) do")
 
-        @writer.append_line("#{klass.name}.new#{initialize_def.literal_predicted_args}")
+        @writer.append_line("#{initialize_def.name}.new#{initialize_def.literal_predicted_args}")
         @writer.append_line('end')
 
         @writer.append_line
       end
 
-      def write_method(klass, method)
-        return unless method.node.body
-        return if method.name == :initialize
+      def write_method(primitive_def)
+        return unless primitive_def.node.body
+        return if primitive_def.name == :initialize
 
-        @writer.append_line("it '##{method.name}' do")
+        @writer.append_line("it '##{primitive_def.name}' do")
+
+        receiver = if primitive_def.sklass
+          primitive_def.klass.name
+        else
+          underscore(klass.name)
+        end
 
         @writer.append_line(
-          "expect(#{underscore(klass.name)}.#{method.name}#{method.literal_predicted_args}).to eq(#{write_equal(method.name)})"
+          "expect(#{receiver}.#{primitive_def.name}#{primitive_def.literal_predicted_args}).to eq(#{write_equal(primitive_def.name)})"
         )
 
         @writer.append_line('end')

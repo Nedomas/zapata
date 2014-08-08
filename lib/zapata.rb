@@ -1,4 +1,5 @@
 require 'parser/current'
+require 'unparser'
 require 'pry'
 require 'pry-stack_explorer'
 require 'rails'

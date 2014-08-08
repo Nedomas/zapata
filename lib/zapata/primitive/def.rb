@@ -1,10 +1,18 @@
 module Zapata
   module Primitive
     class Def < Base
+      attr_accessor :klass, :sklass
+
+      def initialize(code)
+        @code = code
+        @klass = Diver.current_klass
+        @sklass = Diver.current_sklass
+        dive_deeper
+      end
+
       def node
         name, args, body = @code.to_a
         type = @code.type
-        binding.pry if name == :find
         OpenStruct.new(type: type, name: name, args: args, body: body)
       end
 

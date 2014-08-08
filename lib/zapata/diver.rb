@@ -23,11 +23,14 @@ module Zapata
     Hash: %i(hash),
     Ivar: %i(ivar),
     Klass: %i(class),
+    Sklass: %i(sclass),
     Const: %i(const),
   }.freeze
 
   class Diver
     class << self
+      attr_accessor :current_klass, :current_sklass
+
       def search_for(what)
         @search_for = what
       end

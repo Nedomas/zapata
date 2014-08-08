@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'parser'
+  spec.add_runtime_dependency 'unparser'
   spec.add_runtime_dependency 'andand'
   spec.add_runtime_dependency 'pry'
   spec.add_runtime_dependency 'pry-stack_explorer'

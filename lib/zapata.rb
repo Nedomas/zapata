@@ -11,7 +11,6 @@ require_rel 'zapata/rzpec'
 require_relative 'zapata/analyst'
 require_relative 'zapata/diver'
 require_relative 'zapata/db'
-require_relative 'zapata/object_rebuilder'
 require_relative 'zapata/printer'
 require_relative 'zapata/version'
 
@@ -30,6 +29,7 @@ module Zapata
 
     def generate_rspec_for(filename)
       @@analysis[filename] = Analyst.analyze(filename) unless @@analysis[filename]
+      binding.pry
 
       code = Core::Reader.parse(filename)
 

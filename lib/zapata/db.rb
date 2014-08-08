@@ -1,11 +1,17 @@
 module Zapata
   class DB
     @records = []
+    @locs = []
 
     class << self
       def create(record)
-        @records << record
-        record
+        loc = record.code.loc
+
+        unless @locs.include?(loc)
+          @records << record
+          @locs << loc
+          record
+        end
       end
 
       def all
@@ -14,10 +20,6 @@ module Zapata
 
       def destroy_all
         @records = []
-      end
-
-      def get
-        binding.pry
       end
     end
   end

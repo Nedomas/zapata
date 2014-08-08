@@ -31,7 +31,13 @@ module Zapata
         @writer.append_line("describe #{klass.name} do")
         @writer.append_line
 
-        write_let_from_initialize
+        initialize_def = subject_defs.detect { |meth| meth.name == :initialize }
+
+        if initialize_def
+          write_let_from_initialize(initialize_def)
+        else
+          write_let(klass.name, "#{klass.name}.new")
+        end
 
         subject_defs.each do |primitive_def|
           write_method(primitive_def)
@@ -40,16 +46,18 @@ module Zapata
         @writer.append_line('end')
       end
 
-      def write_let_from_initialize
-        initialize_def = subject_defs.find { |meth| meth.name == :initialize }
-        return unless initialize_def
+      def write_let(name, block)
+        @writer.append_line("let(:#{underscore(name)}) do")
 
-        @writer.append_line("let(:#{underscore(initialize_def.name)}) do")
-
-        @writer.append_line("#{initialize_def.name}.new#{initialize_def.literal_predicted_args}")
+        @writer.append_line(block)
         @writer.append_line('end')
 
         @writer.append_line
+      end
+
+      def write_let_from_initialize(initialize_def)
+        block = "#{initialize_def.name}.new#{initialize_def.literal_predicted_args}"
+        write_let(initialize_def.name, block)
       end
 
       def write_method(primitive_def)
@@ -61,7 +69,7 @@ module Zapata
         receiver = if primitive_def.sklass
           primitive_def.klass.name
         else
-          underscore(klass.name)
+          underscore(primitive_def.klass.name)
         end
 
         @writer.append_line(

@@ -41,9 +41,17 @@ module Zapata
         binding.pry
       end
 
-      def args(given_args)
-        if given_args.present?
+      def args(given_args, klass)
+        return unless given_args.present?
+
+        if klass == Array
+          "(#{given_args[1...-1]})"
+        elsif klass == Fixnum
           "(#{given_args})"
+        elsif klass == Hash
+          "(#{given_args})"
+        else
+          binding.pry
         end
       end
 

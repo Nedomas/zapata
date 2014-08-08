@@ -6,7 +6,7 @@ module Zapata
           raw_args = Diver.dive(args_node).to_raw
           chosen_args = choose_values(raw_args)
 
-          literal_args = case chosen_args
+          args_in_string = case chosen_args
           when Array
             rebuilt = chosen_args.map do |primitive|
               Printer.print(primitive)
@@ -25,11 +25,12 @@ module Zapata
             raw_int = Primitive::Raw.new(:int, chosen_args)
             Printer.print(raw_int)
           when NilClass
+            binding.pry
           else
             binding.pry
           end
 
-          Printer.args(literal_args)
+          Printer.args(args_in_string, chosen_args.class)
         end
 
         def choose_values(raw_args)

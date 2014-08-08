@@ -31,7 +31,7 @@ module Zapata
       end
 
       def write_class(klass)
-        @writer.append_line("require '#{Core::Loader.helper_path}'")
+        @writer.append_line("require '#{Core::Loader.helper_name}'")
         @writer.append_line
 
         @writer.append_line("describe #{klass.name} do")

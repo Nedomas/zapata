@@ -5,7 +5,22 @@ module Zapata
 
       def initialize(spec_filename)
         @spec_filename = spec_filename
-        run
+        silence do
+          run
+        end
+      end
+
+      def silence
+        original_stderr = $stderr.dup
+        original_stdout = $stdout.dup
+
+        $stdout.reopen('/dev/null', 'w')
+        $stdout.reopen('/dev/null', 'w')
+
+        yield
+
+        $stderr = original_stderr
+        $stdout = original_stdout
       end
 
       def methodz

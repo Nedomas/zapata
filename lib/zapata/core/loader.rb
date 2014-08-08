@@ -20,7 +20,7 @@ module Zapata
           end
         end
 
-        def helper_path
+        def full_helper_path
           paths = {
             rails_helper: rails_helper_path,
             spec_helper: spec_helper_path,
@@ -30,7 +30,7 @@ module Zapata
         end
 
         def load_spec_helper
-          require "#{helper_path}.rb"
+          require "#{full_helper_path}.rb"
         end
       end
     end

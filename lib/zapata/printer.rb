@@ -32,9 +32,7 @@ module Zapata
 
       def array(given_array)
         unnested_array = given_array
-        if unnested_array.present?
-          "[#{unnested_array.join(', ')}]"
-        end
+        "[#{unnested_array.join(', ')}]"
       end
 
       def unnest_array(given_array)

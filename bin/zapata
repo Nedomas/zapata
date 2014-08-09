@@ -13,14 +13,7 @@ Slop.parse do
 
   command 'generate' do
     run do |opts, args|
-      dirs = %w(app/models app/controllers)
-      file_list = Zapata::Core::Collector.expand_dirs_to_files(dirs)
-
-      files = %w(app/models/actual_fragment.rb app/models/ical.rb app/models/calendar/balance_transfer.rb)
-      # files = %w(app/models/ical.rb)
-
-      spec_filename = Zapata::Revolutionist.new(file_list)
-        .generate_rspec_for(args.shift).spec_filename
+      spec_filename = Zapata::Revolutionist.generate(args.shift)
       puts "Its done, comrades. File #{spec_filename} was generated."
     end
   end

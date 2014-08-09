@@ -41,7 +41,7 @@ module Zapata
 
         if klass == Array
           "(#{given_args[1...-1]})"
-        elsif klass == Fixnum
+        elsif [Fixnum, Symbol].include?(klass)
           "(#{given_args})"
         elsif klass == Hash
           "(#{given_args})"

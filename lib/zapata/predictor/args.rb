@@ -3,7 +3,7 @@ module Zapata
     class Args
       class << self
         def literal(args_node)
-          raw_args = Diver.dive(args_node).to_raw rescue binding.pry
+          raw_args = Diver.dive(args_node).to_raw
           chosen_args = choose_values(raw_args)
 
           args_in_string = case chosen_args
@@ -26,6 +26,9 @@ module Zapata
             Printer.print(raw_int)
           when NilClass
             binding.pry
+          when Symbol
+            raw_sym = Primitive::Raw.new(:sym, chosen_args)
+            Printer.print(raw_sym)
           else
             binding.pry
           end
@@ -55,7 +58,7 @@ module Zapata
 
               obj[key] = val
             end
-          when :int
+          when :int, :missing
             raw_args.value
           else
             binding.pry

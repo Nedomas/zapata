@@ -1,7 +1,7 @@
 module Zapata
   module RZpec
     class Writer
-      attr_reader :spec_filename
+      attr_accessor :spec_filename
 
       class << self
         attr_accessor :ivars
@@ -16,8 +16,8 @@ module Zapata
         @subject_analysis = subject_analysis
         @whole_analysis = whole_analysis
         @spec_analysis = spec_analysis
-        @spec_filename = filename.gsub('app', 'spec').gsub('.rb', '_spec.rb')
-        @writer = Core::Writer.new(spec_filename) rescue binding.pry
+        @spec_filename = filename.gsub('app/', 'spec/').gsub('.rb', '_spec.rb')
+        @writer = Core::Writer.new(spec_filename)
         @result = {}
 
         klasses.each do |klass|

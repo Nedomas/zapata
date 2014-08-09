@@ -17,9 +17,26 @@ require_relative 'zapata/version'
 
 module Zapata
   class Revolutionist
+    class << self
+      attr_accessor :analysis
+
+      def generate(filename)
+        dirs = %w(app/models app/controllers)
+        file_list = Core::Collector.expand_dirs_to_files(dirs)
+
+        # files = %w(app/models/actual_fragment.rb app/models/ical.rb app/models/calendar/balance_transfer.rb)
+
+        new(file_list).generate_rspec_for(filename).spec_filename
+      end
+
+      def analysis_as_array
+        analysis.values.flatten
+      end
+    end
+
     def initialize(file_list)
       Core::Loader.load_spec_helper
-      @@analysis = analyze_multiple(file_list)
+      self.class.analysis = analyze_multiple(file_list)
     end
 
     def analyze_multiple(files)
@@ -29,25 +46,21 @@ module Zapata
     end
 
     def generate_rspec_for(filename)
-      @@analysis[filename] = Analyst.analyze(filename) unless @@analysis[filename]
+      self.class.analysis[filename] = Analyst.analyze(filename) unless self.class.analysis[filename]
 
       code = Core::Reader.parse(filename)
 
       global_analysis = Revolutionist.analysis_as_array
       # first run
-      spec = RZpec::Writer.new(filename, code, @@analysis[filename], global_analysis)
-      binding.pry
+      spec = RZpec::Writer.new(filename, code, self.class.analysis[filename], global_analysis)
       spec_analysis = RZpec::Runner.new(spec.spec_filename)
 
       # second run with RSpec results
-      tmp = Tempfile.new('zapata')
-      writer = RZpec::Writer.new(tmp.path, code, @@analysis[filename], global_analysis, spec_analysis)
-      FileUtils.mv(tmp.path, filename)
+      # tmp = Tempfile.new('zapata')
+      writer = RZpec::Writer.new(filename, code, self.class.analysis[filename], global_analysis, spec_analysis)
+      # writer.spec_filename = spec.spec_filename
+      # FileUtils.mv(tmp.path, filename)
       writer
-    end
-
-    def self.analysis_as_array
-      @@analysis.values.flatten
     end
   end
 end

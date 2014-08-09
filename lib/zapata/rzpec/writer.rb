@@ -17,6 +17,8 @@ module Zapata
         @writer = Core::Writer.new(file)
         @result = {}
 
+        write_require
+
         klasses.each do |klass|
           write_class(klass)
         end
@@ -24,31 +26,32 @@ module Zapata
         self.class.reset_ivars
       end
 
+      def write_require
+        @writer.append_line("require '#{Core::Loader.helper_name}'")
+      end
+
       def klasses
         @subject_analysis.select { |obj| obj.is_a?(Primitive::Klass) }
       end
 
-      def subject_defs
+      def klass_defs(klass)
         @subject_analysis.select do |method|
           [Primitive::Def, Primitive::Defs].include?(method.class) and
-            method.public?
+            method.public? and method.klass.name == klass.name
         end
       end
 
-      def initialize_def
-        subject_defs.detect { |method| method.name == :initialize }
+      def initialize_def(klass)
+        klass_defs(klass).detect { |method| method.name == :initialize }
       end
 
       def write_class(klass)
-        @writer.append_line("require '#{Core::Loader.helper_name}'")
         @writer.append_line
-
         @writer.append_line("describe #{klass.name} do")
 
-        binding.pry if $A
         write_instance_let(klass)
 
-        subject_defs.each do |primitive_def|
+        klass_defs(klass).each do |primitive_def|
           write_method(primitive_def)
         end
 
@@ -62,8 +65,8 @@ module Zapata
       end
 
       def write_instance_let(klass)
-        if initialize_def
-          write_let_from_initialize
+        if initialize_def = initialize_def(klass)
+          write_let_from_initialize(initialize_def)
         else
           write_let(klass.name, "#{klass.name}.new")
         end
@@ -75,7 +78,7 @@ module Zapata
         @writer.append_line('end')
       end
 
-      def write_let_from_initialize
+      def write_let_from_initialize(initialize_def)
         block = "#{initialize_def.klass.name}.new#{initialize_def.literal_predicted_args}"
         write_let(initialize_def.klass.name, block)
       end
@@ -101,7 +104,7 @@ module Zapata
       end
 
       def write_equal(method_name)
-        if false and @spec_analysis
+        if @spec_analysis
           Printer.print(Primitive::Raw.new(:literal, @spec_analysis.expected(method_name)))
         else
           Printer.print(Primitive::Raw.new(:str, 'Fill this in by hand'))

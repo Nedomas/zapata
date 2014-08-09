@@ -25,7 +25,7 @@ module Zapata
             raw_int = Primitive::Raw.new(:int, chosen_args)
             Printer.print(raw_int)
           when NilClass
-            binding.pry
+            nil
           when Symbol
             raw_sym = Primitive::Raw.new(:sym, chosen_args)
             Printer.print(raw_sym)
@@ -58,7 +58,7 @@ module Zapata
 
               obj[key] = val
             end
-          when :int, :missing
+          when :int, :missing, :nil
             raw_args.value
           else
             binding.pry

@@ -1,37 +1,124 @@
 require 'spec_helper'
 
 describe Zapata::Revolutionist do
-  it 'should work with ints' do
-    generated = exec_generation('app/models/test_int.rb')
-    expected = expected(%Q{require 'rails_helper'
+  context 'it should work with' do
+    it 'ints' do
+      generated = exec_generation('app/models/test_int.rb')
+      expected = expected(%Q{require 'rails_helper'
 
-    describe TestInt do
-      let(:test_int) do
-        TestInt.new
-      end
+      describe TestInt do
+        let(:test_int) do
+          TestInt.new
+        end
 
-      it '#test_int_in_arg' do
-        expect(test_int.test_int_in_arg(1)).to eq(1)
-      end
-    end})
+        it '#test_int_in_arg' do
+          expect(test_int.test_int_in_arg(1)).to eq(1)
+        end
+      end})
 
-    expect(generated).to eq(expected)
-  end
+      expect(generated).to eq(expected)
+    end
 
-  it 'should work with symbols' do
-    generated = exec_generation('app/models/test_sym.rb')
-    expected = expected(%Q{require 'rails_helper'
+    it 'symbols' do
+      generated = exec_generation('app/models/test_sym.rb')
+      expected = expected(%Q{require 'rails_helper'
 
-    describe TestSym do
-      let(:test_sym) do
-        TestSym.new
-      end
+      describe TestSym do
+        let(:test_sym) do
+          TestSym.new
+        end
 
-      it '#test_sym_in_arg' do
-        expect(test_sym.test_sym_in_arg(:rock)).to eq(:rock)
-      end
-    end})
+        it '#test_sym_in_arg' do
+          expect(test_sym.test_sym_in_arg(:rock)).to eq(:rock)
+        end
+      end})
 
-    expect(generated).to eq(expected)
+      expect(generated).to eq(expected)
+    end
+
+    it 'strings' do
+      generated = exec_generation('app/models/test_str.rb')
+      expected = expected(%Q{require 'rails_helper'
+
+      describe TestStr do
+        let(:test_str) do
+          TestStr.new
+        end
+
+        it '#test_str_in_arg' do
+          expect(test_str.test_str_in_arg('audioslave')).to eq("audioslave")
+        end
+      end})
+
+      expect(generated).to eq(expected)
+    end
+
+    it 'floats' do
+      generated = exec_generation('app/models/test_float.rb')
+      expected = expected(%Q{require 'rails_helper'
+
+      describe TestFloat do
+        let(:test_float) do
+          TestFloat.new
+        end
+
+        it '#test_float_in_arg' do
+          expect(test_float.test_float_in_arg(2.718)).to eq(2.718)
+        end
+      end})
+
+      expect(generated).to eq(expected)
+    end
+
+    it 'consts' do
+      generated = exec_generation('app/models/test_const.rb')
+      expected = expected(%Q{require 'rails_helper'
+
+      describe TestConst do
+        let(:test_const) do
+          TestConst.new
+        end
+
+        it '#test_const_in_arg' do
+          expect(test_const.test_const_in_arg(TestConst)).to eq(TestConst)
+        end
+      end})
+
+      expect(generated).to eq(expected)
+    end
+
+    it 'arrays' do
+      generated = exec_generation('app/models/test_array.rb')
+      expected = expected(%Q{require 'rails_helper'
+
+      describe TestArray do
+        let(:test_array) do
+          TestArray.new
+        end
+
+        it '#test_array_in_arg' do
+          expect(test_array.test_array_in_arg([2, 7.1, 8])).to eq([2, 7.1, 8])
+        end
+      end})
+
+      expect(generated).to eq(expected)
+    end
+
+    it 'hashes' do
+      generated = exec_generation('app/models/test_hash.rb')
+      expected = expected(%Q{require 'rails_helper'
+
+      describe TestHash do
+        let(:test_hash) do
+          TestHash.new
+        end
+
+        it '#test_hash_in_arg' do
+          expect(test_hash.test_hash_in_arg({ 1 => :one, 2 => :two })).to eq({1=>:one, 2=>:two})
+        end
+      end})
+
+      expect(generated).to eq(expected)
+    end
   end
 end

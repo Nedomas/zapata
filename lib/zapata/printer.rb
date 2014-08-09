@@ -3,7 +3,7 @@ module Zapata
     class << self
       def print(raw)
         case raw.type
-        when :const, :send, :int, :const_send, :literal
+        when :const, :send, :int, :const_send, :literal, :float
           raw.value
         when :str
           # decide which one to use

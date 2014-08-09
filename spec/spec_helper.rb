@@ -16,8 +16,8 @@ require 'zapata'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-# The settings below are suggested to provide a good initial experience
-# with RSpec, but feel free to customize to your heart's content.
+  # The settings below are suggested to provide a good initial experience
+  # with RSpec, but feel free to customize to your heart's content.
 =begin
   # These two settings work together to allow you to limit a spec run
   # to individual examples or groups you care about by tagging them with
@@ -111,4 +111,14 @@ def exec_generation(generate_for)
       #{File.read(spec_path)}
     ACTUAL
   )
+end
+
+def has_block(name, expected_content)
+  generated_lines = @generated.split("\n")
+  it_starts = generated_lines.index { |line| line == "it '#{name}' do" }
+  might_match_lines = generated_lines[it_starts..-1]
+  it_ends = might_match_lines.index { |line| line == 'end' }
+
+  block = might_match_lines[1...it_ends].first
+  expect(block).to eq(expected_content.strip)
 end

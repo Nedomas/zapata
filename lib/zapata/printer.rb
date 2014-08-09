@@ -61,7 +61,7 @@ module Zapata
         end
 
         all_keys_symbols = unnested_hash.keys.all? do |key|
-          Parser::CurrentRuby.parse(key).type == :sym
+          Parser::CurrentRuby.parse(key.to_s).type == :sym
         end
 
         values = unnested_hash.map do |key, val|

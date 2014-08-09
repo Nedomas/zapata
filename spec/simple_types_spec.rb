@@ -46,7 +46,7 @@ describe Zapata::Revolutionist do
         end
 
         it '#test_str_in_arg' do
-          expect(test_str.test_str_in_arg('audioslave')).to eq("audioslave")
+          expect(test_str.test_str_in_arg('audioslave')).to eq('audioslave')
         end
       end})
 

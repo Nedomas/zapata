@@ -42,7 +42,7 @@ module Zapata
         if (matches = clean_expected_line.match(/\#\<(.+):(.+)\>/))
           "'Returned instance object #{matches[1]}'"
         else
-          clean_expected_line
+          Printer.print(Diver.dive(Parser::CurrentRuby.parse(clean_expected_line)).to_raw)
         end
       end
 

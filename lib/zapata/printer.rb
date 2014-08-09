@@ -54,8 +54,17 @@ module Zapata
       end
 
       def hash(obj)
+        all_keys_symbols = obj.keys.all? { |key| key.type == :sym }
+
         values = obj.map do |key, val|
-          "#{unnest(key)} => #{unnest(val)}"
+          unnested_key = unnest(key)
+          unnested_val = unnest(val)
+
+          if all_keys_symbols
+            "#{unnested_key[1..-1]}: #{unnested_val}"
+          else
+            "#{unnested_key} => #{unnested_val}"
+          end
         end
 
         "{ #{values.join(', ')} }"

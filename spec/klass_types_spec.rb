@@ -27,5 +27,23 @@ describe Zapata::Revolutionist do
 
       expect(generated).to eq(expected)
     end
+
+    context 'klass methods' do
+      before(:all) do
+        @generated = exec_generation('app/models/testing_module/klass_methods.rb')
+      end
+
+      it '#defined_with_self' do
+        has_block('#defined_with_self', %Q{
+          expect(TestingModule::KlassMethods.defined_with_self(5)).to eq(5)
+        })
+      end
+
+      it '#defined_with_back_back_self' do
+        has_block('#defined_with_back_back_self', %Q{
+          expect(TestingModule::KlassMethods.defined_with_back_back_self(5)).to eq(5)
+        })
+      end
+    end
   end
 end

@@ -86,22 +86,5 @@ describe Zapata::Revolutionist do
 
       expect(generated).to eq(expected)
     end
-
-    it 'arrays' do
-      generated = exec_generation('app/models/test_array.rb')
-      expected = expected(%Q{require 'rails_helper'
-
-      describe TestArray do
-        let(:test_array) do
-          TestArray.new
-        end
-
-        it '#test_array_in_arg' do
-          expect(test_array.test_array_in_arg([2, 7.1, 8])).to eq([2, 7.1, 8])
-        end
-      end})
-
-      expect(generated).to eq(expected)
-    end
   end
 end

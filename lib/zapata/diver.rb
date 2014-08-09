@@ -53,7 +53,6 @@ module Zapata
         if subklass_pair
           klass = "Zapata::Primitive::#{subklass_pair.first}".constantize
           result = klass.new(code)
-          # binding.pry if result.name == :data
 
           DB.create(result) if search_for_types.include?(current_type)
         else

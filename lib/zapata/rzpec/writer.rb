@@ -3,7 +3,16 @@ module Zapata
     class Writer
       attr_reader :spec_filename
 
+      class << self
+        attr_accessor :ivars
+
+        def reset_ivars
+          @ivars = []
+        end
+      end
+
       def initialize(filename, code, subject_analysis, whole_analysis, spec_analysis = nil)
+        self.class.reset_ivars
         @subject_analysis = subject_analysis
         @whole_analysis = whole_analysis
         @spec_analysis = spec_analysis
@@ -14,6 +23,8 @@ module Zapata
         klasses.each do |klass|
           write_class(klass)
         end
+
+        self.class.reset_ivars
       end
 
       def klasses
@@ -44,6 +55,12 @@ module Zapata
           write_method(primitive_def)
         end
 
+        self.class.ivars.each do |ivar|
+          predicted_value = Predictor::Args.choose_value(ivar.value)
+          literal_predicted_value = Printer.print(predicted_value.to_raw)
+          write_let(ivar.value, literal_predicted_value)
+        end
+
         @writer.append_line('end')
       end
 
@@ -56,7 +73,7 @@ module Zapata
       end
 
       def write_let(name, block)
-        @writer.append_line("let(:#{to_var_name(name)}) do")
+        @writer.append_line("let(:#{Printer.to_var_name(name)}) do")
 
         @writer.append_line(block)
         @writer.append_line('end')
@@ -78,7 +95,7 @@ module Zapata
         receiver = if primitive_def.self?
           primitive_def.klass.name
         else
-          to_var_name(primitive_def.klass.name)
+          Printer.to_var_name(primitive_def.klass.name)
         end
 
         @writer.append_line(
@@ -89,12 +106,6 @@ module Zapata
         @writer.append_line
       end
 
-      # def write_let_from_ivar(ivar)
-      #   @writer.append_line(
-      #     "let(:#{SaveManager.clean(underscore(ivar))}) { Zapata::Missing.new }"
-      #   )
-      # end
-
       def write_equal(method_name)
         if @spec_analysis
           Printer.print(Primitive::Raw.new(:literal, @spec_analysis.expected(method_name)))
@@ -103,9 +114,6 @@ module Zapata
         end
       end
 
-      def to_var_name(name)
-        name.to_s.split('::').last.underscore
-      end
     end
   end
 end

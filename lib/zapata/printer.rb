@@ -24,19 +24,16 @@ module Zapata
         when :missing
           print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
         when :ivar
-          raw.value.to_s
+          RZpec::Writer.ivars << raw
+          to_var_name(raw.value)
         else
           binding.pry
         end
       end
 
       def array(given_array)
-        unnested_array = given_array
+        unnested_array = given_array.map { |el| unnest(el) }
         "[#{unnested_array.join(', ')}]"
-      end
-
-      def unnest_array(given_array)
-        binding.pry
       end
 
       def args(given_args, klass)
@@ -69,6 +66,10 @@ module Zapata
         else
           print(raw)
         end
+      end
+
+      def to_var_name(name)
+        name.to_s.split('::').last.underscore.delete('@')
       end
     end
   end

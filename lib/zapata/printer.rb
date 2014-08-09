@@ -40,7 +40,10 @@ module Zapata
         return unless given_args.present?
 
         if klass == Array
-          "(#{given_args[1...-1]})"
+          array_without_closers = given_args[1...-1]
+          return unless array_without_closers.present?
+
+          "(#{array_without_closers})"
         elsif [Fixnum, Symbol].include?(klass)
           "(#{given_args})"
         elsif klass == Hash

@@ -47,7 +47,6 @@ module Zapata
         @writer.append_line
 
         @writer.append_line("describe #{klass.name} do")
-        @writer.append_line
 
         write_instance_let(klass)
 
@@ -74,11 +73,8 @@ module Zapata
 
       def write_let(name, block)
         @writer.append_line("let(:#{Printer.to_var_name(name)}) do")
-
         @writer.append_line(block)
         @writer.append_line('end')
-
-        @writer.append_line
       end
 
       def write_let_from_initialize
@@ -90,6 +86,7 @@ module Zapata
         return unless primitive_def.node.body
         return if primitive_def.name == :initialize
 
+        @writer.append_line
         @writer.append_line("it '##{primitive_def.name}' do")
 
         receiver = if primitive_def.self?
@@ -103,7 +100,6 @@ module Zapata
         )
 
         @writer.append_line('end')
-        @writer.append_line
       end
 
       def write_equal(method_name)

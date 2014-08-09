@@ -77,3 +77,38 @@ RSpec.configure do |config|
   end
 =end
 end
+
+# Helper methods
+RAILS_TEST_APP_DIR = "#{Dir.pwd}/spec/support/rails_test_app"
+
+def clean(string)
+  string.split(/\n/).map(&:strip).join("\n")
+end
+
+def expected(code)
+  clean(
+    <<-EXPECTED
+      #{code}
+    EXPECTED
+  )
+end
+
+def exec_generation(generate_for)
+  require 'open3'
+
+  stdin, stdout, stderr = Bundler.with_clean_env do
+    Open3.popen3(
+      "cd #{RAILS_TEST_APP_DIR} && bundle exec zapata generate #{generate_for}"
+    )
+  end
+
+  output = stdout.readlines
+  generated_filename = output.last.match(/File\ (.+)\ was/)[1]
+  spec_path = "#{RAILS_TEST_APP_DIR}/#{generated_filename}"
+
+  clean(
+    <<-ACTUAL
+      #{File.read(spec_path)}
+    ACTUAL
+  )
+end

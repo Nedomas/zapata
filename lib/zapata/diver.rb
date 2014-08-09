@@ -34,10 +34,11 @@ module Zapata
 
   class Diver
     class << self
-      attr_accessor :current_modul, :current_klass, :current_sklass, :access_level
+      attr_accessor :current_moduls, :current_klass, :current_sklass, :access_level
 
       def search_for(what)
         @search_for = what
+        @current_moduls ||= []
       end
 
       def dive(code)

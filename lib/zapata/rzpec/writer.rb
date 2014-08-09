@@ -1,8 +1,6 @@
 module Zapata
   module RZpec
     class Writer
-      attr_accessor :spec_filename
-
       class << self
         attr_accessor :ivars
 
@@ -11,13 +9,12 @@ module Zapata
         end
       end
 
-      def initialize(filename, code, subject_analysis, whole_analysis, spec_analysis = nil)
+      def initialize(file, code, subject_analysis, whole_analysis, spec_analysis = nil)
         self.class.reset_ivars
         @subject_analysis = subject_analysis
         @whole_analysis = whole_analysis
         @spec_analysis = spec_analysis
-        @spec_filename = filename.gsub('app/', 'spec/').gsub('.rb', '_spec.rb')
-        @writer = Core::Writer.new(spec_filename)
+        @writer = Core::Writer.new(file)
         @result = {}
 
         klasses.each do |klass|

@@ -26,11 +26,15 @@ module Zapata
 
         # files = %w(app/models/actual_fragment.rb app/models/ical.rb app/models/calendar/balance_transfer.rb)
 
-        new(file_list).generate_rspec_for(filename).spec_filename
+        new(file_list).generate_rspec_for(filename, spec_filename(filename))
       end
 
       def analysis_as_array
         analysis.values.flatten
+      end
+
+      def spec_filename(filename)
+        filename.gsub('app/', 'spec/').gsub('.rb', '_spec.rb')
       end
     end
 
@@ -45,22 +49,30 @@ module Zapata
       end
     end
 
-    def generate_rspec_for(filename)
+    def generate_rspec_for(filename, spec_filename)
       self.class.analysis[filename] = Analyst.analyze(filename) unless self.class.analysis[filename]
 
       code = Core::Reader.parse(filename)
 
       global_analysis = Revolutionist.analysis_as_array
       # first run
-      spec = RZpec::Writer.new(filename, code, self.class.analysis[filename], global_analysis)
-      spec_analysis = RZpec::Runner.new(spec.spec_filename)
+      tmp_spec_filename = Tempfile.new('zapata').path
+      RZpec::Writer.new(tmp_spec_filename, code, self.class.analysis[filename], global_analysis)
+
+      save_spec_file(tmp_spec_filename, spec_filename)
+      spec_analysis = RZpec::Runner.new(spec_filename)
 
       # second run with RSpec results
-      # tmp = Tempfile.new('zapata')
-      writer = RZpec::Writer.new(filename, code, self.class.analysis[filename], global_analysis, spec_analysis)
-      # writer.spec_filename = spec.spec_filename
-      # FileUtils.mv(tmp.path, filename)
-      writer
+      RZpec::Writer.new(tmp_spec_filename, code, self.class.analysis[filename], global_analysis, spec_analysis)
+      save_spec_file(tmp_spec_filename, spec_filename)
+    end
+
+    def save_spec_file(tmp_spec_filename, spec_filename)
+      spec_path = "#{Dir.pwd}/#{spec_filename}"
+      spec_dir = spec_path.split('/')[0...-1].join('/')
+      FileUtils.mkdir_p(spec_dir)
+      FileUtils.cp(tmp_spec_filename, spec_path)
+      spec_filename
     end
   end
 end

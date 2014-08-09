@@ -3,9 +3,9 @@ module Zapata
     class Modul < Base
       def initialize(code)
         @code = code
-        Diver.current_modul = self
+        Diver.current_moduls << self
         dive_deeper
-        Diver.current_modul = nil
+        Diver.current_moduls.pop
       end
 
       def node

@@ -28,7 +28,7 @@ module Zapata
           to_var_name(raw.value)
         else
           binding.pry
-        end
+        end rescue binding.pry
       end
 
       def array(given_array)
@@ -54,16 +54,21 @@ module Zapata
       end
 
       def hash(obj)
-        all_keys_symbols = obj.keys.all? { |key| key.type == :sym }
-
-        values = obj.map do |key, val|
+        unnested_hash = obj.each_with_object({}) do |(key, val), obj|
           unnested_key = unnest(key)
           unnested_val = unnest(val)
+          obj[unnested_key] = unnested_val
+        end
 
+        all_keys_symbols = unnested_hash.keys.all? do |key|
+          Parser::CurrentRuby.parse(key).type == :sym
+        end
+
+        values = unnested_hash.map do |key, val|
           if all_keys_symbols
-            "#{unnested_key[1..-1]}: #{unnested_val}"
+            "#{key[1..-1]}: #{val}"
           else
-            "#{unnested_key} => #{unnested_val}"
+            "#{key} => #{val}"
           end
         end
 

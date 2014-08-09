@@ -20,7 +20,11 @@ module Zapata
 
       def to_raw
         raw = Diver.dive(node.body).to_raw
-        Raw.new(raw.type, raw.value)
+        if raw.type == :super
+          Missing.new(node.name).to_raw
+        else
+          Raw.new(raw.type, raw.value)
+        end
       end
     end
   end

@@ -4,6 +4,7 @@ require 'pry'
 require 'pry-stack_explorer'
 require 'rails'
 require 'require_all'
+require 'file/temp'
 
 require_rel 'zapata/core'
 require_rel 'zapata/predictor'
@@ -56,7 +57,7 @@ module Zapata
 
       global_analysis = Revolutionist.analysis_as_array
       # first run
-      tmp_spec_filename = Tempfile.new('zapata').path
+      tmp_spec_filename = File::Temp.new(false).path
       RZpec::Writer.new(tmp_spec_filename, code, self.class.analysis[filename], global_analysis)
 
       save_spec_file(tmp_spec_filename, spec_filename)

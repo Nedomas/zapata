@@ -45,6 +45,7 @@ module Zapata
 
         @writer.append_line("describe #{klass.name} do")
 
+        binding.pry if $A
         write_instance_let(klass)
 
         subject_defs.each do |primitive_def|
@@ -52,7 +53,7 @@ module Zapata
         end
 
         self.class.ivars.each do |ivar|
-          predicted_value = Predictor::Args.choose_value(ivar.value)
+          predicted_value = Predictor::Args.choose_value(ivar.value, ivar)
           literal_predicted_value = Printer.print(predicted_value.to_raw)
           write_let(ivar.value, literal_predicted_value)
         end
@@ -100,13 +101,12 @@ module Zapata
       end
 
       def write_equal(method_name)
-        if @spec_analysis
+        if false and @spec_analysis
           Printer.print(Primitive::Raw.new(:literal, @spec_analysis.expected(method_name)))
         else
-          Printer.print(Primitive::Raw.new(:str, 'FILL IN THIS BY HAND'))
+          Printer.print(Primitive::Raw.new(:str, 'Fill this in by hand'))
         end
       end
-
     end
   end
 end

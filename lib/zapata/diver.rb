@@ -42,7 +42,7 @@ module Zapata
       end
 
       def dive(code)
-        return Primitive::Raw.new(:missing, :no_code) unless code
+        return Primitive::Raw.new(:nil, nil) unless code
 
         current_type = code.type
         return Primitive::Raw.new(:missing, :hard_type) if HARD_TYPES.include?(current_type)

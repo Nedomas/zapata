@@ -24,14 +24,17 @@ module Zapata
       end
 
       def raw_receiver
+        return unless node.receiver
         Diver.dive(node.receiver).to_raw
       end
 
       def to_raw
-        if raw_receiver.value
-          Raw.new(:const_send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
+        if raw_receiver and raw_receiver.type == :const
+          Raw.new(:const_send, "#{Printer.print(raw_receiver.value)}.#{node.name}#{Predictor::Args.literal(node.args)}")
+        elsif %i(+ - * /).include?(node.name)
+          Raw.new(:super, nil)
         else
-          Predictor::Args.choose_value(node.name).to_raw
+          Predictor::Args.choose_value(node.name, self).to_raw
         end
       end
     end

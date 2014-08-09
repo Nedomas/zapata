@@ -11,7 +11,7 @@ module Zapata
       end
 
       def to_raw
-        chosen_value = Predictor::Args.choose_value(node.name)
+        chosen_value = Predictor::Args.choose_value(node.name, self)
 
         if chosen_value.node.body == node.body
           Raw.new(:missing, node.body.to_a.last)

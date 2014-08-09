@@ -19,7 +19,7 @@ Slop.parse do
       files = %w(app/models/actual_fragment.rb app/models/ical.rb app/models/calendar/balance_transfer.rb)
       # files = %w(app/models/ical.rb)
 
-      spec_filename = Zapata::Revolutionist.new(files)
+      spec_filename = Zapata::Revolutionist.new(file_list)
         .generate_rspec_for(args.shift).spec_filename
       puts "Its done, comrades. File #{spec_filename} was generated."
     end

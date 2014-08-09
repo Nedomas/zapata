@@ -23,6 +23,14 @@ class TestSend
     send_with_params
   end
 
+  def not_explicit_with_params(not_explicit)
+    not_explicit
+  end
+
+  def fail_to_understand(failure)
+    failure
+  end
+
   private
 
   def help_method
@@ -41,8 +49,18 @@ class TestSend
     1 + 3
   end
 
+  def not_explicit(name)
+    'Could you find it?'
+  end
+
+  def failure(name)
+    # does not understand :dstr
+    "Can't you understand, #{name}?"
+  end
+
   def data_to_analyze
     another_object_method = AnotherObject.my_name
+    send_with_params = AnotherObject.send_with_params(12)
   end
 end
 

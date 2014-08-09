@@ -61,7 +61,7 @@ module Zapata
 
         deeper_dives(code) if DIVE_TYPES.include?(current_type)
 
-        result || Primitive::Raw.new(:missing, :deep_dive)
+        result || Primitive::Raw.new(:super, nil)
       end
 
       def search_for_types

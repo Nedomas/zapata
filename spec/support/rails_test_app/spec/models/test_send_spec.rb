@@ -26,7 +26,15 @@ describe TestSend do
   end
 
   it '#to_another_object_with_params' do
-    expect(test_send.to_another_object_with_params('Missing "deep_dive"')).to eq('Missing "deep_dive"')
+    expect(test_send.to_another_object_with_params(AnotherObject.send_with_params(12))).to eq('Id was 12')
+  end
+
+  it '#not_explicit_with_params' do
+    expect(test_send.not_explicit_with_params('Could you find it?')).to eq('Could you find it?')
+  end
+
+  it '#fail_to_understand' do
+    expect(test_send.fail_to_understand('Missing "failure"')).to eq('Missing "failure"')
   end
 end
 

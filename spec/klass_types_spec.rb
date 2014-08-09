@@ -44,6 +44,12 @@ describe Zapata::Revolutionist do
           expect(TestingModule::KlassMethods.defined_with_back_back_self(5)).to eq(5)
         })
       end
+
+      it '#back_to_public_defined_with_self' do
+        has_block('#back_to_public_defined_with_self', %Q{
+          expect(TestingModule::KlassMethods.back_to_public_defined_with_self(5)).to eq(5)
+        })
+      end
     end
   end
 end

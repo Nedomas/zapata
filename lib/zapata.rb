@@ -5,6 +5,7 @@ require 'pry-stack_explorer'
 require 'rails'
 require 'require_all'
 require 'file/temp'
+require 'open3'
 
 require_rel 'zapata/core'
 require_rel 'zapata/predictor'
@@ -46,6 +47,7 @@ module Zapata
 
     def analyze_multiple(files)
       files.each_with_object({}) do |filename, obj|
+        puts "Analyzing: #{filename}"
         obj[filename] = Analyst.analyze(filename)
       end
     end

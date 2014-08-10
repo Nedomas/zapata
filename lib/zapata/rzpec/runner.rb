@@ -23,41 +23,44 @@ module Zapata
       end
 
       def methodz
-        examples.index_by { |ex| ex.metadata[:description].delete('#').to_sym }
+        examples.index_by { |ex| ex['description'].delete('#').to_sym }
       end
 
-      def metadata(method_name)
-        methodz[method_name].metadata
-      end
-
-      def exception(method_name)
-        metadata(method_name)[:execution_result].exception
+      def result_message(method_name)
+        methodz[method_name]['exception']['message']
       end
 
       def expected(method_name)
-        report_lines = exception(method_name).to_s.split(/\n/)
+        report_lines = result_message(method_name).to_s.split(/\n/)
         expected_line = report_lines.detect { |line| line.match('got:') }
-        clean_expected_line = expected_line[10..-1]
 
-        if (matches = clean_expected_line.match(/\#\<(.+):(.+)\>/))
-          "'Returned instance object #{matches[1]}'"
+        if expected_line
+          clean_expected_line = expected_line[10..-1]
+
+          if (matches = clean_expected_line.match(/\#\<(.+):(.+)\>/))
+            "'Returned instance object #{matches[1]}'"
+          else
+            Printer.print(Diver.dive(Parser::CurrentRuby.parse(clean_expected_line)).to_raw)
+          end
         else
-          Printer.print(Diver.dive(Parser::CurrentRuby.parse(clean_expected_line)).to_raw)
+         "'Exception in RSpec'"
         end
       end
 
       def run
         @ran = true
-        RSpec::Core::Runner.run([@spec_filename])
+
+        @stdin, @stdout, @stderr = Bundler.with_clean_env do
+          Open3.popen3("bundle exec rspec #{@spec_filename} --format j")
+        end
       end
 
       def examples
-        reporter = RSpec.configuration.reporter
-        rspec_examples = reporter.instance_variable_get(:@examples)
+        parsed_json_result['examples']
+      end
 
-        raise 'Exception in rspec' unless rspec_examples
-
-        rspec_examples
+      def parsed_json_result
+        @json ||= JSON.parse(@stdout.readlines.last)
       end
     end
   end

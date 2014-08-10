@@ -94,8 +94,6 @@ def expected(code)
 end
 
 def exec_generation(generate_for)
-  require 'open3'
-
   stdin, stdout, stderr = Bundler.with_clean_env do
     Open3.popen3(
       "cd #{RAILS_TEST_APP_DIR} && bundle exec zapata generate #{generate_for}"

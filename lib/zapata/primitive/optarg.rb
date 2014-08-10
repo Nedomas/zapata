@@ -7,7 +7,7 @@ module Zapata
       end
 
       def to_raw
-        Diver.dive(node.body.to_a.last).to_raw
+        Diver.dive(node.body).to_raw
       end
     end
   end

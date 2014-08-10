@@ -28,7 +28,7 @@ module Zapata
           to_var_name(raw.value)
         else
           binding.pry
-        end rescue binding.pry
+        end
       end
 
       def array(given_array)

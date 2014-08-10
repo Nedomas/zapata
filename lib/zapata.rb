@@ -20,10 +20,10 @@ require_relative 'zapata/version'
 module Zapata
   class Revolutionist
     class << self
-      attr_accessor :analysis
+      attr_accessor :analysis, :analysis_as_array
 
       def generate(filename)
-        dirs = %w(app/models app/controllers)
+        dirs = %w(app/models)
         file_list = Core::Collector.expand_dirs_to_files(dirs)
 
         # files = %w(app/models/actual_fragment.rb app/models/ical.rb app/models/calendar/balance_transfer.rb)
@@ -31,8 +31,8 @@ module Zapata
         new(file_list).generate_rspec_for(filename, spec_filename(filename))
       end
 
-      def analysis_as_array
-        analysis.values.flatten
+      def init_analysis_as_array
+        @analysis_as_array = analysis.values.flatten
       end
 
       def spec_filename(filename)
@@ -46,14 +46,21 @@ module Zapata
     end
 
     def analyze_multiple(files)
-      files.each_with_object({}) do |filename, obj|
-        puts "Analyzing: #{filename}"
+      total = files.size.to_s
+
+      files.each_with_object({}).with_index do |(filename, obj), i|
+        puts "[#{adjusted_current(i, total)}/#{total}] Analyzing: #{filename}"
         obj[filename] = Analyst.analyze(filename)
       end
     end
 
+    def adjusted_current(i, total)
+      "#{i}".rjust(total.size)
+    end
+
     def generate_rspec_for(filename, spec_filename)
       self.class.analysis[filename] = Analyst.analyze(filename) unless self.class.analysis[filename]
+      self.class.init_analysis_as_array
 
       code = Core::Reader.parse(filename)
 

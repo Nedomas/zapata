@@ -68,8 +68,8 @@ module Zapata
         def choose_value(name, caller = nil)
           return Primitive::Raw.new(:nil, nil) if name.nil?
 
-          possible_values = Revolutionist.analysis_as_array.select do |v|
-            v.name == name and its_not_a_caller?(v, caller)
+          possible_values = Revolutionist.analysis_as_array.select do |element|
+            is_not_a_caller?(element, caller) and element.name == name
           end
 
           if possible_values.empty?
@@ -79,9 +79,9 @@ module Zapata
           Chooser.new(possible_values).by_probability
         end
 
-        def its_not_a_caller?(primitive, caller)
+        def is_not_a_caller?(primitive, caller)
           return true unless caller
-          primitive.code.loc != caller.code.loc
+          primitive.name != caller.name
         end
       end
     end

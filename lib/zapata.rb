@@ -59,7 +59,10 @@ module Zapata
     end
 
     def generate_rspec_for(filename, spec_filename)
-      self.class.analysis[filename] = Analyst.analyze(filename) unless self.class.analysis[filename]
+      unless self.class.analysis[filename]
+        self.class.analysis[filename] = Analyst.analyze(filename)
+      end
+
       self.class.init_analysis_as_array
 
       code = Core::Reader.parse(filename)

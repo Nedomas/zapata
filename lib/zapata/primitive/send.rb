@@ -32,9 +32,15 @@ module Zapata
         if raw_receiver and raw_receiver.type == :const
           Raw.new(:const_send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
         elsif %i(+ - * /).include?(node.name)
-          Raw.new(:super, nil)
+          Raw.new(:super, node.name)
         else
-          Predictor::Args.choose_value(node.name, self).to_raw
+          predicted = Predictor::Args.choose_value(node.name, self).to_raw
+
+          if predicted.type == :missing
+            Raw.new(:super, node.name)
+          else
+            predicted
+          end
         end
       end
     end

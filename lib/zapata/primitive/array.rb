@@ -15,8 +15,21 @@ module Zapata
       end
 
       def to_raw
-        value = node.body.to_a.map do |element|
-          Diver.dive(element).to_raw
+        value = node.body.to_a.map do |node|
+          primitive = Diver.dive(node)
+          raw = primitive.to_raw
+
+          if raw.type == :super
+            predicted = Predictor::Args.choose_value(raw.value).to_raw
+
+            if predicted.type == :super
+              Missing.new(primitive.name).to_raw
+            else
+              predicted
+            end
+          else
+            raw
+          end
         end
 
         Raw.new(:array, value)

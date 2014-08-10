@@ -1,9 +1,9 @@
 module Zapata
-  RETURN_TYPES = %i(const_send arg optarg sym float str int ivar true false const nil)
-  DIVE_TYPES = %i(begin block defined? nth_ref splat kwsplat class
+  RETURN_TYPES = %i(missing raw const_send sym float str int ivar true false const nil)
+  DIVE_TYPES = %i(args begin block defined? nth_ref splat kwsplat class
     block_pass sclass masgn or and irange erange when and
     return array kwbegin yield while dstr ensure pair)
-  ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn)
+  ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn optarg)
   DEF_TYPES = %i(def defs)
   HARD_TYPES = %i(if dsym resbody mlhs next self break zsuper
     super retry rescue match_with_lvasgn case op_asgn regopt regexp)
@@ -27,6 +27,7 @@ module Zapata
     Modul: %i(module),
     Const: %i(const),
     Optarg: %i(optarg),
+    Arg: %i(arg),
     Basic: RETURN_TYPES,
     Casgn: %i(casgn),
     Var: ASSIGN_TYPES,
@@ -42,7 +43,9 @@ module Zapata
       end
 
       def dive(code)
-        return Primitive::Raw.new(:nil, nil) unless code
+        unless code
+          return Primitive::Nil.new
+        end
 
         current_type = code.type
         return Primitive::Raw.new(:missing, :hard_type) if HARD_TYPES.include?(current_type)

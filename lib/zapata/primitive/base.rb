@@ -1,10 +1,11 @@
 module Zapata
   module Primitive
     class Base
-      attr_accessor :code
+      attr_accessor :code, :type
 
       def initialize(code)
         @code = code
+        @type = code.type
         dive_deeper
       end
 
@@ -13,18 +14,14 @@ module Zapata
       end
 
       def dive_deeper
-        if !RETURN_TYPES.include?(node.type)
+        unless RETURN_TYPES.include?(node.type)
+          Diver.dive(node.args)
           Diver.dive(node.body)
         end
       end
 
       def to_raw
-        raw = Diver.dive(node.body).to_raw
-        if raw.type == :super
-          Missing.new(node.name).to_raw
-        else
-          Raw.new(raw.type, raw.value)
-        end
+        Diver.dive(node.body).to_raw
       end
     end
   end

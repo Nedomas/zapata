@@ -24,4 +24,8 @@ describe TestDefinition do
   it '#call_method_result_in_optional_args' do
     expect(test_definition.call_method_result_in_optional_args('Missing "complex_method"')).to eq('Missing "complex_method"')
   end
+
+  it '#recursive_method' do
+    expect(test_definition.recursive_method).to eq('Exception in RSpec')
+  end
 end

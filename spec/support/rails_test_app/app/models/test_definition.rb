@@ -19,6 +19,13 @@ class TestDefinition
     complex_method
   end
 
+  def should_not_show_empty_method
+  end
+
+  def recursive_method
+    recursive_method
+  end
+
   private
 
   def fall_meth
@@ -29,9 +36,3 @@ class TestDefinition
     fallback = 'Chuck'
   end
 end
-
-# uniq
-# options || {}
-# optarg = 54
-# optargs = abc.hello
-# empty method

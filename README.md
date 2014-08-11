@@ -129,21 +129,10 @@ or
 gem 'zapata', groups: %w(development test)
 ```
 
-:heart: To use run :heart:
+To use run
 ```sh
 zapata generate app/models/model_name.rb
 ```
-
-## Troubleshooting
-
-If you get this error:
-```ruby
-spec/rails_helper.rb:3:in `require': cannot load such file -- spec_helper (LoadError)
-```
-
-Then comment out ``require 'spec_helper'`` from your ``rails_helper``.
-
-This is one of the todos.
 
 ## Collaboration :heart:
 

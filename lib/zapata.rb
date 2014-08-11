@@ -6,6 +6,7 @@ require 'rails'
 require 'require_all'
 require 'file/temp'
 require 'open3'
+require 'rspec'
 
 require_rel 'zapata/core'
 require_rel 'zapata/predictor'
@@ -55,7 +56,7 @@ module Zapata
     end
 
     def adjusted_current(i, total)
-      "#{i}".rjust(total.size)
+      "#{i + 1}".rjust(total.size)
     end
 
     def generate_rspec_for(filename, spec_filename)

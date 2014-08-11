@@ -2,12 +2,16 @@ module Zapata
   module Core
     class Loader
       class << self
+        def spec_dir
+          File.join(Dir.pwd, '/spec')
+        end
+
         def rails_helper_path
-          File.expand_path("#{Dir.pwd}/spec/rails_helper",  __FILE__)
+          File.expand_path("#{spec_dir}/rails_helper",  __FILE__)
         end
 
         def spec_helper_path
-          File.expand_path("#{Dir.pwd}/spec/spec_helper",  __FILE__)
+          File.expand_path("#{spec_dir}/spec_helper",  __FILE__)
         end
 
         def helper_name
@@ -30,7 +34,8 @@ module Zapata
         end
 
         def load_spec_helper
-          require "#{full_helper_path}.rb"
+          $LOAD_PATH << spec_dir
+          require "#{helper_name}"
         end
       end
     end

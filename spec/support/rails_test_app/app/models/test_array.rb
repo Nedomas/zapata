@@ -2,8 +2,8 @@ class TestArray
   def initialize
   end
 
-  def test_in_arg(array)
-    array
+  def test_in_arg(numbers_array)
+    numbers_array
   end
 
   def test_nested_one_level(nested_one_level)
@@ -25,10 +25,10 @@ class TestArray
   private
 
   def data_to_analyze
-    array = [2, 7.1, 8]
-    nested_one_level = [array, :mexico]
-    nested_two_levels = [nested_one_level, array, :mexico]
-    nested_three_levels = [nested_two_levels, nested_one_level, array, :mexico]
-    hash_nested = [{ emiliano: array }]
+    numbers_array = [2, 7.1, 8]
+    nested_one_level = [numbers_array, :mexico]
+    nested_two_levels = [nested_one_level, numbers_array, :mexico]
+    nested_three_levels = [nested_two_levels, nested_one_level, numbers_array, :mexico]
+    hash_nested = [{ emiliano: numbers_array }]
   end
 end

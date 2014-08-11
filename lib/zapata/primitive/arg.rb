@@ -14,7 +14,7 @@ module Zapata
         chosen_value = Predictor::Args.choose_value(node.name, self).to_raw
 
         if chosen_value.type == :super
-          Missing.new(chosen_value.value).to_raw
+          Missing.new(node.name).to_raw
         else
           chosen_value
         end rescue binding.pry

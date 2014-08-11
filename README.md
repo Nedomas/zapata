@@ -1,12 +1,14 @@
 # Zapata
 
-Who has time to write tests? This is a revolutional tool to make them write themselves.
+Who has time to write tests? This is a revolutional tool to make them write
+themselves.
 
 ![Emiliano Zapata](https://cloud.githubusercontent.com/assets/1877286/3753719/af3bfec2-1814-11e4-8790-242c2b26a8e9.jpg)
 
 # What is your problem?
 
-There comes a day where you have this bullshit class ``RobotToTest``. We need tests.
+There comes a day where you have this bullshit class ``RobotToTest``. We need
+tests. :shipit:
 
 ```ruby
 class RobotToTest
@@ -66,7 +68,7 @@ end
 You run ``zapata generate app/models/robot_to_test.rb`` and pop the champagne.
 Zapata generated ``spec/models/robot_to_test_spec.rb`` for you.
 
-```
+```ruby
 describe RobotToTest do
   let(:robot_to_test) do
     RobotToTest.new('Emiliano', { planets: ['Mars', Human.home] })
@@ -81,7 +83,16 @@ describe RobotToTest do
   end
 
   it '#nested_fun_objects' do
-    expect(robot_to_test.nested_fun_objects([[:array, :in, :array], { hash: { in_hash: { in: ['array'] } } }])).to eq('It was fun')
+    expect(robot_to_test.nested_fun_objects([
+      [:array, :in, :array],
+      {
+        hash: {
+          in_hash: {
+            in: ['array']
+          }
+        }
+      }
+    ])).to eq('It was fun')
   end
 
   it '#prefix' do
@@ -95,14 +106,15 @@ end
 It tries to write a passing RSpec spec off the bat. It does fancy analysis
 to predict the values it could feed to the API of a class.
 
-To be more specific:
+__To be more specific:__
 - Analyzes all vars and methods definitions in ``app/models``
 - Checks what arguments does a testable method in ``app/models/robot_to_test.rb`` need
 - Searches for such variable or method name in methods in analyzed
 - Selects the most probable value by how many times it was repeated in code
 - Runs the RSpec and fills in the expected values of the test with those returned by RSpec
 
-For more things it can currently do check https://github.com/Nedomas/zapata/tree/master/spec
+For more things it can currently do check
+https://github.com/Nedomas/zapata/tree/master/spec
 
 ## Installation
 
@@ -117,7 +129,7 @@ or
 gem 'zapata', groups: %w(development test)
 ```
 
-## Collaboration
+## Collaboration :heart:
 
 I know that code analyzing is a sexy sphere to work on for many developers.
 So here it is - a sexy project where you can realize your wet dreams about magic

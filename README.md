@@ -4,120 +4,136 @@ Who has time to write tests? This is a revolutional tool to make them write them
 
 ![Emiliano Zapata](https://cloud.githubusercontent.com/assets/1877286/3753719/af3bfec2-1814-11e4-8790-242c2b26a8e9.jpg)
 
-# Working prototype
+# What is your problem?
 
-There comes a day where you have this bullshit class ``RobotToTest`` to test.
+There comes a day where you have this bullshit class ``RobotToTest``. We need tests.
 
 ```ruby
-class RobotToTest < Object
-  def initialize(name, shop_id, sex, has_children)
-    has_children = true
-    random_false_value = false
-    @name = name
-    @shop_ids = [1, 2, 3]
-    @code = :some_code
-    code = :some_other_code
-    @prefix = 'funky'
-    show_name_with_prefix(@prefix)
-
-    run_helping_method = some_helping_method
-    test_method_return_as_arg(run_helping_method)
+class RobotToTest
+  def initialize(human_name, cv)
+    @name = robot_name(human_name)
   end
 
-  def show_shop_ids
-    shop_id = 11
-    code = :some_other_code
-    p @shop_ids
+  def robot_name(human_name)
+    "#{self.class.prefix}_#{human_name}"
   end
 
-  def some_helping_method
-    'hello'
+  def cv
+    { planets: planets }
   end
 
-  def test_method_return_as_arg(run_helping_method)
-    p run_helping_method
+  def nested_fun_objects(fun_objects)
+    'It was fun'
   end
 
-  def testing_true_and_false(has_children, random_false_value)
-    has_children
+  def self.prefix
+    'Robot'
   end
 
-  def testing_empty_method
+  private
+
+  def planets
+    ['Mars', Human.home]
   end
 
-  def testing_hash(options_hash)
-    options_hash = { one: :thing, led: :to_another }
+  def fun_objects
+    [%i(array in array), { hash: nested_hash }]
   end
 
-  def show_name_with_prefix(prefix)
-    "#{prefix}_#{@name}"
+  def nested_hash
+    { in_hash: { in: array } }
   end
 
-  def whats_my_code(code)
-    code
+  def array
+    %w(array)
+  end
+end
+
+# just another class to analyze
+class Human
+  def initialize
+    human_name = 'Emiliano'
+  end
+
+  def self.home
+    'Earth'
   end
 end
 ```
 
-You just run ``zapata generate app/models/robot_to_test.rb`` and pop the champagne.
-Zapata generated ``spec/models/robot_to_test_spec.rb`` and prefills it with its own data.
-The more data it has, the more accurate the generated spec is. It automatically
-does the analysis of classes in ``app/{models,controllers}`` and gathers data.
+## Solving it
 
-It __live evaluates__ RSpec file it generated and prefills expected values.
+You run ``zapata generate app/models/robot_to_test.rb`` and pop the champagne.
+Zapata generated ``spec/models/robot_to_test_spec.rb`` for you.
 
-```ruby
-require 'rails_helper'
-
+```
 describe RobotToTest do
-
-  let(:robot_to_test) { RobotToTest.new('John3000', 11, Zapata::Missing.new(:never_set, :sex), true) }
-
-  it '#show_shop_ids' do
-    expect(robot_to_test.show_shop_ids).to eq([1, 2, 3])
+  let(:robot_to_test) do
+    RobotToTest.new('Emiliano', { planets: ['Mars', Human.home] })
   end
 
-  it '#some_helping_method' do
-    expect(robot_to_test.some_helping_method).to eq('hello')
+  it '#robot_name' do
+    expect(robot_to_test.robot_name('Emiliano')).to eq('Robot_Emiliano')
   end
 
-  it '#test_method_return_as_arg' do
-    expect(robot_to_test.test_method_return_as_arg('hello')).to eq('hello')
+  it '#cv' do
+    expect(robot_to_test.cv).to eq({ planets: ['Mars', 'Earth'] })
   end
 
-  it '#testing_true_and_false' do
-    expect(robot_to_test.testing_true_and_false(true, false)).to eq(true)
+  it '#nested_fun_objects' do
+    expect(robot_to_test.nested_fun_objects([[:array, :in, :array], { hash: { in_hash: { in: ['array'] } } }])).to eq('It was fun')
   end
 
-  it '#testing_empty_method' do
-    expect(robot_to_test.testing_empty_method).to eq()
+  it '#prefix' do
+    expect(RobotToTest.prefix).to eq('Robot')
   end
-
-  it '#testing_hash' do
-    expect(robot_to_test.testing_hash({:one=>:thing, :led=>:to_another})).to eq({:one=>:thing, :led=>:to_another})
-  end
-
-  it '#show_name_with_prefix' do
-    expect(robot_to_test.show_name_with_prefix('funky')).to eq('funky_John3000')
-  end
-
-  it '#whats_my_code' do
-    expect(robot_to_test.whats_my_code(:some_other_code)).to eq(:some_other_code)
-  end
-
 end
 ```
+
+## What does it do?
+
+It tries to write a passing RSpec spec off the bat. It does fancy analysis
+to predict the values it could feed to the API of a class.
+
+To be more specific:
+- Analyzes all vars and methods definitions in ``app/models``
+- Checks what arguments does a testable method in ``app/models/robot_to_test.rb`` need
+- Searches for such variable or method name in methods in analyzed
+- Selects the most probable value by how many times it was repeated in code
+- Runs the RSpec and fills in the expected values of the test with those returned by RSpec
+
+For more things it can currently do check https://github.com/Nedomas/zapata/tree/master/spec
 
 ## Installation
 
-It is unreleased and unstable at this moment, but you can install it by
+It should be as easy as
+```sh
+gem install zapata
+```
+
+or
+
+```ruby
+gem 'zapata', groups: %w(development test)
+```
+
+## Collaboration
+
+I know that code analyzing is a sexy sphere to work on for many developers.
+So here it is - a sexy project where you can realize your wet dreams about magic
+in Ruby.
+
+To install, run:
 ```sh
 git clone https://github.com/Nedomas/zapata
 cd zapata
 bundle exec rake install
 ```
 
-I doubt it will work easily out of the box so check ``lib/zapata.rb``
+For specs, run:
+```sh
+bundle exec rspec --patern "spec/*_spec.rb"
+```
 
 ## Copyright
 Copyright (c) 2014 Domas.

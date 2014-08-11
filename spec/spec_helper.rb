@@ -114,6 +114,8 @@ end
 def has_block(name, expected_content)
   generated_lines = @generated.split("\n")
   it_starts = generated_lines.index { |line| line == "it '#{name}' do" }
+  raise 'No such block' unless it_starts
+
   might_match_lines = generated_lines[it_starts..-1]
   it_ends = might_match_lines.index { |line| line == 'end' }
 

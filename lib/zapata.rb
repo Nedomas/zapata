@@ -23,12 +23,9 @@ module Zapata
     class << self
       attr_accessor :analysis, :analysis_as_array
 
-      def generate(filename)
-        dirs = %w(app/models)
+      def generate(filename, single: false)
+        dirs = single ? [] : %w(app/models)
         file_list = Core::Collector.expand_dirs_to_files(dirs)
-
-        # files = %w(app/models/actual_fragment.rb app/models/ical.rb app/models/calendar/balance_transfer.rb)
-
         new(file_list).generate_rspec_for(filename, spec_filename(filename))
       end
 

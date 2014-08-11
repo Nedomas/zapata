@@ -4,17 +4,21 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require_relative '../lib/zapata'
 
-Slop.parse do
-  banner 'Usage: zapata [options]'
+generate_description = "'zapata generate <filename>'
+             -s, --single option to skip app/models analysis"
 
-  on '--help', '-h' do
-    puts help
-  end
+slop = Slop.new(help: true, banner: true) do
+  banner('Usage: zapata [options]')
 
-  command 'generate' do
+  command('generate', description: generate_description) do
+    on(:s, :single, "Does not analyze 'app/models'", banner: true)
+
     run do |opts, args|
-      spec_filename = Zapata::Revolutionist.generate(args.shift)
+      spec_filename = Zapata::Revolutionist.generate(args.shift, single: opts.single?)
       puts "Its done, comrades. File #{spec_filename} was generated."
     end
   end
 end
+
+puts slop.help if ARGV.empty?
+slop.parse

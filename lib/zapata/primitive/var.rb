@@ -15,7 +15,6 @@ module Zapata
         raw = Diver.dive(node.body).to_raw
 
         if raw.type == :super
-          binding.pry
           Missing.new(node.name).to_raw
         else
           raw

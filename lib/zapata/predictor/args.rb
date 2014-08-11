@@ -30,7 +30,7 @@ module Zapata
             raw_sym = Primitive::Raw.new(:sym, chosen_args)
             Printer.print(raw_sym)
           else
-            binding.pry
+            raise "Not yet implemented"
           end
 
           Printer.args(args_in_string, chosen_args.class)
@@ -65,13 +65,13 @@ module Zapata
           when :int, :missing, :nil
             raw_args.value
           else
-            binding.pry
+            raise "Not yet implemented"
           end
         end
 
         def choose_value(name, finder = nil)
           return Primitive::Raw.new(:nil, nil) if name.nil?
-          return finder if finder and RETURN_TYPES.include?(finder.type) rescue binding.pry
+          return finder if finder and RETURN_TYPES.include?(finder.type)
 
           possible_values = Revolutionist.analysis_as_array.select do |element|
             !is_a_finder?(element, finder) and element.name == name
@@ -86,7 +86,7 @@ module Zapata
 
         def is_a_finder?(primitive, finder)
           return false unless finder
-          primitive.class == finder.class and primitive.name == finder.name rescue binding.pry
+          primitive.class == finder.class and primitive.name == finder.name
         end
       end
     end

@@ -17,7 +17,7 @@ module Zapata
           Missing.new(node.name).to_raw
         else
           chosen_value
-        end rescue binding.pry
+        end
       end
     end
   end

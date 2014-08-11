@@ -20,7 +20,6 @@ module Zapata
         when :hash
           hash(raw.value)
         when :nil
-          binding.pry
           'nil'
         when :missing
           print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
@@ -28,7 +27,7 @@ module Zapata
           RZpec::Writer.ivars << raw
           to_var_name(raw.value)
         else
-          binding.pry
+          raise "Not yet implemented #{raw}"
         end
       end
 
@@ -50,7 +49,7 @@ module Zapata
         elsif klass == Hash
           "(#{given_args})"
         else
-          binding.pry
+          raise "Not yet implemented"
         end
       end
 

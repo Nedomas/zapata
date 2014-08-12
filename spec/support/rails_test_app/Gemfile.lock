@@ -1,7 +1,7 @@
 PATH
   remote: ~/Developer/zapata
   specs:
-    zapata (0.0.1)
+    zapata (0.0.2)
       andand (~> 1.3)
       file-temp (~> 1.2)
       memoist

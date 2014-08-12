@@ -31,8 +31,6 @@ module Zapata
       def to_raw
         if raw_receiver and raw_receiver.type == :const
           Raw.new(:const_send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
-        elsif %i(+ - * /).include?(node.name)
-          Raw.new(:super, node.name)
         else
           predicted = Predictor::Value.new(node.name, self).choose.to_raw
 

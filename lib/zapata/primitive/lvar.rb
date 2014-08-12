@@ -14,7 +14,7 @@ module Zapata
         chosen_value = Predictor::Value.new(node.name, self).choose
 
         if chosen_value.node.body == node.body
-          Raw.new(:missing, node.body.to_a.last)
+          Missing.new(node.name).to_raw
         else
           chosen_value.to_raw
         end

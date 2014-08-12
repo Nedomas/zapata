@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/Nedomas/zapata/badges/gpa.svg)](https://codeclimate.com/github/Nedomas/zapata)
+
 # Zapata
 
 Who has time to write tests? This is a revolutional tool to make them write

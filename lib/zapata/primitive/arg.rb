@@ -12,12 +12,7 @@ module Zapata
 
       def to_raw
         chosen_value = Predictor::Value.new(node.name, self).choose.to_raw
-
-        if chosen_value.type == :super
-          Missing.new(node.name).to_raw
-        else
-          chosen_value
-        end
+        return_with_super_as_missing(chosen_value, node.name)
       end
     end
   end

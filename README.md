@@ -120,6 +120,11 @@ __To be more specific:__
 For more things it can currently do check
 https://github.com/Nedomas/zapata/tree/master/spec
 
+## Requirements
+
+- Ruby 2.0+
+- Rails 3.0+
+
 ## Installation
 
 It should be as easy as

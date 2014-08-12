@@ -10,3 +10,4 @@ rvm:
   - jruby-head
   - ree
 script: bundle exec rspec --pattern "spec/*_spec.rb"
+gemfile: spec/support/rails_test_app/Gemfile

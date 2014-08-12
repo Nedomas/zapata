@@ -36,18 +36,18 @@ module Zapata
         "[#{unnested_array.join(', ')}]"
       end
 
-      def args(given_args, klass)
+      def args(given_args, type)
         return unless given_args.present?
 
-        if klass == Array
+        if type == :array
           array_without_closers = given_args[1...-1]
           return unless array_without_closers.present?
 
           "(#{array_without_closers})"
-        elsif [Fixnum, Symbol].include?(klass)
+        elsif %i(int sym hash).include?(type)
           "(#{given_args})"
-        elsif klass == Hash
-          "(#{given_args})"
+        elsif %i(nil).include?(type)
+          ''
         else
           raise "Not yet implemented"
         end

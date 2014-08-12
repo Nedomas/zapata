@@ -1,5 +1,6 @@
 module Zapata
   RETURN_TYPES = %i(missing raw const_send sym float str int ivar true false const nil)
+  FINAL_TYPES = Zapata::RETURN_TYPES + %i(array hash)
   DIVE_TYPES = %i(args begin block defined? nth_ref splat kwsplat class
     block_pass sclass masgn or and irange erange when and
     return array kwbegin yield while dstr ensure pair)

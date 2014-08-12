@@ -7,6 +7,7 @@ require 'require_all'
 require 'file/temp'
 require 'open3'
 require 'rspec'
+require 'memoist'
 
 require_rel 'zapata/core'
 require_rel 'zapata/predictor'

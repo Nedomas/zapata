@@ -4,6 +4,7 @@ PATH
     zapata (0.0.1)
       andand (~> 1.3)
       file-temp (~> 1.2)
+      memoist
       parser (~> 2.1)
       pry (~> 0.9)
       pry-stack_explorer (~> 0.4)
@@ -85,6 +86,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memoist (0.9.3)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)

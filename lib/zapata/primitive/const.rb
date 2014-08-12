@@ -1,6 +1,6 @@
 module Zapata
   module Primitive
-    class Const < Primitive::Basic
+    class Const < Basic
       def node
         modul, klass = @code.to_a
         type = @code.type

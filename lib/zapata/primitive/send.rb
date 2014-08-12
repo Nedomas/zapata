@@ -30,15 +30,10 @@ module Zapata
 
       def to_raw
         if raw_receiver and raw_receiver.type == :const
-          Raw.new(:const_send, "#{Printer.print(raw_receiver)}.#{node.name}#{Predictor::Args.literal(node.args)}")
+          ConstSend.new(raw_receiver, node.name, node.args).to_raw
         else
-          predicted = Predictor::Value.new(node.name, self).choose.to_raw
-
-          if predicted.type == :missing
-            Raw.new(:super, node.name)
-          else
-            predicted
-          end
+          raw = Predictor::Value.new(node.name, self).choose.to_raw
+          return_with_missing_as_super(raw, node.name)
         end
       end
     end

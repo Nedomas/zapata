@@ -26,6 +26,10 @@ module Zapata
       def return_with_super_as_missing(raw, name)
         raw.type == :super ? Missing.new(name).to_raw : raw
       end
+
+      def return_with_missing_as_super(raw, name)
+        raw.type == :missing ? Raw.new(:super, name) : raw
+      end
     end
   end
 end

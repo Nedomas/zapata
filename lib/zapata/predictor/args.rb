@@ -3,31 +3,11 @@ module Zapata
     class Args
       class << self
         def literal(args_node)
+          return unless args_node
+
           raw_args = Diver.dive(args_node).to_raw
           chosen_args = choose_values(raw_args)
-
-          args_in_string = case chosen_args
-#           when Array
-#             rebuilt = chosen_args.map do |primitive|
-#               Printer.print(primitive)
-#             end
-#
-#             raw_array = Primitive::Raw.new(:array, rebuilt)
-#             Printer.print(raw_array)
-#           when Hash
-#             rebuilt = chosen_args.each_with_object({}) do |(key, val), obj|
-#               obj[Printer.print(key)] = Printer.print(val)
-#             end
-#
-#             raw_hash = Primitive::Raw.new(:hash, rebuilt)
-#             Printer.print(raw_hash)
-          when Primitive::Raw
-            Printer.print(chosen_args)
-          else
-            raise 'Not yet implemented'
-          end
-
-          Printer.args(args_in_string, chosen_args.type)
+          Printer.print(chosen_args, args: true)
         end
 
         def choose_values(raw_args)

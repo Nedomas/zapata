@@ -28,4 +28,28 @@ describe Zapata::Revolutionist do
       expect(test_send.method_with_calculated_value('Missing "calculated_value"')).to eq('Missing "calculated_value"')
     })
   end
+
+  it '#to_another_object' do
+    has_block('#to_another_object', %Q{
+      expect(test_send.to_another_object(AnotherObject.my_name)).to eq('Domas')
+    })
+  end
+
+  it '#to_another_object_with_params' do
+    has_block('#to_another_object_with_params', %Q{
+      expect(test_send.to_another_object_with_params(AnotherObject.send_with_params(12))).to eq('Id was 12')
+    })
+  end
+
+  it '#not_explicit_with_params' do
+    has_block('#not_explicit_with_params', %Q{
+      expect(test_send.not_explicit_with_params('Could you find it?')).to eq('Could you find it?')
+    })
+  end
+
+  it '#fail_to_understand' do
+    has_block('#fail_to_understand', %Q{
+      expect(test_send.fail_to_understand('Missing "failure"')).to eq('Missing "failure"')
+    })
+  end
 end

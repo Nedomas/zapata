@@ -1,8 +1,12 @@
 module Zapata
   class Printer
     class << self
-      def print(raw)
-        case raw.type
+      extend Memoist
+
+      def print(raw, args: false)
+        type = raw.type
+
+        result = case type
         when :const, :send, :int, :const_send, :literal, :float
           raw.value
         when :str
@@ -29,51 +33,51 @@ module Zapata
         else
           raise "Not yet implemented #{raw}"
         end
+
+        args ? argize(result, type) : result
       end
 
-      def array(given_array)
-        unnested_array = given_array.map { |el| unnest(el) }
-        "[#{unnested_array.join(', ')}]"
+      def array(given)
+        unnested = given.map { |el| unnest(el) }
+
+        "[#{unnested.join(', ')}]"
       end
 
-      def args(given_args, type)
-        return unless given_args.present?
-
-        if type == :array
-          array_without_closers = given_args[1...-1]
-          return unless array_without_closers.present?
-
-          "(#{array_without_closers})"
-        elsif %i(int sym hash).include?(type)
-          "(#{given_args})"
-        elsif %i(nil).include?(type)
-          ''
-        else
-          raise "Not yet implemented"
+      def argize(value, type)
+        case type
+        when :array
+          value = value[1...-1]
+        when :hash
+          value = value[2...-2]
         end
+
+        return unless value.present?
+
+        "(#{[value].flatten.join(', ')})"
       end
 
-      def hash(obj)
-        unnested_hash = obj.each_with_object({}) do |(key, val), obj|
-          unnested_key = unnest(key)
-          unnested_val = unnest(val)
-          obj[unnested_key] = unnested_val
+      def hash(given)
+        unnested = given.each_with_object({}) do |(key, val), obj|
+          obj[unnest(key)] = unnest(val)
         end
 
-        all_keys_symbols = unnested_hash.keys.all? do |key|
-          Parser::CurrentRuby.parse(key.to_s).type == :sym
-        end
-
-        values = unnested_hash.map do |key, val|
-          if all_keys_symbols
-            "#{key[1..-1]}: #{val}"
-          else
-            "#{key} => #{val}"
-          end
+        values = unnested.map do |key, val|
+          print_hash_pair(key, val, all_keys_symbols?(unnested))
         end
 
         "{ #{values.join(', ')} }"
       end
+
+      def print_hash_pair(key, val, symbol_keys)
+        symbol_keys ? "#{key[1..-1]}: #{val}" : "#{key} => #{val}"
+      end
+
+      def all_keys_symbols?(hash)
+        hash.keys.all? do |key|
+          Parser::CurrentRuby.parse(key.to_s).type == :sym
+        end
+      end
+      memoize :all_keys_symbols?
 
       def unnest(raw)
         return raw unless raw.respond_to?(:value)

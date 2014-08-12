@@ -4,13 +4,16 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require_relative '../lib/zapata'
 
-generate_description = "'zapata generate <filename>'
+description_of_generate = "'zapata generate <filename>'
              -s, --single option to skip app/models analysis"
 
 slop = Slop.new(help: true, banner: true) do
   banner('Usage: zapata [options]')
+  on :v, :version, 'Print version.' do
+    puts "Your version is #{Zapata::VERSION}"
+  end
 
-  command('generate', description: generate_description) do
+  command('generate', description: description_of_generate) do
     on(:s, :single, "Does not analyze 'app/models'", banner: true)
 
     run do |opts, args|

@@ -20,7 +20,7 @@ module Zapata
           raw = primitive.to_raw
 
           if raw.type == :super
-            predicted = Predictor::Args.choose_value(raw.value).to_raw
+            predicted = Predictor::Value.new(raw.value).choose.to_raw
 
             if predicted.type == :super
               Missing.new(primitive.name).to_raw

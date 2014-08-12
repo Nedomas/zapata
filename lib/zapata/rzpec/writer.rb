@@ -56,7 +56,7 @@ module Zapata
         end
 
         self.class.ivars.each do |ivar|
-          predicted_value = Predictor::Args.choose_value(ivar.value, ivar)
+          predicted_value = Predictor::Value.new(ivar.value, ivar).choose
           literal_predicted_value = Printer.print(predicted_value.to_raw)
           write_let(ivar.value, literal_predicted_value)
         end

@@ -43,7 +43,7 @@ module Zapata
               if (RETURN_TYPES + [:array, :hash]).include?(arg.type)
                 arg
               else
-                choose_value(arg.value, arg).to_raw
+                Value.new(arg.value, arg).choose.to_raw
               end
             end
           when :hash
@@ -51,13 +51,13 @@ module Zapata
               key = if RETURN_TYPES.include?(rkey.type)
                 rkey
               else
-                choose_value(rkey.value, rkey).to_raw
+                Value.new(rkey.value, rkey).choose.to_raw
               end
 
               val = if RETURN_TYPES.include?(rval.type)
                 rval
               else
-                choose_value(rval.value, rval).to_raw
+                Value.new(rval.value, rval).choose.to_raw
               end
 
               obj[key] = val
@@ -67,26 +67,6 @@ module Zapata
           else
             raise "Not yet implemented"
           end
-        end
-
-        def choose_value(name, finder = nil)
-          return Primitive::Raw.new(:nil, nil) if name.nil?
-          return finder if finder and RETURN_TYPES.include?(finder.type)
-
-          possible_values = Revolutionist.analysis_as_array.select do |element|
-            !is_a_finder?(element, finder) and element.name == name
-          end
-
-          if possible_values.empty?
-            return Primitive::Raw.new(:super, name)
-          end
-
-          Chooser.new(possible_values).by_probability
-        end
-
-        def is_a_finder?(primitive, finder)
-          return false unless finder
-          primitive.class == finder.class and primitive.name == finder.name
         end
       end
     end

@@ -34,7 +34,7 @@ module Zapata
         elsif %i(+ - * /).include?(node.name)
           Raw.new(:super, node.name)
         else
-          predicted = Predictor::Args.choose_value(node.name, self).to_raw
+          predicted = Predictor::Value.new(node.name, self).choose.to_raw
 
           if predicted.type == :missing
             Raw.new(:super, node.name)

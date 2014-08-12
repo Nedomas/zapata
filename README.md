@@ -1,4 +1,6 @@
 [![Code Climate](https://codeclimate.com/github/Nedomas/zapata/badges/gpa.svg)](https://codeclimate.com/github/Nedomas/zapata)
+[![Gem Version](https://badge.fury.io/rb/zapata.svg)](http://badge.fury.io/rb/zapata)
+[![Build Status](https://travis-ci.org/Nedomas/zapata.svg?branch=master)](https://travis-ci.org/Nedomas/zapata)
 
 # Zapata
 

@@ -44,28 +44,33 @@ module Zapata
       end
 
       def dive(code)
-        unless code
-          return Primitive::Nil.new
-        end
+        return Primitive::Nil.new unless code
+        return Primitive::Raw.new(:missing, :hard_type) if HARD_TYPES.include?(code.type)
 
-        current_type = code.type
-        return Primitive::Raw.new(:missing, :hard_type) if HARD_TYPES.include?(current_type)
-
-        subklass_pair = PRIMITIVE_TYPES.detect do |_, types|
-          types.include?(current_type)
-        end
-
-        if subklass_pair
-          klass = "Zapata::Primitive::#{subklass_pair.first}".constantize
+        if (klass = primitive_klass(code))
           result = klass.new(code)
-
-          DB.create(result) if search_for_types.include?(current_type)
-        else
+          DB.create(result) if search_for_types.include?(code.type)
         end
 
-        deeper_dives(code) if DIVE_TYPES.include?(current_type)
+        deeper_dives(code)
 
         result || Primitive::Raw.new(:super, nil)
+      end
+
+      def primitive_klass(code)
+        primitive_type = find_primitive_type(code)
+        return unless primitive_type
+
+        "Zapata::Primitive::#{primitive_type}".constantize
+      end
+
+      def find_primitive_type(code)
+        klass_pair = PRIMITIVE_TYPES.detect do |_, types|
+          types.include?(code.type)
+        end
+        return unless klass_pair
+
+        klass_pair.first
       end
 
       def search_for_types
@@ -73,6 +78,8 @@ module Zapata
       end
 
       def deeper_dives(code)
+        return unless DIVE_TYPES.include?(code.type)
+
         code.to_a.compact.each do |part|
           dive(part)
         end

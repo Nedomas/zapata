@@ -101,7 +101,13 @@ def exec_generation(generate_for)
   end
 
   output = stdout.readlines
-  generated_filename = output.last.match(/File\ (.+)\ was/)[1]
+  begin
+    generated_filename = output.last.match(/File\ (.+)\ was/)[1]
+  rescue
+    raise "Did not get the message that file was generated. Got this instead:
+      STDOUT: #{output}
+      STDERR: #{stderr.readlines}"
+  end
   spec_path = "#{RAILS_TEST_APP_DIR}/#{generated_filename}"
 
   clean(

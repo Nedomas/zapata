@@ -133,9 +133,16 @@ or
 gem 'zapata', groups: %w(development test)
 ```
 
+## Usage
+
 To use run
 ```sh
 zapata generate app/models/model_name.rb
+```
+
+To ignore other files and analyze a single model you want to generate a spec for:
+```sh
+zapata generate app/models/model_name.rb --single
 ```
 
 ## Collaboration :heart:

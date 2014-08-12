@@ -10,11 +10,9 @@ module Zapata
         when :const, :send, :int, :const_send, :literal, :float
           raw.value
         when :str
-          # decide which one to use
-          # "\"#{raw.value}\""
-          "'#{raw.value}'"
+          str(raw)
         when :sym
-          ":#{raw.value}"
+          sym(raw)
         when :true
           true
         when :false
@@ -26,10 +24,9 @@ module Zapata
         when :nil
           'nil'
         when :missing
-          print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
+          missing(raw)
         when :ivar
-          RZpec::Writer.ivars << raw
-          to_var_name(raw.value)
+          ivar(raw)
         else
           raise "Not yet implemented #{raw}"
         end
@@ -37,10 +34,35 @@ module Zapata
         args ? argize(result, type) : result
       end
 
+      def to_var_name(name)
+        name.to_s.split('::').last.underscore.delete('@')
+      end
+
+      private
+
       def array(given)
         unnested = given.map { |el| unnest(el) }
 
         "[#{unnested.join(', ')}]"
+      end
+
+      def str(raw)
+        # decide which one to use
+        # "\"#{raw.value}\""
+        "'#{raw.value}'"
+      end
+
+      def sym(raw)
+        ":#{raw.value}"
+      end
+
+      def ivar(raw)
+        RZpec::Writer.ivars << raw
+        to_var_name(raw.value)
+      end
+
+      def missing(raw)
+        print(Primitive::Raw.new(:str, "Missing \"#{raw.value}\""))
       end
 
       def argize(value, type)
@@ -87,10 +109,6 @@ module Zapata
         else
           print(raw)
         end
-      end
-
-      def to_var_name(name)
-        name.to_s.split('::').last.underscore.delete('@')
       end
     end
   end

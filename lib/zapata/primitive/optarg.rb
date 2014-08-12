@@ -7,9 +7,6 @@ module Zapata
         OpenStruct.new(type: type, name: name, body: body)
       end
 
-      def dive_deeper
-      end
-
       def to_raw
         Diver.dive(node.body).to_raw
       end

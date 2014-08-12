@@ -6,7 +6,6 @@ module Zapata
       def initialize(code)
         @code = code
         @type = code.type
-        dive_deeper
       end
 
       def name

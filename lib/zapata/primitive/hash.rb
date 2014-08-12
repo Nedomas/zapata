@@ -11,9 +11,6 @@ module Zapata
         value.to_a.flatten
       end
 
-      def dive_deeper
-      end
-
       def to_raw
         result = {}
 

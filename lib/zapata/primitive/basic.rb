@@ -1,6 +1,6 @@
 module Zapata
   module Primitive
-    class Basic < Primitive::Base
+    class Basic < Base
       def to_a
         [value]
       end
@@ -9,9 +9,6 @@ module Zapata
         body = @code
         type = @code.type
         OpenStruct.new(type: type, body: body)
-      end
-
-      def dive_deeper
       end
 
       def to_raw

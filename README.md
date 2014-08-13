@@ -152,9 +152,15 @@ zapata generate app/models/model_name.rb --single
 
 ## Collaboration :heart:
 
-I know that code analyzing is a sexy sphere to work on for many developers.
-So here it is - a sexy project where you can realize your wet dreams about magic
-in Ruby.
+It is encouraged by somehow managing to bring a cake to your house. I promise,
+I will really try.
+
+This is a great project to understand language architecture in general. A
+project to let your free and expressionistic side shine through by leaving meta
+hacks and rainbows everywhere.
+
+Thank you to everyone who do. I strongly believe that this can make the
+developer job less robotic and more creative.
 
 To install, run:
 ```sh

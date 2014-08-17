@@ -23,8 +23,8 @@ module Zapata
         Diver.dive(node.body).to_raw
       end
 
-      def return_with_super_as_missing(raw, name)
-        raw.type == :super ? Missing.new(name).to_raw : raw
+      def return_with_super_as_missing(raw, primitive)
+        raw.type == :super ? Missing.new(primitive.name).to_raw : raw
       end
 
       def return_with_missing_as_super(raw, name)

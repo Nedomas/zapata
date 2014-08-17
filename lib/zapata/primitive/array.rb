@@ -18,7 +18,7 @@ module Zapata
 
           if raw.type == :super
             predicted = Predictor::Value.new(raw.value).choose.to_raw
-            return_with_super_as_missing(predicted, primitive.name)
+            return_with_super_as_missing(predicted, primitive)
           else
             raw
           end

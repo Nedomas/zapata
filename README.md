@@ -120,6 +120,16 @@ __To be more specific:__
 For more things it can currently do check
 https://github.com/Nedomas/zapata/tree/master/spec
 
+## Workflow with Zapata
+
+Say you are writing some new feature on your existing project. 
+Before writing that, you probably want to test out the current functionality. 
+But who has time for that?
+
+You let *Zapata* create that quick spec for you. 
+Think of it as a *current functionality lock*.
+Write more code and when you're happy with the result - lock it up again.
+
 ## Requirements
 
 - Ruby 2.0+
@@ -169,7 +179,7 @@ cd zapata
 bundle exec rake install
 ```
 
-# For specs:
+For specs:
 
 1. ``cd spec/support/rails_test_app && bundle update``
 2. ``cd ../../..``

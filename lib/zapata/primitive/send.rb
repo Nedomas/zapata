@@ -33,8 +33,7 @@ module Zapata
           ConstSend.new(raw_receiver, node.name, node.args).to_raw
         else
           raw = Predictor::Value.new(node.name, self).choose.to_raw
-          missing_name = raw.type == :super ? Unparser.unparse(code) : node.name
-          Missing.new(missing_name).to_raw
+          return_with_missing_as_super(raw, node.name)
         end
       end
     end

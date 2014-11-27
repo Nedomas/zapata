@@ -1,7 +1,22 @@
 language: ruby
-rvm:
-  - 2.1.5
-  - 2.1.2
-  - 2.0.0
+
+bundler_args: --without development
+
 script: bundle exec rspec --pattern "spec/*_spec.rb"
 gemfile: spec/support/rails_test_app/Gemfile
+
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1.0
+  - ruby-head
+  - jruby-19mode
+  - jruby-head
+  - rbx
+
+matrix:
+  allow_failures:
+    - rvm: 1.9.3
+    - rvm: ruby-head
+    - rvm: jruby-head
+    - rvm: rbx

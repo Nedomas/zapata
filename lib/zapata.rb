@@ -23,6 +23,12 @@ module Zapata
     class << self
       attr_accessor :analysis, :analysis_as_array
 
+      def generate_with_friendly_output(file, opts)
+        spec_filename = Zapata::Revolutionist.generate(file,
+          single: opts.single?)
+        puts "Its done, comrades. File #{spec_filename} was generated."
+      end
+
       def generate(filename, single: false)
         dirs = single ? [] : %w(app/models)
         file_list = Core::Collector.expand_dirs_to_files(dirs)

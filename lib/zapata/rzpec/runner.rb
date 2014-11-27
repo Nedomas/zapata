@@ -51,7 +51,7 @@ module Zapata
         @ran = true
 
         @stdin, @stdout, @stderr = Bundler.with_clean_env do
-          Open3.popen3("bundle exec rspec #{@spec_filename} --format j")
+          Open3.popen3("RBENV_VERSION=1.9.3-p551 rbenv exec bundle exec rspec #{@spec_filename} --format j")
         end
       end
 

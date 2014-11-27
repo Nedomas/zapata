@@ -51,8 +51,27 @@ module Zapata
         @ran = true
 
         @stdin, @stdout, @stderr = Bundler.with_clean_env do
-          Open3.popen3("bundle exec rspec #{@spec_filename} --format j")
+          binding.pry
+          Open3.popen3("#{ruby_manager} bundle exec rspec #{@spec_filename} --format j")
         end
+      end
+
+      def ruby_manager
+        return ''
+        if exec_exists?(:rbenv)
+          "RBENV_VERSION=#{version} rbenv exec"
+        elsif exec_exists?(:rvm)
+          "rvm #{version} exec"
+        end
+      end
+
+      def exec_exists?(name)
+        _, _, stderr = Open3.popen3("type '#{name}' || { exit 1; }")
+        stderr.readlines.empty?
+      end
+
+      def version
+        binding.pry
       end
 
       def examples

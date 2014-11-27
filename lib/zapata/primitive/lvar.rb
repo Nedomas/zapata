@@ -10,7 +10,7 @@ module Zapata
       def to_raw
         chosen_value = Predictor::Value.new(node.name, self).choose
 
-        if chosen_value.node.body == node.body
+        if chosen_value.respond_to?(:node) && chosen_value.node.body == node.body
           Missing.new(node.name).to_raw
         else
           chosen_value.to_raw

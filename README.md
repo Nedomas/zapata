@@ -169,9 +169,12 @@ cd zapata
 bundle exec rake install
 ```
 
-For specs, run:
+For specs:
+1. ``cd spec/support/rails_test_app && bundle update``
+2. ``cd ../../..``
+3. Run:
 ```sh
-bundle exec rspec --patern "spec/*_spec.rb"
+bundle exec rspec --pattern "spec/*_spec.rb"
 ```
 
 ## Copyright

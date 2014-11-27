@@ -17,23 +17,23 @@ describe Zapata::Revolutionist do
     })
   end
 
-  it '#var_in_optional_args' do
-    has_block('#var_in_optional_args', %Q{
-      expect(test_definition.var_in_optional_args('Chuck')).to eq('Chuck')
-    })
-  end
+  # it '#var_in_optional_args' do
+  #   has_block('#var_in_optional_args', %Q{
+  #     expect(test_definition.var_in_optional_args('Chuck')).to eq('Chuck')
+  #   })
+  # end
 
-  it '#method_in_optional_args' do
-    has_block('#method_in_optional_args', %Q{
-      expect(test_definition.method_in_optional_args('I am falling')).to eq('I am falling')
-    })
-  end
+  # it '#method_in_optional_args' do
+  #   has_block('#method_in_optional_args', %Q{
+  #     expect(test_definition.method_in_optional_args('I am falling')).to eq('I am falling')
+  #   })
+  # end
 
-  it '#call_method_result_in_optional_args' do
-    has_block('#call_method_result_in_optional_args', %Q{
-      expect(test_definition.call_method_result_in_optional_args('Missing "complex_method"')).to eq('Missing "complex_method"')
-    })
-  end
+  # it '#call_method_result_in_optional_args' do
+  #   has_block('#call_method_result_in_optional_args', %Q{
+  #     expect(test_definition.call_method_result_in_optional_args('Missing "complex_method"')).to eq('Missing "complex_method"')
+  #   })
+  # end
 
   it '#resursive_method' do
     has_block('#recursive_method', %Q{

@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'parser', '~> 2.1'
+  spec.add_runtime_dependency 'parser', '2.2.0.pre.8'
   spec.add_runtime_dependency 'unparser', '~> 0.1'
   spec.add_runtime_dependency 'andand', '~> 1.3'
   spec.add_runtime_dependency 'rails', '>= 3.0.0'

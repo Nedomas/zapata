@@ -10,15 +10,15 @@ describe TestSend do
   end
 
   it '#second_level_method_chain' do
-    expect(test_send.second_level_method_chain('Help method')).to eq('Help method')
+    expect(test_send.second_level_method_chain('Missing "help_method"')).to eq('Missing "help_method"')
   end
 
   it '#third_level_method_chain' do
-    expect(test_send.third_level_method_chain('Help method')).to eq('Help method')
+    expect(test_send.third_level_method_chain('Missing "second_level_method"')).to eq('Missing "second_level_method"')
   end
 
   it '#method_with_calculated_value' do
-    expect(test_send.method_with_calculated_value('Missing "calculated_value"')).to eq('Missing "calculated_value"')
+    expect(test_send.method_with_calculated_value('Missing "+"')).to eq('Missing "+"')
   end
 
   it '#to_another_object' do

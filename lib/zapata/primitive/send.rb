@@ -32,8 +32,7 @@ module Zapata
         if raw_receiver and raw_receiver.type == :const
           ConstSend.new(raw_receiver, node.name, node.args).to_raw
         else
-          raw = Predictor::Value.new(node.name, self).choose.to_raw
-          return_with_missing_as_super(raw, node.name)
+          Missing.new(node.name).to_raw
         end
       end
     end

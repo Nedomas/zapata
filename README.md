@@ -137,6 +137,8 @@ Write more code and when you're happy with the result - lock it up again.
 - Ruby 2.0+
 - Rails 3.0+
 
+Ruby 1.9.3 and older version support is in next release and can be checked out [here](https://github.com/Nedomas/zapata/issues/2).
+
 ## Installation
 
 It should be as easy as

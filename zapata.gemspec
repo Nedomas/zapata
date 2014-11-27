@@ -22,8 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'parser', '~> 2.1'
   spec.add_runtime_dependency 'unparser', '~> 0.1'
   spec.add_runtime_dependency 'andand', '~> 1.3'
-  spec.add_runtime_dependency 'pry', '~> 0.9'
-  spec.add_runtime_dependency 'pry-stack_explorer', '~> 0.4'
   spec.add_runtime_dependency 'rails', '>= 3.0.0'
   spec.add_runtime_dependency 'slop', '~> 3.4'
   spec.add_runtime_dependency 'rspec-rails'
@@ -31,6 +29,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'file-temp', '~> 1.2'
   spec.add_runtime_dependency 'rspec'
   spec.add_runtime_dependency 'memoist'
+  spec.add_development_dependency 'pry', '~> 0.9'
+  spec.add_development_dependency 'pry-stack_explorer', '~> 0.4'
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rake', '~> 10.0'
 end

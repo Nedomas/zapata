@@ -1,11 +1,13 @@
-[![Code Climate](https://codeclimate.com/github/Nedomas/zapata/badges/gpa.svg)](https://codeclimate.com/github/Nedomas/zapata)
-[![Gem Version](https://badge.fury.io/rb/zapata.svg)](http://badge.fury.io/rb/zapata)
-[![Build Status](https://travis-ci.org/Nedomas/zapata.svg?branch=master)](https://travis-ci.org/Nedomas/zapata)
-
 # Zapata
 
 Who has time to write tests? This is a revolutional tool to make them write
 themselves.
+
+[![Gem Version](http://img.shields.io/gem/v/zapata.svg?style=flat)][rubygems]
+[![Build Status](http://img.shields.io/travis/Nedomas/zapata.svg?style=flat)][travis]
+[![Dependency Status](http://img.shields.io/gemnasium/Nedomas/zapata.svg?style=flat)][gemnasium]
+[![Coverage Status](http://img.shields.io/coveralls/Nedomas/zapata/master.svg?style=flat)][coveralls]
+[![Code Climate](http://img.shields.io/codeclimate/github/Nedomas/zapata.svg?style=flat)][codeclimate]
 
 ![Emiliano Zapata](https://cloud.githubusercontent.com/assets/1877286/3753719/af3bfec2-1814-11e4-8790-242c2b26a8e9.jpg)
 
@@ -198,3 +200,10 @@ Special thanks to my comrade @jpalumickas, with whom we share a vision of a bett
 ## Copyright
 Copyright (c) 2014 Domas.
 See [LICENSE](LICENSE) for details.
+
+[rubygems]: https://rubygems.org/gems/zapata
+[travis]: http://travis-ci.org/Nedomas/zapata
+[gemnasium]: https://gemnasium.com/Nedomas/zapata
+[coveralls]: https://coveralls.io/r/Nedomas/zapata
+[codeclimate]: https://codeclimate.com/github/Nedomas/zapata
+

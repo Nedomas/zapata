@@ -1,6 +1,6 @@
 # Zapata
 
-Who has time to write tests? This is a revolutional tool to make them write
+Who has time to write tests? This is a revolutionaly tool to make them write
 themselves.
 
 [![Gem Version](http://img.shields.io/gem/v/zapata.svg?style=flat)][rubygems]

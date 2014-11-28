@@ -29,11 +29,11 @@ describe Zapata::Revolutionist do
   #   })
   # end
 
-  # it '#call_method_result_in_optional_args' do
-  #   has_block('#call_method_result_in_optional_args', %Q{
-  #     expect(test_definition.call_method_result_in_optional_args('Missing "complex_method"')).to eq('Missing "complex_method"')
-  #   })
-  # end
+  it '#call_method_result_in_optional_args' do
+    has_block('#call_method_result_in_optional_args', %Q{
+      expect(test_definition.call_method_result_in_optional_args('Missing "fall_meth.first"')).to eq('Missing "fall_meth.first"')
+    })
+  end
 
   it '#resursive_method' do
     has_block('#recursive_method', %Q{

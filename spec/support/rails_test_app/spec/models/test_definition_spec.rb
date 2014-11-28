@@ -22,7 +22,7 @@ describe TestDefinition do
   end
 
   it '#call_method_result_in_optional_args' do
-    expect(test_definition.call_method_result_in_optional_args('Missing "first"')).to eq('Missing "first"')
+    expect(test_definition.call_method_result_in_optional_args('Missing "fall_meth.first"')).to eq('Missing "fall_meth.first"')
   end
 
   it '#recursive_method' do

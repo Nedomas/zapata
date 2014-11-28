@@ -18,7 +18,7 @@ describe TestSend do
   end
 
   it '#method_with_calculated_value' do
-    expect(test_send.method_with_calculated_value('Missing "+"')).to eq('Missing "+"')
+    expect(test_send.method_with_calculated_value('Missing "1 + 3"')).to eq('Missing "1 + 3"')
   end
 
   it '#to_another_object' do

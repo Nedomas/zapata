@@ -6,6 +6,7 @@
 /doc/
 /pkg/
 /spec/reports/
+/spec/support/rails_test_app/Gemfile.lock
 /tmp/
 *.bundle
 *.so

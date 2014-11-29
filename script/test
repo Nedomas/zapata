@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -e
+
+bundle exec rspec --pattern "spec/*_spec.rb"

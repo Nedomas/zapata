@@ -2,7 +2,7 @@ language: ruby
 
 bundler_args: --without development
 
-script: bundle exec rspec --pattern "spec/*_spec.rb"
+script: script/test
 gemfile: spec/support/rails_test_app/Gemfile
 
 rvm:

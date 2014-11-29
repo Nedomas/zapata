@@ -124,11 +124,11 @@ https://github.com/Nedomas/zapata/tree/master/spec
 
 ## Workflow with Zapata
 
-Say you are writing some new feature on your existing project. 
-Before writing that, you probably want to test out the current functionality. 
+Say you are writing some new feature on your existing project.
+Before writing that, you probably want to test out the current functionality.
 But who has time for that?
 
-You let *Zapata* create that quick spec for you. 
+You let *Zapata* create that quick spec for you.
 Think of it as a *current functionality lock*.
 Write more code and when you're happy with the result - lock it up again.
 
@@ -176,19 +176,25 @@ hacks and rainbows everywhere.
 Thank you to everyone who do. I strongly believe that this can make the
 developer job less robotic and more creative.
 
+1. [Fork it](https://github.com/Nedomas/zapata/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
+
 To install, run:
 ```sh
-git clone https://github.com/Nedomas/zapata
 cd zapata
-bundle exec rake install
+script/bootstrap
 ```
 
 For specs:
 
-1. ``cd spec/support/rails_test_app && bundle update``
-2. ``cd ../../..``
-3. Run:
 ```sh
+script/test
+
+# or
+
 bundle exec rspec --pattern "spec/*_spec.rb"
 ```
 
@@ -208,4 +214,3 @@ See [LICENSE](LICENSE) for details.
 [gemnasium]: https://gemnasium.com/Nedomas/zapata
 [coveralls]: https://coveralls.io/r/Nedomas/zapata
 [codeclimate]: https://codeclimate.com/github/Nedomas/zapata
-

@@ -2,6 +2,7 @@
 
 set -e
 
+rake install
 cd spec/support/rails_test_app
 bundle update
 cd ../../..

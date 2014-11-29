@@ -18,16 +18,16 @@ developer job less robotic and more creative.
 
 To install, run:
 ```sh
-git clone https://github.com/Nedomas/zapata
 cd zapata
-bundle exec rake install
+script/bootstrap
 ```
 
 For specs:
 
-1. ``cd spec/support/rails_test_app && bundle update``
-2. ``cd ../../..``
-3. Run:
 ```sh
+script/test
+
+# or
+
 bundle exec rspec --pattern "spec/*_spec.rb"
 ```

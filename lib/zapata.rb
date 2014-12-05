@@ -23,9 +23,10 @@ module Zapata
     class << self
       attr_accessor :analysis, :analysis_as_array
 
-      def generate_with_friendly_output(file, opts)
+      def generate_with_friendly_output(args, opts)
+        file = args.shift
         spec_filename = Zapata::Revolutionist.generate(file,
-          single: opts.single?)
+          single: single?(opts, args))
         puts "Its done, comrades. File #{spec_filename} was generated."
       end
 
@@ -41,6 +42,12 @@ module Zapata
 
       def spec_filename(filename)
         filename.gsub('app/', 'spec/').gsub('.rb', '_spec.rb')
+      end
+
+      private
+
+      def single?(opts, args)
+        opts.single? || args.include?('-s') || args.include?('--single')
       end
     end
 

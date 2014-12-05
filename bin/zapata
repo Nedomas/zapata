@@ -17,13 +17,13 @@ slop = Slop.new(help: true, banner: true) do
     on(:s, :single, "Does not analyze 'app/models'", banner: true)
 
     run do |opts, args|
-      Zapata::Revolutionist.generate_with_friendly_output(args.shift, opts)
+      Zapata::Revolutionist.generate_with_friendly_output(args, opts)
     end
   end
 
   run do |opts, args|
     if args.present?
-      Zapata::Revolutionist.generate_with_friendly_output(args.shift, opts)
+      Zapata::Revolutionist.generate_with_friendly_output(args, opts)
     end
   end
 end

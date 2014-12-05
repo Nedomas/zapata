@@ -204,6 +204,7 @@ I am well aware that this is featured in [Ruby Weekly 223](http://rubyweekly.com
 On that note I'd like to thank everybody who helped it shine through.
 
 Special thanks to my comrade @jpalumickas, with whom we share a vision of a better world.
+Also - thank you @edgibbs, for being the early contributor.
 
 ## Copyright
 Copyright (c) 2014 Domas.

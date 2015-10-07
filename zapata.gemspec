@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'unparser', '0.2.4'
   spec.add_runtime_dependency 'andand', '~> 1.3'
   spec.add_runtime_dependency 'rails', '>= 3.0.0'
-  spec.add_runtime_dependency 'slop', '~> 3.4'
+  spec.add_runtime_dependency 'slop', '~> 4.2'
   spec.add_runtime_dependency 'rspec-rails'
   spec.add_runtime_dependency 'require_all', '~> 1.3'
   spec.add_runtime_dependency 'file-temp', '~> 1.2'

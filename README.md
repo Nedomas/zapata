@@ -119,7 +119,7 @@ __To be more specific:__
 - Selects the most probable value by how many times it was repeated in code
 - Runs the RSpec and fills in the expected values of the test with those returned by RSpec
 
-For more things it can currently do check
+For more things it can currently do check test files
 https://github.com/Nedomas/zapata/tree/master/spec
 
 ## Workflow with Zapata
@@ -207,7 +207,7 @@ Special thanks to my comrade [@jpalumickas](https://github.com/jpalumickas), wit
 Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early contributor.
 
 ## Copyright
-Copyright (c) 2014 Domas.
+Copyright (c) 2014-2015 Domas.
 See [LICENSE](LICENSE) for details.
 
 [rubygems]: https://rubygems.org/gems/zapata

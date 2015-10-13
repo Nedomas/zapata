@@ -207,7 +207,7 @@ Special thanks to my comrade [@jpalumickas](https://github.com/jpalumickas), wit
 Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early contributor.
 
 ## Copyright
-Copyright (c) 2014-2015 Domas.
+Copyright (c) 2014-2015 Justas, Andrew, Ed, Domas.
 See [LICENSE](LICENSE) for details.
 
 [rubygems]: https://rubygems.org/gems/zapata

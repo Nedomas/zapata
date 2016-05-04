@@ -208,7 +208,7 @@ Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early con
 [@morron](https://github.com/morron) - for caring.
 
 ## Copyright
-Copyright (c) 2014-2015 Justas, Andrew, Ed, Dmitry, Domas.
+Copyright (c) 2014-2016 Justas, Andrew, Ed, Dmitry, Domas.
 See [LICENSE](LICENSE) for details.
 
 [rubygems]: https://rubygems.org/gems/zapata

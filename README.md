@@ -134,7 +134,7 @@ Write more code and when you're happy with the result - lock it up again.
 
 ## Requirements
 
-- Ruby 2.0+
+- Ruby 2.1+
 - Rails 3.0+
 
 Ruby 1.9.3 and older version support is in next release and can be checked out [here](https://github.com/Nedomas/zapata/issues/2).
@@ -204,10 +204,11 @@ I am well aware that this is featured in [Ruby Weekly 223](http://rubyweekly.com
 On that note I'd like to thank everybody who helped it shine through.
 
 Special thanks to my comrade [@jpalumickas](https://github.com/jpalumickas), with whom we share a vision of a better world.
-Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early contributor.
+Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early contributor. 
+[@morron](https://github.com/morron) - for caring.
 
 ## Copyright
-Copyright (c) 2014-2015 Justas, Andrew, Ed, Domas.
+Copyright (c) 2014-2015 Justas, Andrew, Ed, Dmitry, Domas.
 See [LICENSE](LICENSE) for details.
 
 [rubygems]: https://rubygems.org/gems/zapata

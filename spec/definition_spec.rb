@@ -6,13 +6,13 @@ describe Zapata::Revolutionist do
   end
 
   it '#in_optional_args' do
-    has_block('#in_optional_args', %Q{
+    has_block('#in_optional_args', %{
       expect(test_definition.in_optional_args(:audioslave)).to eq(:audioslave)
     })
   end
 
   it '#use_optional' do
-    has_block('#use_optional', %Q{
+    has_block('#use_optional', %{
       expect(test_definition.use_optional(:audioslave)).to eq(:audioslave)
     })
   end
@@ -30,13 +30,13 @@ describe Zapata::Revolutionist do
   # end
 
   it '#call_method_result_in_optional_args' do
-    has_block('#call_method_result_in_optional_args', %Q{
+    has_block('#call_method_result_in_optional_args', %{
       expect(test_definition.call_method_result_in_optional_args('Missing "fall_meth.first"')).to eq('Missing "fall_meth.first"')
     })
   end
 
   it '#resursive_method' do
-    has_block('#recursive_method', %Q{
+    has_block('#recursive_method', %{
       expect(test_definition.recursive_method).to eq('Exception in RSpec')
     })
   end

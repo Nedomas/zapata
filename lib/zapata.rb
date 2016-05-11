@@ -26,7 +26,7 @@ module Zapata
       def generate_with_friendly_output(args, opts)
         file = args.shift
         spec_filename = Zapata::Revolutionist.generate(file,
-          single: single?(opts, args))
+                                                       single: single?(opts, args))
         puts "Its done, comrades. File #{spec_filename} was generated."
       end
 
@@ -66,7 +66,7 @@ module Zapata
     end
 
     def adjusted_current(i, total)
-      "#{i + 1}".rjust(total.size)
+      (i + 1).to_s.rjust(total.size)
     end
 
     def generate_rspec_for(filename, spec_filename)

@@ -9,7 +9,7 @@ module Zapata
         end
       end
 
-      def initialize(file, code, subject_analysis, whole_analysis, spec_analysis = nil)
+      def initialize(file, _code, subject_analysis, whole_analysis, spec_analysis = nil)
         self.class.reset_ivars
         @subject_analysis = subject_analysis
         @whole_analysis = whole_analysis
@@ -36,8 +36,8 @@ module Zapata
 
       def klass_defs(klass)
         @subject_analysis.select do |method|
-          [Primitive::Def, Primitive::Defs].include?(method.class) and
-            method.public? and method.klass.name == klass.name
+          [Primitive::Def, Primitive::Defs].include?(method.class) &&
+            method.public? && method.klass.name == klass.name
         end
       end
 
@@ -91,9 +91,9 @@ module Zapata
         @writer.append_line("it '##{primitive_def.name}' do")
 
         receiver = if primitive_def.self?
-          primitive_def.klass.name
-        else
-          Printer.to_var_name(primitive_def.klass.name)
+                     primitive_def.klass.name
+                   else
+                     Printer.to_var_name(primitive_def.klass.name)
         end
 
         @writer.append_line(

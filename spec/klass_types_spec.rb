@@ -4,7 +4,7 @@ describe Zapata::Revolutionist do
   context 'it should work with' do
     it 'bare module' do
       generated = exec_generation('app/models/testing_module/bare.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestingModule::Bare do
         let(:bare) do
@@ -17,7 +17,7 @@ describe Zapata::Revolutionist do
 
     it 'nested module' do
       generated = exec_generation('app/models/testing_module/nested/inside.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestingModule::Nested::Inside do
         let(:inside) do
@@ -34,19 +34,19 @@ describe Zapata::Revolutionist do
       end
 
       it '#defined_with_self' do
-        has_block('#defined_with_self', %Q{
+        has_block('#defined_with_self', %{
           expect(TestingModule::KlassMethods.defined_with_self(5)).to eq(5)
         })
       end
 
       it '#defined_with_back_back_self' do
-        has_block('#defined_with_back_back_self', %Q{
+        has_block('#defined_with_back_back_self', %{
           expect(TestingModule::KlassMethods.defined_with_back_back_self(5)).to eq(5)
         })
       end
 
       it '#back_to_public_defined_with_self' do
-        has_block('#back_to_public_defined_with_self', %Q{
+        has_block('#back_to_public_defined_with_self', %{
           expect(TestingModule::KlassMethods.back_to_public_defined_with_self(5)).to eq(5)
         })
       end

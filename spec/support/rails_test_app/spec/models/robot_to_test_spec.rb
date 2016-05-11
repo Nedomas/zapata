@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe RobotToTest do
   let(:robot_to_test) do
-    RobotToTest.new('Emiliano', { planets: ['Mars', Human.home] })
+    RobotToTest.new('Emiliano', planets: ['Mars', Human.home])
   end
 
   it '#robot_name' do
@@ -10,7 +10,7 @@ describe RobotToTest do
   end
 
   it '#cv' do
-    expect(robot_to_test.cv).to eq({ planets: ['Mars', 'Earth'] })
+    expect(robot_to_test.cv).to eq(planets: %w(Mars Earth))
   end
 
   it '#nested_fun_objects' do

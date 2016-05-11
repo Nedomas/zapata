@@ -7,11 +7,11 @@ module Zapata
         end
 
         def rails_helper_path
-          File.expand_path("#{spec_dir}/rails_helper",  __FILE__)
+          File.expand_path("#{spec_dir}/rails_helper", __FILE__)
         end
 
         def spec_helper_path
-          File.expand_path("#{spec_dir}/spec_helper",  __FILE__)
+          File.expand_path("#{spec_dir}/spec_helper", __FILE__)
         end
 
         def helper_name
@@ -27,7 +27,7 @@ module Zapata
         def full_helper_path
           paths = {
             rails_helper: rails_helper_path,
-            spec_helper: spec_helper_path,
+            spec_helper: spec_helper_path
           }.freeze
 
           paths[helper_name.to_sym]
@@ -35,7 +35,7 @@ module Zapata
 
         def load_spec_helper
           $LOAD_PATH << spec_dir
-          require "#{helper_name}"
+          require helper_name.to_s
         end
       end
     end

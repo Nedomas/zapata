@@ -49,7 +49,7 @@ class TestSend
     1 + 3
   end
 
-  def not_explicit(name)
+  def not_explicit(_name)
     'Could you find it?'
   end
 

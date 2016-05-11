@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Zapata::VERSION
   spec.authors       = ['Domas Bitvinskas']
   spec.email         = ['domas.bitvinskas@me.com']
-  spec.summary       = %q(Automatic automated test writer)
-  spec.description   = %q(Who has time to write tests? This is a revolutional tool to make them write themselves.)
+  spec.summary       = 'Automatic automated test writer'
+  spec.description   = 'Who has time to write tests? This is a revolutional tool to make them write themselves.'
   spec.homepage      = 'https://github.com/Nedomas/zapata'
   spec.license       = 'MIT'
   spec.required_ruby_version = '~> 2.0'

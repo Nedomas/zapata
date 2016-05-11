@@ -1,5 +1,5 @@
 class RobotToTest
-  def initialize(human_name, cv)
+  def initialize(human_name, _cv)
     @name = robot_name(human_name)
   end
 
@@ -11,7 +11,7 @@ class RobotToTest
     { planets: planets }
   end
 
-  def nested_fun_objects(fun_objects)
+  def nested_fun_objects(_fun_objects)
     'It was fun'
   end
 

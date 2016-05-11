@@ -43,7 +43,7 @@ module Zapata
             Printer.print(Diver.dive(Parser::CurrentRuby.parse(clean_expected_line)).to_raw)
           end
         else
-         "'Exception in RSpec'"
+          "'Exception in RSpec'"
         end
       end
 

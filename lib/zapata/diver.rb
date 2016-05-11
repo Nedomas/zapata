@@ -1,19 +1,19 @@
 module Zapata
-  RETURN_TYPES = %i(missing raw const_send sym float str int ivar true false const nil)
+  RETURN_TYPES = %i(missing raw const_send sym float str int ivar true false const nil).freeze
   FINAL_TYPES = Zapata::RETURN_TYPES + %i(array hash)
   DIVE_TYPES = %i(args begin block defined? nth_ref splat kwsplat class
-    block_pass sclass masgn or and irange erange when and
-    return array kwbegin yield while dstr ensure pair)
-  ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn optarg)
-  DEF_TYPES = %i(def defs)
+                  block_pass sclass masgn or and irange erange when and
+                  return array kwbegin yield while dstr ensure pair).freeze
+  ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn optarg).freeze
+  DEF_TYPES = %i(def defs).freeze
   HARD_TYPES = %i(if dsym resbody mlhs next self break zsuper
-    super retry rescue match_with_lvasgn case op_asgn regopt regexp)
+                  super retry rescue match_with_lvasgn case op_asgn regopt regexp).freeze
   TYPES_BY_SEARCH_FOR = {
     klass: %i(class),
     var: ASSIGN_TYPES,
     def: DEF_TYPES,
-    send: %i(send),
-  }
+    send: %i(send)
+  }.freeze
 
   PRIMITIVE_TYPES = {
     Def: %i(def),
@@ -31,7 +31,7 @@ module Zapata
     Arg: %i(arg),
     Basic: RETURN_TYPES,
     Casgn: %i(casgn),
-    Var: ASSIGN_TYPES,
+    Var: ASSIGN_TYPES
   }.freeze
 
   class Diver

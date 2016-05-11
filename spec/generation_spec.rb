@@ -4,7 +4,7 @@ describe Zapata::Revolutionist do
   describe '#generate_with_friendly_output' do
     let(:file_name) { 'app/models/test_array.rb' }
 
-    context "with the generate command" do
+    context 'with the generate command' do
       context 'with single specified' do
         it 'returns a single file generation message' do
           output = execution_output("cd #{RAILS_TEST_APP_DIR} && bundle exec zapata generate #{file_name} -s")
@@ -21,7 +21,7 @@ describe Zapata::Revolutionist do
       end
     end
 
-    context "without the generate command" do
+    context 'without the generate command' do
       context 'with single (-s) specified' do
         it 'returns a single file generation message' do
           output = execution_output("cd #{RAILS_TEST_APP_DIR} && bundle exec zapata #{file_name} -s")

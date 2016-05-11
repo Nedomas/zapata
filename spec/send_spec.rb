@@ -6,7 +6,7 @@ describe Zapata::Revolutionist do
   end
 
   it '#another_method_as_arg' do
-    has_block('#another_method_as_arg', %Q{
+    has_block('#another_method_as_arg', %{
       expect(test_send.another_method_as_arg('Help method')).to eq('Help method')
     })
   end
@@ -30,25 +30,25 @@ describe Zapata::Revolutionist do
   # end
 
   it '#to_another_object' do
-    has_block('#to_another_object', %Q{
+    has_block('#to_another_object', %{
       expect(test_send.to_another_object(AnotherObject.my_name)).to eq('Domas')
     })
   end
 
   it '#to_another_object_with_params' do
-    has_block('#to_another_object_with_params', %Q{
+    has_block('#to_another_object_with_params', %{
       expect(test_send.to_another_object_with_params(AnotherObject.send_with_params(12))).to eq('Id was 12')
     })
   end
 
   it '#not_explicit_with_params' do
-    has_block('#not_explicit_with_params', %Q{
+    has_block('#not_explicit_with_params', %{
       expect(test_send.not_explicit_with_params('Could you find it?')).to eq('Could you find it?')
     })
   end
 
   it '#fail_to_understand' do
-    has_block('#fail_to_understand', %Q{
+    has_block('#fail_to_understand', %{
       expect(test_send.fail_to_understand('Missing "failure"')).to eq('Missing "failure"')
     })
   end

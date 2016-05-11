@@ -4,7 +4,7 @@ describe Zapata::Revolutionist do
   context 'it should work with' do
     it 'ints' do
       generated = exec_generation('app/models/test_int.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestInt do
         let(:test_int) do
@@ -21,7 +21,7 @@ describe Zapata::Revolutionist do
 
     it 'symbols' do
       generated = exec_generation('app/models/test_sym.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestSym do
         let(:test_sym) do
@@ -38,7 +38,7 @@ describe Zapata::Revolutionist do
 
     it 'strings' do
       generated = exec_generation('app/models/test_str.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestStr do
         let(:test_str) do
@@ -55,7 +55,7 @@ describe Zapata::Revolutionist do
 
     it 'floats' do
       generated = exec_generation('app/models/test_float.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestFloat do
         let(:test_float) do
@@ -72,7 +72,7 @@ describe Zapata::Revolutionist do
 
     it 'consts' do
       generated = exec_generation('app/models/test_const.rb')
-      expected = expected(%Q{require 'rails_helper'
+      expected = expected(%{require 'rails_helper'
 
       describe TestConst do
         let(:test_const) do

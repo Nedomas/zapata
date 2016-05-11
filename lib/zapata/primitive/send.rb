@@ -29,13 +29,13 @@ module Zapata
       end
 
       def to_raw
-        if raw_receiver and raw_receiver.type == :const
+        if raw_receiver && raw_receiver.type == :const
           ConstSend.new(raw_receiver, node.name, node.args).to_raw
         else
           missing_name = if node.receiver
-            Unparser.unparse(code)
-          else
-            node.name
+                           Unparser.unparse(code)
+                         else
+                           node.name
           end
 
           Missing.new(missing_name).to_raw

@@ -11,7 +11,7 @@ module Zapata
       end
 
       def parent_modul_names
-        @moduls.map { |mod| mod and mod.name }.compact
+        @moduls.map { |mod| mod && mod.name }.compact
       end
 
       def node

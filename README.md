@@ -7,7 +7,6 @@ themselves.
 [![Build Status](http://img.shields.io/travis/Nedomas/zapata.svg?style=flat)][travis]
 [![Dependency Status](http://img.shields.io/gemnasium/Nedomas/zapata.svg?style=flat)][gemnasium]
 [![Coverage Status](http://img.shields.io/coveralls/Nedomas/zapata/master.svg?style=flat)][coveralls]
-[![Code Climate](http://img.shields.io/codeclimate/github/Nedomas/zapata.svg?style=flat)][codeclimate]
 
 ![Emiliano Zapata](https://cloud.githubusercontent.com/assets/1877286/3753719/af3bfec2-1814-11e4-8790-242c2b26a8e9.jpg)
 
@@ -208,7 +207,7 @@ Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early con
 [@morron](https://github.com/morron) - for caring.
 
 ## Copyright
-Copyright (c) 2014-2016 Justas, Andrew, Ed, Dmitry, Domas.
+Copyright (c) 2014-2018 Justas, Andrew, Ed, Dmitry, Domas.
 See [LICENSE](LICENSE) for details.
 
 [rubygems]: https://rubygems.org/gems/zapata

@@ -1,32 +1,8 @@
 #!/usr/bin/env ruby
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require_relative '../lib/zapata'
+require 'rubygems'
+require 'bundler/setup'
+require 'zapata'
+require 'zapata/cli'
 
-description_of_generate = "'zapata generate <filename>'
-             -s, --single option to skip app/models analysis"
-
-slop = Slop.new(help: true, banner: true) do
-  banner('Usage: zapata [options]')
-  on :v, :version, 'Print version.' do
-    puts "Your version is #{Zapata::VERSION}"
-  end
-
-  command('generate', description: description_of_generate) do
-    on(:s, :single, "Does not analyze 'app/models'", banner: true)
-
-    run do |opts, args|
-      Zapata::Revolutionist.generate_with_friendly_output(args, opts)
-    end
-  end
-
-  run do |opts, args|
-    if args.present?
-      Zapata::Revolutionist.generate_with_friendly_output(args, opts)
-    end
-  end
-end
-
-puts slop.help if ARGV.empty?
-slop.parse
+Zapata::CLI.start(ARGV)

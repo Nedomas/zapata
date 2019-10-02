@@ -19,7 +19,7 @@ module Zapata
       end
 
       def node
-        receiver, name, args, body = @code.to_a
+        _, name, args, body = @code.to_a
         type = @code.type
         OpenStruct.new(type: type, name: name, args: args, body: body)
       end

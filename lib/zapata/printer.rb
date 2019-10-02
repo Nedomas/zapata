@@ -86,7 +86,6 @@ module Zapata
         values = unnested.map do |key, val|
           print_hash_pair(key, val, all_keys_symbols?(unnested))
         end
-
         "{ #{values.join(', ')} }"
       end
 

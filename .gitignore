@@ -13,3 +13,10 @@
 *.o
 *.a
 mkmf.log
+
+.rspec_status
+gemfiles/*.lock
+spec/support/rails_test_app/db/*.sqlite3
+spec/support/rails_test_app/db/*.sqlite3-journal
+spec/support/rails_test_app/log/*.log
+spec/support/rails_test_app/tmp/

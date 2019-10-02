@@ -10,7 +10,7 @@ module Zapata
       end
 
       def node
-        receiver_self, body = @code.to_a
+        _, body = @code.to_a
         type = @code.type
 
         OpenStruct.new(type: type, body: body)

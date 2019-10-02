@@ -15,7 +15,7 @@ module Zapata
       end
 
       def node
-        const, inherited_from_klass, body = @code.to_a
+        const, _, body = @code.to_a
         immediate_modul, klass = const.to_a
         chain = parent_modul_names + [immediate_modul, klass]
         name = chain.compact.join('::')

@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'memoist'
+  spec.add_runtime_dependency 'memoist', '~> 0.16'
   spec.add_runtime_dependency 'parser'
   spec.add_runtime_dependency 'rails'
   spec.add_runtime_dependency 'rspec'
@@ -28,9 +28,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'unparser'
 
-  spec.add_development_dependency 'appraisal'
+  spec.add_development_dependency 'appraisal', '~> 2.2'
   spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'pry-stack_explorer'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rubocop', '~> 0.80'
   spec.add_development_dependency 'sqlite3'

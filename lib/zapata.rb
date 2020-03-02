@@ -2,9 +2,9 @@
 
 require 'parser/current'
 require 'unparser'
+require 'tempfile'
 require 'rails'
 require 'require_all'
-require 'file/temp'
 require 'open3'
 require 'rspec'
 require 'memoist'
@@ -80,15 +80,16 @@ module Zapata
 
       global_analysis = Revolutionist.analysis_as_array
       # first run
-      tmp_spec_filename = File::Temp.new(false).path
-      RZpec::Writer.new(tmp_spec_filename, code, self.class.analysis[filename], global_analysis)
+      Tempfile.open('spec') do |tempfile|
+        RZpec::Writer.new(tempfile.path, code, self.class.analysis[filename], global_analysis)
 
-      save_spec_file(tmp_spec_filename, spec_filename)
-      spec_analysis = RZpec::Runner.new(spec_filename)
+        save_spec_file(tempfile.path, spec_filename)
+        spec_analysis = RZpec::Runner.new(spec_filename)
 
-      # second run with RSpec results
-      RZpec::Writer.new(tmp_spec_filename, code, self.class.analysis[filename], global_analysis, spec_analysis)
-      save_spec_file(tmp_spec_filename, spec_filename)
+        # second run with RSpec results
+        RZpec::Writer.new(tempfile.path, code, self.class.analysis[filename], global_analysis, spec_analysis)
+        save_spec_file(tempfile.path, spec_filename)
+      end
     end
 
     def save_spec_file(tmp_spec_filename, spec_filename)

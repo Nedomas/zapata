@@ -136,16 +136,9 @@ Write more code and when you're happy with the result - lock it up again.
 - Ruby 2.1+
 - Rails 3.0+
 
-Ruby 1.9.3 and older version support is in next release and can be checked out [here](https://github.com/Nedomas/zapata/issues/2).
-
 ## Installation
 
-It should be as easy as
-```sh
-gem install zapata
-```
-
-or
+Add `zapata` to your `Gemfile`. It currently only works if the library is added to the `Gemfile`.
 
 ```ruby
 gem 'zapata', groups: %w(development test)
@@ -205,6 +198,8 @@ On that note I'd like to thank everybody who helped it shine through.
 Special thanks to my comrade [@jpalumickas](https://github.com/jpalumickas), with whom we share a vision of a better world.
 Also - thank you [@edgibbs](https://github.com/edgibbs), for being the early contributor. 
 [@morron](https://github.com/morron) - for caring.
+
+Huge thanks to [@marcinruszkiewicz](https://github.com/marcinruszkiewicz) for reviving this gem to life in 2019/2020. Also additional thanks to [@jpalumickas](https://github.com/jpalumickas) for all the extra fixes and modernizing the codebase. This would not be done without you all.
 
 ## Copyright
 Copyright (c) 2014-2018 Justas, Andrew, Ed, Dmitry, Domas.

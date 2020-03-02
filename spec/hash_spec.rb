@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Zapata::Revolutionist do
   before(:all) do
     @generated = exec_generation('app/models/test_hash.rb')

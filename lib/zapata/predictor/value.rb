@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   module Predictor
     class Value
@@ -12,11 +14,13 @@ module Zapata
         return Primitive::Raw.new(:nil, nil) if @name.nil?
         return @finder if @finder && FINAL_TYPES.include?(@finder.type)
         return Primitive::Raw.new(:super, @name) if possible_values.empty?
+
         Chooser.new(possible_values).by_probability
       end
 
       def a_finder?(primitive)
         return false unless @finder
+
         primitive.class == @finder.class && primitive.name == @finder.name
       end
 

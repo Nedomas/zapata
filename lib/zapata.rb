@@ -31,7 +31,7 @@ module Zapata
       end
 
       def generate(filename:, single: false)
-        dirs = single ? [] : %w(app/models)
+        dirs = single ? [] : %w[app/models]
         file_list = Core::Collector.expand_dirs_to_files(dirs)
         new(file_list).generate_rspec_for(filename, spec_filename(filename))
       end

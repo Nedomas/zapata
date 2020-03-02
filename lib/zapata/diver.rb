@@ -1,38 +1,38 @@
 # frozen_string_literal: true
 
 module Zapata
-  RETURN_TYPES = %i(missing raw const_send sym float str int ivar true false const nil).freeze
-  FINAL_TYPES = Zapata::RETURN_TYPES + %i(array hash)
-  DIVE_TYPES = %i(args begin block defined? nth_ref splat kwsplat class
+  RETURN_TYPES = %i[missing raw const_send sym float str int ivar true false const nil].freeze
+  FINAL_TYPES = Zapata::RETURN_TYPES + %i[array hash]
+  DIVE_TYPES = %i[args begin block defined? nth_ref splat kwsplat class
                   block_pass sclass masgn or and irange erange when and
-                  return array kwbegin yield while dstr ensure pair).freeze
-  ASSIGN_TYPES = %i(ivasgn lvasgn or_asgn casgn optarg).freeze
-  DEF_TYPES = %i(def defs).freeze
-  HARD_TYPES = %i(if dsym resbody mlhs next self break zsuper
-                  super retry rescue match_with_lvasgn case op_asgn regopt regexp).freeze
+                  return array kwbegin yield while dstr ensure pair].freeze
+  ASSIGN_TYPES = %i[ivasgn lvasgn or_asgn casgn optarg].freeze
+  DEF_TYPES = %i[def defs].freeze
+  HARD_TYPES = %i[if dsym resbody mlhs next self break zsuper
+                  super retry rescue match_with_lvasgn case op_asgn regopt regexp].freeze
   TYPES_BY_SEARCH_FOR = {
-    klass: %i(class),
+    klass: %i[class],
     var: ASSIGN_TYPES,
     def: DEF_TYPES,
-    send: %i(send)
+    send: %i[send]
   }.freeze
 
   PRIMITIVE_TYPES = {
-    Def: %i(def),
-    Defs: %i(defs),
-    Send: %i(send),
-    Array: %i(args array),
-    Hash: %i(hash),
-    Ivar: %i(ivar),
-    Lvar: %i(lvar),
-    Klass: %i(class),
-    Sklass: %i(sclass),
-    Modul: %i(module),
-    Const: %i(const),
-    Optarg: %i(optarg),
-    Arg: %i(arg),
+    Def: %i[def],
+    Defs: %i[defs],
+    Send: %i[send],
+    Array: %i[args array],
+    Hash: %i[hash],
+    Ivar: %i[ivar],
+    Lvar: %i[lvar],
+    Klass: %i[class],
+    Sklass: %i[sclass],
+    Modul: %i[module],
+    Const: %i[const],
+    Optarg: %i[optarg],
+    Arg: %i[arg],
     Basic: RETURN_TYPES,
-    Casgn: %i(casgn),
+    Casgn: %i[casgn],
     Var: ASSIGN_TYPES
   }.freeze
 
@@ -47,7 +47,9 @@ module Zapata
 
       def dive(code)
         return Primitive::Nil.new unless code
-        return Primitive::Raw.new(:missing, :hard_type) if HARD_TYPES.include?(code.type)
+        if HARD_TYPES.include?(code.type)
+          return Primitive::Raw.new(:missing, :hard_type)
+        end
 
         if (klass = primitive_klass(code))
           result = klass.new(code)

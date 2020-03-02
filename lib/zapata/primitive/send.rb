@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   module Primitive
     class Send < Base
@@ -25,6 +27,7 @@ module Zapata
 
       def raw_receiver
         return unless node.receiver
+
         Diver.dive(node.receiver).to_raw
       end
 
@@ -33,9 +36,9 @@ module Zapata
           ConstSend.new(raw_receiver, node.name, node.args).to_raw
         else
           missing_name = if node.receiver
-                           Unparser.unparse(code)
-                         else
-                           node.name
+            Unparser.unparse(code)
+          else
+            node.name
           end
 
           Missing.new(missing_name).to_raw

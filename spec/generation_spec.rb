@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Zapata::Revolutionist do
   describe '#generate_with_friendly_output' do
     let(:file_name) { 'app/models/test_array.rb' }

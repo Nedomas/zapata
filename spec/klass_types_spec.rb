@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Zapata::Revolutionist do
   context 'it should work with' do
     it 'bare module' do

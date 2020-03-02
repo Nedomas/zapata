@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'coveralls'
 
 Coveralls.wear!
@@ -14,7 +16,7 @@ RSpec.configure do |config|
 end
 
 # Helper methods
-RAILS_TEST_APP_DIR = "#{Dir.pwd}/spec/support/rails_test_app".freeze
+RAILS_TEST_APP_DIR = "#{Dir.pwd}/spec/support/rails_test_app"
 
 def execution_output(command)
   stdout = Bundler.with_clean_env do
@@ -47,7 +49,7 @@ def exec_generation(generate_for)
   output = stdout.readlines
   begin
     generated_filename = output.last.match(/File\ (.+)\ was/)[1]
-  rescue
+  rescue StandardError
     raise "Did not get the message that file was generated. Got this instead:
       STDOUT: #{output}
       STDERR: #{stderr.readlines}"

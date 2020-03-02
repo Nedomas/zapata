@@ -26,7 +26,7 @@ class RobotToTest
   end
 
   def fun_objects
-    [%i(array in array), { hash: nested_hash }]
+    [%i[array in array], { hash: nested_hash }]
   end
 
   def nested_hash
@@ -34,7 +34,7 @@ class RobotToTest
   end
 
   def array
-    %w(array)
+    %w[array]
   end
 end
 

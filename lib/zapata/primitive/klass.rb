@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   module Primitive
     class Klass < Base
@@ -11,7 +13,7 @@ module Zapata
       end
 
       def parent_modul_names
-        @moduls.map { |mod| mod && mod.name }.compact
+        @moduls.map { |mod| mod&.name }.compact
       end
 
       def node

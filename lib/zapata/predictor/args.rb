@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   module Predictor
     class Args

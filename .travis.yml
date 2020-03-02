@@ -13,5 +13,5 @@ matrix:
   exclude:
   - rvm: 2.3.8
     gemfile: gemfiles/6.0.gemfile
-  - rvm: 2.4.7
+  - rvm: 2.4.8
     gemfile: gemfiles/6.0.gemfile

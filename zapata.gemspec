@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'andand'
   spec.add_runtime_dependency 'file-temp'
   spec.add_runtime_dependency 'memoist'
   spec.add_runtime_dependency 'parser'

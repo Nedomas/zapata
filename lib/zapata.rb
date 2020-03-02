@@ -4,16 +4,15 @@ require 'parser/current'
 require 'unparser'
 require 'tempfile'
 require 'rails'
-require 'require_all'
 require 'open3'
 require 'rspec'
 require 'memoist'
 
-require_rel 'zapata/core'
-require_rel 'zapata/predictor'
-require_rel 'zapata/primitive/base'
-require_rel 'zapata/primitive'
-require_rel 'zapata/rzpec'
+require_relative 'zapata/core'
+require_relative 'zapata/predictor'
+require_relative 'zapata/primitive'
+require_relative 'zapata/rzpec/runner'
+require_relative 'zapata/rzpec/writer'
 require_relative 'zapata/analyst'
 require_relative 'zapata/diver'
 require_relative 'zapata/db'
@@ -65,8 +64,8 @@ module Zapata
       end
     end
 
-    def adjusted_current(i, total)
-      (i + 1).to_s.rjust(total.size)
+    def adjusted_current(index, total)
+      (index + 1).to_s.rjust(total.size)
     end
 
     def generate_rspec_for(filename, spec_filename)

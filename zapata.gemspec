@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'memoist'
   spec.add_runtime_dependency 'parser'
   spec.add_runtime_dependency 'rails'
-  spec.add_runtime_dependency 'require_all'
   spec.add_runtime_dependency 'rspec'
   spec.add_runtime_dependency 'rspec-rails'
   spec.add_runtime_dependency 'thor'

@@ -1,4 +1,5 @@
 require 'coveralls'
+
 Coveralls.wear!
 
 require 'zapata'
@@ -16,7 +17,7 @@ end
 RAILS_TEST_APP_DIR = "#{Dir.pwd}/spec/support/rails_test_app".freeze
 
 def execution_output(command)
-  stdout = Bundler.with_clean_env do
+  stdout = Bundler.with_unbundled_env do
     Open3.pipeline_r(
       command
     )
@@ -37,7 +38,7 @@ def expected(code)
 end
 
 def exec_generation(generate_for)
-  _, stdout, stderr = Bundler.with_clean_env do
+  _, stdout, stderr = Bundler.with_unbundled_env do
     Open3.popen3(
       "cd #{RAILS_TEST_APP_DIR} && bundle exec zapata generate #{generate_for} -s"
     )

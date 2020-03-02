@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   class Printer
     class << self
@@ -7,28 +9,28 @@ module Zapata
         type = raw.type
 
         result = case type
-                 when :const, :send, :int, :const_send, :literal, :float
-                   raw.value
-                 when :str
-                   str(raw)
-                 when :sym
-                   sym(raw)
-                 when :true
-                   true
-                 when :false
-                   false
-                 when :array
-                   array(raw.value)
-                 when :hash
-                   hash(raw.value)
-                 when :nil
-                   'nil'
-                 when :missing
-                   missing(raw)
-                 when :ivar
-                   ivar(raw)
-                 else
-                   raise "Not yet implemented #{raw}"
+        when :const, :send, :int, :const_send, :literal, :float
+          raw.value
+        when :str
+          str(raw)
+        when :sym
+          sym(raw)
+        when :true
+          true
+        when :false
+          false
+        when :array
+          array(raw.value)
+        when :hash
+          hash(raw.value)
+        when :nil
+          'nil'
+        when :missing
+          missing(raw)
+        when :ivar
+          ivar(raw)
+        else
+          raise "Not yet implemented #{raw}"
         end
 
         args ? argize(result, type) : result

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   class Analyst
     attr_reader :result

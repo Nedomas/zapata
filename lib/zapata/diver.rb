@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   RETURN_TYPES = %i(missing raw const_send sym float str int ivar true false const nil).freeze
   FINAL_TYPES = Zapata::RETURN_TYPES + %i(array hash)

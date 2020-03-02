@@ -1,4 +1,6 @@
-lib = File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'zapata/version'
 
@@ -8,7 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Domas Bitvinskas']
   spec.email         = ['domas.bitvinskas@me.com']
   spec.summary       = 'Automatic automated test writer'
-  spec.description   = 'Who has time to write tests? This is a revolutional tool to make them write themselves.'
+  spec.description   = 'Who has time to write tests? This is a revolutional ' \
+                       'tool to make them write themselves.'
   spec.homepage      = 'https://github.com/Nedomas/zapata'
   spec.license       = 'MIT'
 
@@ -32,5 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-stack_explorer'
   spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rubocop', '~> 0.80'
   spec.add_development_dependency 'sqlite3'
 end

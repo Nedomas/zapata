@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   module RZpec
     class Runner
@@ -50,7 +52,7 @@ module Zapata
       def run
         @ran = true
 
-        @stdin, @stdout, @stderr = Bundler.with_unbundled_env do
+        @stdin, @stdout, @stderr = Bundler.with_clean_env do
           Open3.popen3("bundle exec rspec #{@spec_filename} --format j")
         end
       end

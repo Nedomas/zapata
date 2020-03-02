@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Zapata
   module RZpec
     class Writer
@@ -91,9 +93,9 @@ module Zapata
         @writer.append_line("it '##{primitive_def.name}' do")
 
         receiver = if primitive_def.self?
-                     primitive_def.klass.name
-                   else
-                     Printer.to_var_name(primitive_def.klass.name)
+          primitive_def.klass.name
+        else
+          Printer.to_var_name(primitive_def.klass.name)
         end
 
         @writer.append_line(

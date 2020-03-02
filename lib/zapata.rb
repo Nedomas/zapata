@@ -6,10 +6,10 @@ require 'file/temp'
 require 'open3'
 require 'rspec'
 require 'memoist'
-require 'slop'
 
 require_rel 'zapata/core'
 require_rel 'zapata/predictor'
+require_rel 'zapata/primitive/base'
 require_rel 'zapata/primitive'
 require_rel 'zapata/rzpec'
 require_relative 'zapata/analyst'
@@ -23,14 +23,12 @@ module Zapata
     class << self
       attr_accessor :analysis, :analysis_as_array
 
-      def generate_with_friendly_output(args, opts)
-        file = args.shift
-        spec_filename = Zapata::Revolutionist.generate(file,
-                                                       single: single?(opts, args))
+      def generate_with_friendly_output(filename:, single: false)
+        spec_filename = Zapata::Revolutionist.generate(filename: filename, single: single)
         puts "Its done, comrades. File #{spec_filename} was generated."
       end
 
-      def generate(filename, single: false)
+      def generate(filename:, single: false)
         dirs = single ? [] : %w(app/models)
         file_list = Core::Collector.expand_dirs_to_files(dirs)
         new(file_list).generate_rspec_for(filename, spec_filename(filename))

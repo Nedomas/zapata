@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Zapata::Revolutionist do
   before(:all) do
     @generated = exec_generation('app/models/test_send.rb')

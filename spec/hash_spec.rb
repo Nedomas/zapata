@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Zapata::Revolutionist do
   before(:all) do
     @generated = exec_generation('app/models/test_hash.rb')
@@ -37,7 +35,7 @@ describe Zapata::Revolutionist do
 
   it '#test_keys_are_symbols' do
     has_block('#test_keys_are_symbols', %{
-      expect(test_hash.test_keys_are_symbols({ this: 'should', be: 'pretty' })).to eq({ this: 'should', be: 'pretty' })
+      expect(test_hash.test_keys_are_symbols({ this: 'should', be: 'pretty' })).to eq({ be: 'pretty', this: 'should' })
     })
   end
 end

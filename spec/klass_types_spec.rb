@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Zapata::Revolutionist do
   context 'it should work with' do
     it 'bare module' do

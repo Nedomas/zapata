@@ -15,10 +15,10 @@ module Zapata
       end
 
       def dive_deeper
-        unless RETURN_TYPES.include?(node.type)
-          Diver.dive(node.args)
-          Diver.dive(node.body)
-        end
+        return if RETURN_TYPES.include?(node.type)
+
+        Diver.dive(node.args)
+        Diver.dive(node.body)
       end
 
       def to_raw

@@ -1,5 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.3
+  Exclude:
+    - 'spec/support/rails_test_app/**/*'
 
 Style/Documentation:
   Enabled: false
@@ -23,6 +25,9 @@ Layout/CaseIndentation:
 Layout/EndAlignment:
   Enabled: true
   EnforcedStyleAlignWith: variable
+
+Style/EmptyMethod:
+  Enabled: false
 
 Metrics/BlockLength:
   Exclude:
